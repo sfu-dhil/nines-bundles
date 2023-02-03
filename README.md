@@ -10,7 +10,7 @@ Applications that use Symfony Flex
 Open a command console, enter your project directory and execute:
 
 ```console
-$ composer require ubermichael/nines:4.x-dev-up
+$ composer require sfu-dhil/nines:4.x-dev-up
 ```
 
 Applications that don't use Symfony Flex
@@ -22,7 +22,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```console
-$ composer require ubermichael/nines:4.x-dev-up
+$ composer require sfu-dhil/nines:4.x-dev-up
 ```
 
 ### Step 2: Enable the Bundles You Want
@@ -58,7 +58,7 @@ Import the routing information as required:
 nines_blog:
     resource: '@NinesBlogBundle/config/routes.yaml'
     prefix: blog
-    
+
 nines_dublin_core:
     resource: '@NinesDublinCoreBundle/config/routes.yaml'
     prefix: dc
@@ -84,12 +84,12 @@ nines_user:
 Copy the configuration files from the bundles and edit them as required:
 
 ```console
-$ cp vendor/ubermichael/nines/*/config/nines_*.yaml config/packages/
+$ cp vendor/sfu-dhil/nines/*/config/nines_*.yaml config/packages/
 ```
 
 ### Step 5: Update Your Database Schema
 
-How you do this one depends on your project and your config. [Doctrine 
+How you do this one depends on your project and your config. [Doctrine
 migrations][migrations] are the recommended approach.
 
 ### Post Installation
@@ -97,7 +97,7 @@ migrations][migrations] are the recommended approach.
 This should be enough to get the bundles working. You may also wish to load the
 [Doctrine fixtures][fixtures].
 
-Fixtures are available for development, testing, and production. They are 
+Fixtures are available for development, testing, and production. They are
 labelled `dev`, `test`, and `prod`.
 
 ```console

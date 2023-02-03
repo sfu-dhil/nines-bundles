@@ -14,7 +14,7 @@ Open your composer.json file and add the Nines Bundles repository.
     "repositories": [
         {
             "type": "github",
-            "url": "https://github.com/ubermichael/nines-bundles.git"
+            "url": "https://github.com/sfu-dhil/nines-bundles.git"
         }
     ],
 
@@ -24,7 +24,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```console
-$ composer require ubermichael/nines 2.x-dev
+$ composer require sfu-dhil/nines 2.x-dev
    ```
 
 This command requires you to have Composer installed globally, as explained
@@ -76,8 +76,8 @@ Then add the editor widget javascript to your templates.
 
 ### Custom Config
 
-To customize the editor configuration, copy Resources/public/js/editor-config.js to 
-your bundle and make whatever changes you need. Then add the asset path to the twig 
+To customize the editor configuration, copy Resources/public/js/editor-config.js to
+your bundle and make whatever changes you need. Then add the asset path to the twig
 global variable configuration.
 
 ```yaml
