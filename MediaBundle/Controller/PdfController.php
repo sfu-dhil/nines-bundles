@@ -21,6 +21,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -87,7 +88,7 @@ class PdfController extends AbstractController implements PaginatorAwareInterfac
             throw new AccessDeniedHttpException();
         }
 
-        return new BinaryFileResponse($pdf->getFile());
+        return (new BinaryFileResponse($pdf->getFile()))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
     }
 
     /**
