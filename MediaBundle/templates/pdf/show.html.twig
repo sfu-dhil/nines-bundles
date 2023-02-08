@@ -16,6 +16,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src='{{ asset('yarn/pdfobject/pdfobject.min.js') }}'></script>
+    <script src='{{ asset('node_modules/pdfobject/pdfobject.min.js') }}'></script>
     <script>PDFObject.embed("{{ path('nines_media_pdf_view', {'id': pdf.id}) }}", "#pdfview")</script>
 {% endblock %}
