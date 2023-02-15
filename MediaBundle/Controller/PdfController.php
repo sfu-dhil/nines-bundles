@@ -83,12 +83,34 @@ class PdfController extends AbstractController implements PaginatorAwareInterfac
     /**
      * @Route("/{id}/view", name="nines_media_pdf_view", methods={"GET"})
      */
-    public function view(Pdf $pdf) : BinaryFileResponse {
+    public function view(Pdf $pdf) : Response {
         if ( ! $pdf->getPublic() && ! $this->getUser()) {
             throw new AccessDeniedHttpException();
         }
 
-        return (new BinaryFileResponse($pdf->getFile()))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        return $this->render('@jjalvarezlPDFjsViewer/viewer/default.html.twig', [
+            'pdf' => $this->generateUrl('nines_media_pdf_download', ['id' => $pdf->getId()]),
+            'tmpPdfDirectory' => '',
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/download", name="nines_media_pdf_download", methods={"GET"})
+     */
+    public function download(Pdf $pdf) : BinaryFileResponse {
+        if ( ! $pdf->getPublic() && ! $this->getUser()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $response = new BinaryFileResponse($pdf->getFile());
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $pdf->getOriginalName()
+        );
+
+        return $response;
     }
 
     /**

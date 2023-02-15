@@ -44,8 +44,10 @@ return [
     Nines\SolrBundle\NinesSolrBundle::class => ['all' => true],
     Nines\UserBundle\NinesUserBundle::class => ['all' => true],
     Nines\UtilBundle\NinesUtilBundle::class => ['all' => true],
+    jjalvarezl\PDFjsViewerBundle\jjalvarezlPDFjsViewerBundle::class => ['all' => true],
 ];
 ```
+> The `PDFjsViewerBundle` is required by the media bundle to view PDFs inline
 
 NinesUtilBundle is required by all the others.
 

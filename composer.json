@@ -38,7 +38,8 @@
         "sensio/framework-extra-bundle": "^5.1|^6.2",
         "solarium/solarium": "^6.0",
         "soundasleep/html2text": "^2.0",
-        "twig/string-extra": "^3.0"
+        "twig/string-extra": "^3.0",
+        "jjalvarezl/pdfjs-viewer-bundle": "3.2.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
@@ -46,5 +47,11 @@
         "symfony/browser-kit": "4.4.*",
         "symfony/css-selector": "4.4.*",
         "symfony/phpunit-bridge": "^5.0"
-    }
+    },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/jontorrado/jjalvarezlpdfjsviewerbundle.git"
+        }
+    ]
 }
