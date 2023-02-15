@@ -8,14 +8,16 @@
 
 {% block body %}
 
-    <div class='well' id='pdfview' style='height: 40em'></div>
+    <div class='btn-toolbar pull-right'>
+        <div class='btn-group'>
+            <a href="{{ path('nines_media_pdf_view', { 'id': pdf.id }) }}" class="btn btn-primary" target="_blank">
+                <span class='glyphicon glyphicon-download'></span>
+                Download
+            </a>
+        </div>
+    </div>
 
     {% embed '@NinesMedia/pdf/partial/detail.html.twig' %}
     {% endembed %}
 
-{% endblock %}
-
-{% block javascripts %}
-    <script src='{{ asset('node_modules/pdfobject/pdfobject.min.js') }}'></script>
-    <script>PDFObject.embed("{{ path('nines_media_pdf_view', {'id': pdf.id}) }}", "#pdfview")</script>
 {% endblock %}

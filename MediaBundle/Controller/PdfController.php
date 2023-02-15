@@ -88,7 +88,15 @@ class PdfController extends AbstractController implements PaginatorAwareInterfac
             throw new AccessDeniedHttpException();
         }
 
-        return (new BinaryFileResponse($pdf->getFile()))->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
+        $response = new BinaryFileResponse($pdf->getFile());
+        $response->headers->set('Content-Type', 'application/pdf');
+
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_INLINE,
+            $pdf->getOriginalName()
+        );
+
+        return $response;
     }
 
     /**
