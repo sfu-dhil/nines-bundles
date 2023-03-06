@@ -51,6 +51,16 @@ trait StoredFileTrait {
      */
     private ?int $fileSize = null;
 
+    /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private ?string $checksum = null;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private ?string $sourceUrl = null;
+
     public function __toString() : string {
         if ($this->file) {
             return $this->file->getFilename();
@@ -200,6 +210,38 @@ trait StoredFileTrait {
      */
     public function setFileSize(?int $fileSize) : self {
         $this->fileSize = $fileSize;
+
+        return $this;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getChecksum() : ?string {
+        return $this->checksum;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function setChecksum(?string $checksum) : self {
+        $this->checksum = $checksum;
+
+        return $this;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function getSourceUrl() : ?string {
+        return $this->sourceUrl;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function setSourceUrl(?string $sourceUrl) : self {
+        $this->sourceUrl = $sourceUrl;
 
         return $this;
     }

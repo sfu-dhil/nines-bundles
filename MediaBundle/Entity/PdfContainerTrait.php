@@ -62,4 +62,32 @@ trait PdfContainerTrait {
     public function getPdfs() : array {
         return $this->pdfs->toArray();
     }
+
+    /**
+     * @param string $checksum
+     * @return bool
+     */
+    public function hasPdfByChecksum(string $checksum) : bool {
+        foreach ($this->pdfs as $pdf) {
+            if ($pdf->getChecksum() === $checksum) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $sourceUrl
+     * @return bool
+     */
+    public function hasPdfBySourceUrl(string $sourceUrl) : bool {
+        foreach ($this->pdfs as $pdf) {
+            if ($pdf->getSourceUrl() === $sourceUrl) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

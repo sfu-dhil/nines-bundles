@@ -62,4 +62,32 @@ trait ImageContainerTrait {
     public function getImages() : array {
         return $this->images->toArray();
     }
+
+    /**
+     * @param string $checksum
+     * @return bool
+     */
+    public function hasImageByChecksum(string $checksum) : bool {
+        foreach ($this->images as $image) {
+            if ($image->getChecksum() === $checksum) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $sourceUrl
+     * @return bool
+     */
+    public function hasImageBySourceUrl(string $sourceUrl) : bool {
+        foreach ($this->images as $image) {
+            if ($image->getSourceUrl() === $sourceUrl) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -29,4 +29,16 @@ interface AudioContainerInterface extends AbstractEntityInterface {
      * @return array<Audio>
      */
     public function getAudios() : array;
+
+    /**
+     * @param string $checksum
+     * @return bool
+     */
+    public function hasAudioByChecksum(string $checksum) : bool;
+
+    /**
+     * @param string $sourceUrl
+     * @return bool
+     */
+    public function hasAudioBySourceUrl(string $sourceUrl) : bool;
 }

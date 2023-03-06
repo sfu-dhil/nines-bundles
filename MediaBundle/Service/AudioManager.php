@@ -40,6 +40,7 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
 
         $audioFile = new File($path);
         $audio->setFileSize($audioFile->getSize());
+        $audio->setChecksum(md5_file($path));
         $audio->setFile($audioFile);
         $audio->setPath($filename);
         $audio->setMimeType($audioFile->getMimeType());

@@ -47,4 +47,12 @@ interface StoredFileInterface extends Stringable {
     public function getLicense() : ?string;
 
     public function setLicense(?string $license) : self;
+
+    public function getChecksum() : ?string;
+
+    public function setChecksum(?string $checksum) : self;
+
+    public function getSourceUrl() : ?string;
+
+    public function setSourceUrl(?string $sourceUrl) : self;
 }

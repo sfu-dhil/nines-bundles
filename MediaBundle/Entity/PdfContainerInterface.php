@@ -29,4 +29,16 @@ interface PdfContainerInterface extends AbstractEntityInterface {
      * @return array<Pdf>
      */
     public function getPdfs() : array;
+
+    /**
+     * @param string $checksum
+     * @return bool
+     */
+    public function hasPdfByChecksum(string $checksum) : bool;
+
+    /**
+     * @param string $sourceUrl
+     * @return bool
+     */
+    public function hasPdfBySourceUrl(string $sourceUrl) : bool;
 }

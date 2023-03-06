@@ -62,4 +62,32 @@ trait AudioContainerTrait {
     public function getAudios() : array {
         return $this->audios->toArray();
     }
+
+    /**
+     * @param string $checksum
+     * @return bool
+     */
+    public function hasAudioByChecksum(string $checksum) : bool {
+        foreach ($this->audios as $audio) {
+            if ($audio->getChecksum() === $checksum) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $sourceUrl
+     * @return bool
+     */
+    public function hasAudioBySourceUrl(string $sourceUrl) : bool {
+        foreach ($this->audios as $audio) {
+            if ($audio->getSourceUrl() === $sourceUrl) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

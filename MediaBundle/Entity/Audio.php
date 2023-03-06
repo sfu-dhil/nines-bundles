@@ -20,7 +20,9 @@ use Nines\UtilBundle\Entity\LinkedEntityTrait;
  * @ORM\Entity(repositoryClass=AudioRepository::class)
  * @ORM\Table(name="nines_media_audio", indexes={
  *     @ORM\Index(name="nines_media_audio_ft", columns={"original_name", "description"}, flags={"fulltext"}),
- *     @ORM\Index(columns={"entity"})
+ *     @ORM\Index(columns={"entity"}),
+ *     @ORM\Index(columns={"checksum"}),
+ *     @ORM\Index(columns={"source_url"}, flags={"fulltext"}),
  * })
  */
 class Audio extends AbstractEntity implements LinkedEntityInterface, StoredFileInterface {

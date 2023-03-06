@@ -52,6 +52,7 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
         $image->setPath($filename);
         $image->setFile($imageFile);
         $image->setFileSize($imageFile->getSize());
+        $image->setChecksum(md5_file($path));
         $image->setMimeType($imageFile->getMimeType());
         $dimensions = getimagesize($path);
         $image->setImageWidth($dimensions[0]);

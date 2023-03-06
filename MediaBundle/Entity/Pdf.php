@@ -19,7 +19,9 @@ use Nines\UtilBundle\Entity\LinkedEntityTrait;
  * @ORM\Entity(repositoryClass=PdfRepository::class)
  * @ORM\Table(name="nines_media_pdf", indexes={
  *     @ORM\Index(name="nines_media_pdf_ft", columns={"original_name", "description"}, flags={"fulltext"}),
- *     @ORM\Index(columns={"entity"})
+ *     @ORM\Index(columns={"entity"}),
+ *     @ORM\Index(columns={"checksum"}),
+ *     @ORM\Index(columns={"source_url"}, flags={"fulltext"}),
  * })
  */
 class Pdf extends AbstractPdf implements LinkedEntityInterface, StoredFileInterface {

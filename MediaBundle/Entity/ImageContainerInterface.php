@@ -29,4 +29,16 @@ interface ImageContainerInterface extends AbstractEntityInterface {
      * @return array<Image>
      */
     public function getImages() : array;
+
+    /**
+     * @param string $checksum
+     * @return bool
+     */
+    public function hasImageByChecksum(string $checksum) : bool;
+
+    /**
+     * @param string $sourceUrl
+     * @return bool
+     */
+    public function hasImageBySourceUrl(string $sourceUrl) : bool;
 }

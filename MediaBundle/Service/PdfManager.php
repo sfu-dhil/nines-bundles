@@ -49,6 +49,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
         $pdf->setPath($filename);
         $pdf->setFile($pdfFile);
         $pdf->setFileSize($pdfFile->getSize());
+        $pdf->setChecksum(md5_file($path));
         $pdf->setMimeType($pdfFile->getMimeType());
         $thumbPath = $this->thumbnailer->thumbnail($pdf);
         $pdf->setThumbPath($thumbPath);
