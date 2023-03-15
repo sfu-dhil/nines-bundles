@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Tests\Controller;
 
 use Nines\UserBundle\DataFixtures\UserFixtures;
@@ -87,11 +81,11 @@ class ProfileControllerTest extends ControllerTestCase {
         $this->client->followRedirect();
         $this->assertSelectorTextContains('div.alert', 'Your password has been updated.');
 
-        $encoder = $this->client->getContainer()->get('security.password_encoder');
+        $passwordHasher = $this->client->getContainer()->get('security.password_hashers');
 
         // Refresh the user from the database.
         $changedUser = $this->repository->findOneByEmail(UserFixtures::USER['username']);
-        $this->assertTrue($encoder->isPasswordValid($changedUser, 'othersecret'));
+        $this->assertTrue($passwordHasher->isPasswordValid($changedUser, 'othersecret'));
     }
 
     public function testUserChangePasswordFail() : void {
@@ -109,6 +103,6 @@ class ProfileControllerTest extends ControllerTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->repository = self::$container->get(UserRepository::class);
+        $this->repository = static::getContainer()->get(UserRepository::class);
     }
 }

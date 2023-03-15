@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\EditorBundle\Tests\Controller;
 
 use Nines\UserBundle\DataFixtures\UserFixtures;
@@ -51,21 +45,21 @@ class EditorControllerTest extends ControllerTestCase {
     }
 
     public function testView() : void {
-        $path = self::$container->getParameter('nines.editor.upload_dir');
+        $path = static::getContainer()->getParameter('nines.editor.upload_dir');
         $this->upload->move($path, 'testfile.png');
         $this->client->request('GET', '/editor/upload/image/testfile.png');
         $this->assertResponseIsSuccessful();
     }
 
     public function testViewBadNameDir() : void {
-        $path = self::$container->getParameter('nines.editor.upload_dir');
+        $path = static::getContainer()->getParameter('nines.editor.upload_dir');
         $this->upload->move($path, 'testfile.png');
         $this->client->request('GET', '/editor/upload/image/../testfile.png');
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
 
     public function testViewBadNameChars() : void {
-        $path = self::$container->getParameter('nines.editor.upload_dir');
+        $path = static::getContainer()->getParameter('nines.editor.upload_dir');
         $this->upload->move($path, 'testfile.png');
         $this->client->request('GET', '/editor/upload/image/test$file.png');
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);
@@ -78,7 +72,7 @@ class EditorControllerTest extends ControllerTestCase {
 
     public function testUserView() : void {
         $this->login(UserFixtures::USER);
-        $path = self::$container->getParameter('nines.editor.upload_dir');
+        $path = static::getContainer()->getParameter('nines.editor.upload_dir');
         $this->upload->move($path, 'testfile.png');
         $this->client->request('GET', '/editor/upload/image/testfile.png');
         $this->assertResponseIsSuccessful();

@@ -2,23 +2,16 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Form\Mapper;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Nines\DublinCoreBundle\Entity\Element;
 use Nines\DublinCoreBundle\Entity\Value;
 use Nines\DublinCoreBundle\Entity\ValueInterface;
 use Nines\DublinCoreBundle\Repository\ElementRepository;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
+use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 
-class DublinCoreMapper extends PropertyPathMapper implements DataMapperInterface {
+class DublinCoreMapper extends DataMapper implements DataMapperInterface {
     private ?ElementRepository $elementRepo = null;
 
     private ?EntityManagerInterface $em = null;
@@ -69,20 +62,12 @@ class DublinCoreMapper extends PropertyPathMapper implements DataMapperInterface
         }
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setElementRepository(ElementRepository $repo) : void {
         $this->elementRepo = $repo;
     }

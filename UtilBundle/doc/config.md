@@ -1,7 +1,7 @@
 Configuring the Util Bundle
 ===========================
 
-Configuring the bundle is covered in the main [Nines Bundles](../../README.md) 
+Configuring the bundle is covered in the main [Nines Bundles](../../README.md)
 documentation. This documentation describes the bundle configuration options.
 
 Requirements
@@ -26,7 +26,7 @@ nines_util:
 
 - `trim_length` is probably unused and should probably be removed.
 - `sender` is the From: addresss to use when sending emails.
-- `routing` is an associative array for linking entity classes to a controller 
+- `routing` is an associative array for linking entity classes to a controller
 action to display details about the entity.
 
 The Util bundle also provides an optional error handling controller which can
@@ -38,14 +38,15 @@ framework:
     error_controller: Nines\UtilBundle\Controller\ErrorController::show
 ```
 
-The bundle also provides a number of services and templates for Twig. The 
+The bundle also provides a number of services and templates for Twig. The
 relevant configuration options are shown below.
 
 ```twig
 # config/packages/twig.yaml
 twig:
     form_themes:
-        - "@NinesUtil/form/fields.html.twig"
+        - '@NinesUtil/form/fixed_bootstrap_5_horizontal_layout.html.twig'
+        - 'jquery.collection.html.twig'
     globals:
         matomo_enabled: '%dhil.matomo_enabled%'
         matomo_url: '%dhil.matomo_url%'
@@ -54,7 +55,7 @@ twig:
         linker: '@Nines\UtilBundle\Services\EntityLinker'
 ```
 
-The `dhil.*` parameters are defined in the services configuration and are only 
+The `dhil.*` parameters are defined in the services configuration and are only
 necessary if you embed the matomo.html.twig template in your base template.
 
 ```yaml

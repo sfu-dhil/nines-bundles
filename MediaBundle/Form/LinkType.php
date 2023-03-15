@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Form;
 
 use Nines\MediaBundle\Entity\Link;
@@ -28,16 +22,10 @@ class LinkType extends AbstractType {
         $builder->add('url', UrlType::class, [
             'label' => 'Url',
             'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('text', TextType::class, [
             'label' => 'Text',
             'required' => false,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
     }
 

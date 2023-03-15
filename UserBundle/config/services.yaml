@@ -27,6 +27,7 @@ services:
     Nines\UserBundle\Menu\Builder:
         tags:
             - { name: knp_menu.menu_builder, method: userMenu, alias: nines_user_nav }
+            - { name: knp_menu.menu_builder, method: userSidebarMenu, alias: nines_user_sidebar }
 
     Nines\UserBundle\Services\UserManager:
         arguments:

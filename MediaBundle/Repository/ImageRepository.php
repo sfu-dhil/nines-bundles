@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,6 +14,7 @@ use Nines\MediaBundle\Entity\Image;
  * @method Image[] findAll()
  * @method Image[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|Image findOneBy(array $criteria, array $orderBy = null)
+ *
  * @phpstan-extends ServiceEntityRepository<Image>
  */
 class ImageRepository extends ServiceEntityRepository {
@@ -30,7 +25,8 @@ class ImageRepository extends ServiceEntityRepository {
     public function indexQuery() : Query {
         return $this->createQueryBuilder('image')
             ->orderBy('image.originalName')
-            ->getQuery();
+            ->getQuery()
+        ;
     }
 
     public function searchQuery(string $q) : Query {

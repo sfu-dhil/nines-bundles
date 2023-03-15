@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,8 +9,6 @@ use Exception;
 use Nines\MediaBundle\Entity\Audio;
 use Nines\MediaBundle\Entity\AudioContainerInterface;
 use Nines\MediaBundle\Form\AudioType;
-use Nines\MediaBundle\Service\AbstractFileManager;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -32,10 +24,8 @@ trait AudioControllerTrait {
 
     /**
      * @throws Exception
-     *
-     * @return array<string,mixed>|RedirectResponse
      */
-    protected function newAudioAction(Request $request, EntityManagerInterface $em, AudioContainerInterface $container, string $route) {
+    protected function newAudioAction(Request $request, EntityManagerInterface $em, AudioContainerInterface $container, string $route, array $routeParams) : array|RedirectResponse {
         $audio = new Audio();
         $form = $this->createForm(AudioType::class, $audio);
         $form->handleRequest($request);
@@ -46,7 +36,7 @@ trait AudioControllerTrait {
             $em->flush();
             $this->addFlash('success', 'The new audio has been saved.');
 
-            return $this->redirectToRoute($route, ['id' => $container->getId()]);
+            return $this->redirectToRoute($route, $routeParams);
         }
 
         return [
@@ -54,42 +44,27 @@ trait AudioControllerTrait {
             'form' => $form->createView(),
             'entity' => $container,
             'route' => $route,
+            'routeParams' => $routeParams,
         ];
     }
 
     /**
      * @throws Exception
-     *
-     * @return array<string,mixed>|RedirectResponse
      */
-    protected function editAudioAction(Request $request, EntityManagerInterface $em, AudioContainerInterface $container, Audio $audio, string $route) {
+    protected function editAudioAction(Request $request, EntityManagerInterface $em, AudioContainerInterface $container, Audio $audio, string $route, array $routeParams) : array|RedirectResponse {
         if ( ! $container->containsAudio($audio)) {
             throw new NotFoundHttpException('That audio is not associated.');
         }
 
-        $size = AbstractFileManager::getMaxUploadSize(false);
         $form = $this->createForm(AudioType::class, $audio);
-        $form->remove('file');
-        $form->add('newFile', FileType::class, [
-            'label' => 'Replacement Audio',
-            'required' => false,
-            'attr' => [
-                'help_block' => "Select a file to upload which is less than {$size} in size.",
-                'data-maxsize' => AbstractFileManager::getMaxUploadSize(true),
-            ],
-            'mapped' => false,
-        ]);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            if (($upload = $form->get('newFile')->getData())) {
-                $audio->setFile($upload);
-                $audio->preUpdate(); // force doctrine to update.
-            }
+            $em->persist($audio);
             $em->flush();
             $this->addFlash('success', 'The audio has been updated.');
 
-            return $this->redirectToRoute($route, ['id' => $container->getId()]);
+            return $this->redirectToRoute($route, $routeParams);
         }
 
         return [
@@ -97,17 +72,18 @@ trait AudioControllerTrait {
             'form' => $form->createView(),
             'entity' => $container,
             'route' => $route,
+            'routeParams' => $routeParams,
         ];
     }
 
     /**
      * @throws Exception
      */
-    protected function deleteAudioAction(Request $request, EntityManagerInterface $em, AudioContainerInterface $container, Audio $audio, string $route) : RedirectResponse {
+    protected function deleteAudioAction(Request $request, EntityManagerInterface $em, AudioContainerInterface $container, Audio $audio, string $route, array $routeParams) : RedirectResponse {
         if ( ! $this->isCsrfTokenValid('delete_audio' . $audio->getId(), $request->request->get('_token'))) {
             $this->addFlash('warning', 'Invalid security token.');
 
-            return $this->redirectToRoute($route, ['id' => $container->getId()]);
+            return $this->redirectToRoute($route, $routeParams);
         }
         if ( ! $container->containsAudio($audio)) {
             throw new NotFoundHttpException('That audio is not associated.');
@@ -117,6 +93,6 @@ trait AudioControllerTrait {
         $em->flush();
         $this->addFlash('success', 'The audio has been removed.');
 
-        return $this->redirectToRoute($route, ['id' => $container->getId()]);
+        return $this->redirectToRoute($route, $routeParams);
     }
 }

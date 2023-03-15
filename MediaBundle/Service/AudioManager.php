@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Service;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Nines\MediaBundle\Entity\Audio;
 use Nines\MediaBundle\Entity\AudioContainerInterface;
 use Nines\MediaBundle\Repository\AudioRepository;
@@ -47,23 +42,22 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
     }
 
     /**
-     * @required
-     *
-     * @codeCoverageIgnore
+     * @param ?AudioRepository $repo
      */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setRepo(?AudioRepository $repo) : void {
         $this->repo = $repo;
     }
 
     public function prePersist(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Audio) {
             $this->uploadFile($entity);
         }
     }
 
     public function preUpdate(PreUpdateEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ( ! $entity instanceof Audio) {
             return;
         }
@@ -78,7 +72,8 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
     }
 
     public function postLoad(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
+        $class = ClassUtils::getClass($entity);
         if ($entity instanceof Audio) {
             $filePath = $this->uploadDir . '/' . $entity->getPath();
             if (file_exists($filePath)) {
@@ -89,14 +84,14 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
         }
         if ($entity instanceof AudioContainerInterface) {
             $audios = $this->repo->findBy([
-                'entity' => get_class($entity) . ':' . $entity->getId(),
+                'entity' => $class . ':' . $entity->getId(),
             ]);
             $entity->setAudios($audios);
         }
     }
 
     public function postRemove(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Audio && $entity->getFile()) {
             $fs = new Filesystem();
 

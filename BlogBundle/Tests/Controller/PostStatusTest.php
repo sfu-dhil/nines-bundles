@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\BlogBundle\Tests\Controller;
 
 use Nines\BlogBundle\Repository\PostStatusRepository;
@@ -117,7 +111,7 @@ class PostStatusTest extends ControllerTestCase {
 
     public function testAdminDelete() : void {
         /** @var PostStatusRepository $repo */
-        $repo = self::$container->get(PostStatusRepository::class);
+        $repo = static::getContainer()->get(PostStatusRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);

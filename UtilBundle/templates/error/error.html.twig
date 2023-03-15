@@ -1,10 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block pageheader %}
-    <h1>{{ status }} {{ message }}</h1>
-{% endblock %}
-
 {% block body %}
+    <h1>{{ status }} {{ message }}</h1>
 
     <p><strong>{{ class }}</strong> <br>
         {{ status }} - {{ message }}<br>
@@ -12,5 +9,5 @@
 
     {% include('@NinesUtil/error/details.html.twig') %}
 
-    <p><button class="btn btn-default" onclick="window.history.go(-1)">Back</button></p>
+    <p><button class="btn btn-primary" onclick="window.history.go(-1)">Back</button></p>
 {% endblock %}

@@ -1,0 +1,64 @@
+{% use "bootstrap_5_layout.html.twig" %}
+
+{%- block form_label -%}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' h6')|trim}) %}
+    {{ parent() }}
+{%- endblock form_label -%}
+
+{%- block form_row -%}
+    {#- collection row hack -#}
+    {%- set is_collection = 'collection' in (form.parent.vars.attr.class ?? '') -%}
+
+    {%- if is_collection -%}
+        <div class="row mb-3 gy-2 bg-white">
+            <div class="col-lg">
+    {%- endif -%}
+    {% if attr.html_block is defined %}
+        {{ attr.html_block|raw }}
+    {% endif %}
+
+    {%- if compound is defined and compound -%}
+        {%- set element = 'fieldset' -%}
+    {%- endif -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+    {%- set row_class = row_class|default(row_attr.class|default('mb-3')|trim) -%}
+    <{{ element|default('div') }}{% with {attr: row_attr|merge({class: row_class})} %}{{ block('attributes') }}{% endwith %}>
+        {%- if 'form-floating' in row_class -%}
+            {{- form_widget(form, widget_attr) -}}
+            {% if attr.add_route is defined or attr.add_path is defined %}
+                <a href="{{ attr.add_route ?? path(attr.add_path) }}" class="btn btn-primary" target="_blank"><i class="bi bi-plus-circle"></i> {{ attr.add_label }}</a>
+            {% endif %}
+            {{- form_label(form) -}}
+        {%- else -%}
+            {{- form_label(form) -}}
+            {% if attr.add_route is defined or attr.add_path is defined %}
+                <div class="row mb-3 gy-2">
+                    <div class="col-lg">
+                        {{- form_widget(form, widget_attr) -}}
+                    </div>
+                    <div class="col-lg-auto">
+                        <a href="{{ attr.add_route ?? path(attr.add_path) }}" class="btn btn-primary" target="_blank"><i class="bi bi-plus-circle"></i> {{ attr.add_label }}</a>
+                    </div>
+                </div>
+            {% else %}
+                {{- form_widget(form, widget_attr) -}}
+            {% endif %}
+        {%- endif -%}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </{{ element|default('div') }}>
+
+    {%- if is_collection -%}
+            </div>
+            <div class="col-lg-auto text-end">
+                <div class="btn-group" role="group">
+                    <a href="#" class="btn btn-primary btn-sm collection-remove"><i class="bi bi-dash-circle"></i></a>
+                    <a href="#" class="btn btn-primary btn-sm collection-add"><i class="bi bi-plus-circle"></i></a>
+                </div>
+            </div>
+        </div>
+    {%- endif -%}
+{%- endblock form_row %}

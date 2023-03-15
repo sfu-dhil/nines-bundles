@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Nines\UserBundle\Entity\User;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture implements FixtureGroupInterface {
     public const ADMIN = [
@@ -32,10 +26,10 @@ class UserFixtures extends Fixture implements FixtureGroupInterface {
         'password' => 'sleeping',
     ];
 
-    private ?UserPasswordEncoderInterface $encoder = null;
+    private ?UserPasswordHasherInterface $passwordHasher = null;
 
-    public function __construct(UserPasswordEncoderInterface $encoder) {
-        $this->encoder = $encoder;
+    public function __construct(UserPasswordHasherInterface $passwordHasher) {
+        $this->passwordHasher = $passwordHasher;
     }
 
     /**
@@ -50,7 +44,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface {
         $admin->setEmail(self::ADMIN['username']);
         $admin->setFullname('Admin user');
         $admin->setAffiliation('Institution');
-        $admin->setPassword($this->encoder->encodePassword($admin, self::ADMIN['password']));
+        $admin->setPassword($this->passwordHasher->hashPassword($admin, self::ADMIN['password']));
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setActive(true);
         $this->setReference('user.admin', $admin);
@@ -60,7 +54,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface {
         $user->setEmail(self::USER['username']);
         $user->setFullname('Unprivileged user');
         $user->setAffiliation('Department');
-        $user->setPassword($this->encoder->encodePassword($user, self::USER['password']));
+        $user->setPassword($this->passwordHasher->hashPassword($user, self::USER['password']));
         $user->setActive(true);
         $this->setReference('user.user', $user);
         $manager->persist($user);
@@ -69,7 +63,7 @@ class UserFixtures extends Fixture implements FixtureGroupInterface {
         $inactive->setEmail(self::INACTIVE['username']);
         $inactive->setFullname('Inactive User');
         $inactive->setAffiliation('None');
-        $inactive->setPassword($this->encoder->encodePassword($inactive, self::INACTIVE['password']));
+        $inactive->setPassword($this->passwordHasher->hashPassword($inactive, self::INACTIVE['password']));
         $inactive->setActive(false);
         $this->setReference('user.inactive', $inactive);
         $manager->persist($inactive);

@@ -2,16 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Command;
 
 use Exception;
 use Nines\SolrBundle\Services\SolrManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -19,10 +14,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Ping the server.
  */
+#[AsCommand(name: 'nines:solr:ping')]
 class PingCommand extends Command {
     private ?SolrManager $manager = null;
-
-    protected static $defaultName = 'nines:solr:ping';
 
     /**
      * Configure the command.
@@ -49,11 +43,7 @@ class PingCommand extends Command {
         return 0;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrManager(SolrManager $manager) : void {
         $this->manager = $manager;
     }

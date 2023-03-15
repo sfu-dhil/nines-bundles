@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -20,25 +14,11 @@ interface AudioContainerInterface extends AbstractEntityInterface {
 
     public function containsAudio(Audio $audio) : bool;
 
-    /**
-     * @param array<Audio>|Collection<int,Audio> $audios
-     */
-    public function setAudios($audios) : self;
+    public function setAudios(array|Collection $audios) : self;
 
-    /**
-     * @return array<Audio>
-     */
     public function getAudios() : array;
 
-    /**
-     * @param string $checksum
-     * @return bool
-     */
-    public function hasAudioByChecksum(string $checksum) : bool;
+    public function getAudioByChecksum(string $checksum) : ?Audio;
 
-    /**
-     * @param string $sourceUrl
-     * @return bool
-     */
-    public function hasAudioBySourceUrl(string $sourceUrl) : bool;
+    public function getAudioBySourceUrl(string $sourceUrl) : ?Audio;
 }

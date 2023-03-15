@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Form\Security;
 
 use Symfony\Component\Form\AbstractType;
@@ -19,8 +13,15 @@ class RequestTokenType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'Email address',
-            ]);
+                'label' => 'Email',
+                'row_attr' => [
+                    'class' => 'form-floating',
+                ],
+                'attr' => [
+                    'placeholder' => 'name@example.com',
+                ],
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver) : void {

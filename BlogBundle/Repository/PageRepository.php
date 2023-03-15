@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\BlogBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,6 +14,7 @@ use Nines\BlogBundle\Entity\Page;
  * @method Page[] findAll()
  * @method Page[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|Page findOneBy(array $criteria, array $orderBy = null)
+ *
  * @phpstan-extends ServiceEntityRepository<\Nines\BlogBundle\Entity\Page>
  */
 class PageRepository extends ServiceEntityRepository {

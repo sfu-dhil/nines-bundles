@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Services;
 
 use DateTimeImmutable;
@@ -19,7 +13,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Class UserManager.
@@ -33,7 +27,7 @@ class UserManager {
 
     public const TOKEN_EXPIRY = ' +1 day';
 
-    private ?UserPasswordEncoderInterface $encoder = null;
+    private ?UserPasswordHasherInterface $passwordHasher = null;
 
     private ?LoggerInterface $logger = null;
 
@@ -73,38 +67,22 @@ class UserManager {
         $this->sender = $sender;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
-    public function setEncoder(UserPasswordEncoderInterface $encoder) : void {
-        $this->encoder = $encoder;
+    #[\Symfony\Contracts\Service\Attribute\Required]
+    public function setHasher(UserPasswordHasherInterface $passwordHasher) : void {
+        $this->passwordHasher = $passwordHasher;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLogger(LoggerInterface $logger) : void {
         $this->logger = $logger;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setRepository(UserRepository $repository) : void {
         $this->repository = $repository;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMailer(MailerInterface $mailer) : void {
         $this->mailer = $mailer;
     }
@@ -175,16 +153,16 @@ class UserManager {
         $user->setResetExpiry($expiry);
     }
 
-    public function encodePassword(User $user, string $password) : string {
-        return $this->encoder->encodePassword($user, $password);
+    public function hashPassword(User $user, string $password) : string {
+        return $this->passwordHasher->hashPassword($user, $password);
     }
 
     public function changePassword(User $user, string $password) : void {
-        $user->setPassword($this->encoder->encodePassword($user, $password));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $password));
     }
 
     public function validatePassword(User $user, string $password) : bool {
-        return $this->encoder->isPasswordValid($user, $password);
+        return $this->passwordHasher->isPasswordValid($user, $password);
     }
 
     public function promote(User $user, string $role) : void {

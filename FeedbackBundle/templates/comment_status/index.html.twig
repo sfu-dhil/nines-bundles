@@ -11,11 +11,11 @@
 
 {% block body %}
 
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
+    <div class='btn-toolbar'>
+        <div class='btn-group ms-auto'>
             {% if is_granted('ROLE_FEEDBACK_ADMIN') %}
-                <a href="{{ path('nines_feedback_comment_status_new') }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> New </a>
+                <a href="{{ path('nines_feedback_comment_status_new') }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> New </a>
             {% endif %}
         </div>
     </div>

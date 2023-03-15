@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Index;
 
 use Nines\SolrBundle\Exception\NotConfiguredException;
@@ -30,11 +24,7 @@ abstract class AbstractIndex {
         return $this->manager->createQueryBuilder();
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrManager(SolrManager $manager) : void {
         $this->manager = $manager;
     }

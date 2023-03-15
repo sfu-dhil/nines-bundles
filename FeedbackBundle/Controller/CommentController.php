@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,16 +28,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/comment")
- */
+#[Route(path: '/comment')]
 class CommentController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="nines_feedback_comment_index", methods={"GET"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route(path: '/', name: 'nines_feedback_comment_index', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function index(Request $request, CommentRepository $commentRepository, CommentStatusRepository $statusRepository) : Response {
         $query = $commentRepository->indexQuery($request->query->get('status'));
         $pageSize = (int) $this->getParameter('page_size');
@@ -55,10 +45,8 @@ class CommentController extends AbstractController implements PaginatorAwareInte
         ]);
     }
 
-    /**
-     * @Route("/search", name="nines_feedback_comment_search", methods={"GET"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route(path: '/search', name: 'nines_feedback_comment_search', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
     public function search(Request $request, CommentRepository $commentRepository) : Response {
         $q = $request->query->get('q');
         if ($q) {
@@ -81,8 +69,8 @@ class CommentController extends AbstractController implements PaginatorAwareInte
      * @throws OptimisticLockException
      * @throws ORMException
      * @throws TransportExceptionInterface
-     * @Route("/new", name="nines_feedback_comment_new", methods={"GET", "POST"})
      */
+    #[Route(path: '/new', name: 'nines_feedback_comment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CommentService $service, EntityManagerInterface $em, EntityLinker $linker, Notifier $notifier) : Response {
         $id = $request->request->get('entity_id', null);
         $class = $request->request->get('entity_class', null);
@@ -111,23 +99,8 @@ class CommentController extends AbstractController implements PaginatorAwareInte
         ]);
     }
 
-    /**
-     * @Route("/new_popup", name="nines_feedback_comment_new_popup", methods={"GET", "POST"})
-     * @IsGranted("ROLE_FEEDBACK_ADMIN")
-     *
-     * @throws Exception
-     * @throws OptimisticLockException
-     * @throws ORMException
-     * @throws TransportExceptionInterface
-     */
-    public function new_popup(Request $request, CommentService $service, EntityManagerInterface $em, EntityLinker $linker, Notifier $notifier) : Response {
-        return $this->new($request, $service, $em, $linker, $notifier);
-    }
-
-    /**
-     * @Route("/{id}", name="nines_feedback_comment_show", methods={"GET", "POST"})
-     * @IsGranted("ROLE_USER")
-     */
+    #[Route(path: '/{id}', name: 'nines_feedback_comment_show', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_USER')]
     public function show(Request $request, Comment $comment, EntityManagerInterface $em) : Response {
         $adminForm = $this->createForm(AdminCommentType::class, $comment);
         $adminForm->handleRequest($request);
@@ -159,14 +132,11 @@ class CommentController extends AbstractController implements PaginatorAwareInte
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_FEEDBACK_ADMIN")
-     * @Route("/{id}", name="nines_feedback_comment_delete", methods={"DELETE"})
-     * @IsGranted("ROLE_FEEDBACK_ADMIN")
-     */
-    public function delete(Request $request, Comment $comment) : RedirectResponse {
+    #[IsGranted('ROLE_FEEDBACK_ADMIN')]
+    #[Route(path: '/{id}', name: 'nines_feedback_comment_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_FEEDBACK_ADMIN')]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Comment $comment) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $comment->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($comment);
             $entityManager->flush();
             $this->addFlash('success', 'The comment has been deleted.');

@@ -2,16 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Command;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,10 +21,9 @@ use Twig\Error\SyntaxError;
 /**
  * Download and save fonts from Google Fonts and generate the CSS for them.
  */
+#[AsCommand(name: 'nines:fonts:download')]
 class FontDownload extends Command {
     private ?Environment $twig = null;
-
-    protected static $defaultName = 'nines:fonts:download';
 
     /**
      * {@inheritdoc}
@@ -38,7 +32,8 @@ class FontDownload extends Command {
         $this
             ->setDescription('Fetch the fonts defined in config/fonts.yaml')
             ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
+            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description')
+        ;
     }
 
     /**
@@ -86,7 +81,7 @@ class FontDownload extends Command {
                 'ext' => $format,
             ];
 
-            $filename = preg_replace_callback('/\{(\w+)\}/', fn($matches) => $callback[$matches[1]], $filenameTemplate);
+            $filename = preg_replace_callback('/\{(\w+)\}/', fn ($matches) => $callback[$matches[1]], $filenameTemplate);
             $file = $config['path'] . '/' . $filename;
 
             $client->get($variant[$format], [
@@ -168,13 +163,13 @@ class FontDownload extends Command {
 
         $path = $config['path'];
         if ( ! file_exists($path)) {
-            mkdir($path, 0755, true);
+            mkdir($path, 0o755, true);
         }
 
         $subsets = implode(',', $config['subsets']);
 
         foreach (array_keys($config['families']) as $id) {
-            $url = "https://google-webfonts-helper.herokuapp.com/api/fonts/{$id}?subsets={$subsets}";
+            $url = "https://gwfh.mranftl.com/api/fonts/{$id}?subsets={$subsets}";
             $res = $client->get($url);
             $data = json_decode($res->getBody()->getContents(), true);
             $css .= $this->processFont($id, $data, $config);
@@ -182,18 +177,14 @@ class FontDownload extends Command {
 
         $cssFile = $config['css'];
         if ( ! file_exists(dirname($cssFile))) {
-            mkdir(dirname($cssFile), 0755, true);
+            mkdir(dirname($cssFile), 0o755, true);
         }
         file_put_contents($cssFile, $css);
 
         return 0;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTwigEngine(Environment $twig) : void {
         $this->twig = $twig;
     }

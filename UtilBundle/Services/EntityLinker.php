@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Services;
 
 use Doctrine\Common\Util\ClassUtils;
@@ -40,6 +34,7 @@ class EntityLinker {
 
     /**
      * @param array<string,string> $parameters
+     * @param ?AbstractEntity $entity
      *
      * @throws Exception
      */
@@ -91,20 +86,12 @@ class EntityLinker {
         $this->routing = $routing;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setUrlGenerator(UrlGeneratorInterface $urlGenerator) : void {
         $this->urlGenerator = $urlGenerator;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }

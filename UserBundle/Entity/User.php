@@ -2,81 +2,56 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Entity;
 
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="Nines\UserBundle\Repository\UserRepository")
- * @ORM\Table(name="nines_user")
- */
-class User extends AbstractEntity implements UserInterface {
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private ?bool $active = null;
+#[ORM\Table(name: 'nines_user')]
+#[ORM\Entity(repositoryClass: 'Nines\UserBundle\Repository\UserRepository')]
+class User extends AbstractEntity implements UserInterface, PasswordAuthenticatedUserInterface {
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $active = false;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\Email]
     private ?string $email = null;
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: 'string')]
     private ?string $password = null;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: 'string', nullable: true)]
     private ?string $resetToken = null;
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeInterface $resetExpiry = null;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 64)]
+    #[Assert\NotBlank]
     private ?string $fullname = null;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 64)]
+    #[Assert\NotBlank]
     private ?string $affiliation = null;
 
     /**
-     * @ORM\Column(type="array")
-     *
      * @var array<string>
      */
-    private array $roles = [];
+    #[ORM\Column(type: 'array')]
+    private array $roles = ['ROLE_USER'];
 
-    /**
-     * @ORM\Column(type="datetime_immutable", nullable=true)
-     */
-    private ?DateTimeInterface $login;
+    #[ORM\Column(type: 'datetime_immutable', nullable: true)]
+    private ?DateTimeInterface $login = null;
 
     public function __construct() {
         parent::__construct();
-        $this->active = false;
-        $this->login = null;
-        $this->roles = ['ROLE_USER'];
     }
 
     public function __toString() : string {
@@ -88,7 +63,7 @@ class User extends AbstractEntity implements UserInterface {
      *
      * @see UserInterface
      */
-    public function getUsername() : string {
+    public function getUserIdentifier() : string {
         return (string) $this->email;
     }
 

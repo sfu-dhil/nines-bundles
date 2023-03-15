@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Form;
 
 use Nines\DublinCoreBundle\Entity\Element;
@@ -37,8 +31,8 @@ abstract class ValueType extends AbstractType {
                 'entry_options' => [
                     'label' => false,
                 ],
+                'help' => $element->getDescription(),
                 'attr' => [
-                    'help_block' => $element->getDescription(),
                     'class' => 'collection-simple',
                 ],
                 'mapped' => false,

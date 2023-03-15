@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Tests\Controller;
 
 use Nines\FeedbackBundle\Repository\CommentNoteRepository;
@@ -118,7 +112,7 @@ class CommentNoteTest extends ControllerTestCase {
 
     public function testAdminDelete() : void {
         /** @var CommentNoteRepository $repo */
-        $repo = self::$container->get(CommentNoteRepository::class);
+        $repo = static::getContainer()->get(CommentNoteRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Client;
 
 use Nines\SolrBundle\Logging\SolrLogger;
@@ -67,11 +61,7 @@ class LoggerPlugin extends AbstractPlugin {
         ]);
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrLogger(SolrLogger $logger) : void {
         $this->logger = $logger;
     }

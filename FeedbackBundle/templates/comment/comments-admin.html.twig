@@ -1,13 +1,13 @@
 {% set comments = comment_service.findComments(entity) %}
 {% if comments|length %}
-    <div class="well">
+    <li class="list-group-item">
         <h2>Comments</h2>
         {% for comment in comments %}
-            <div class="panel panel-default">
-                <div class="panel-body">
+            <div class="card card-light">
+                <div class="card-body">
                     {{ comment.content }}
                 </div>
-                <div class="panel-footer">
+                <div class="card-footer">
                     {{ comment.status.label }} - Submitted by
                     {% if comment.followUp %}
                         {{ comment.fullname }} <a href="mailto:{{ comment.email }}">{{ comment.email }}</a>
@@ -20,5 +20,5 @@
                 </div>
             </div>
         {% endfor %}
-    </div>
+    </li>
 {% endif %}

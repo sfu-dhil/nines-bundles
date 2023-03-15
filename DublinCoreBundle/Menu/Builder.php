@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Menu;
 
 use Knp\Menu\ItemInterface;
@@ -29,9 +23,15 @@ class Builder extends AbstractBuilder {
 
         $menu->addChild('Elements', [
             'route' => 'nines_dc_element_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item',
+            ],
         ]);
         $menu->addChild('Values', [
             'route' => 'nines_dc_value_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item',
+            ],
         ]);
 
         return $menu->getParent();

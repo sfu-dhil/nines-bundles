@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Tests\Controller;
 
 use Nines\DublinCoreBundle\Repository\ElementRepository;
@@ -160,7 +154,7 @@ class ElementTest extends ControllerTestCase {
     }
 
     public function testAdminDelete() : void {
-        $repo = self::$container->get(ElementRepository::class);
+        $repo = static::getContainer()->get(ElementRepository::class);
         $element = $repo->find(1);
         foreach ($element->getValues() as $value) {
             $this->em->remove($value);

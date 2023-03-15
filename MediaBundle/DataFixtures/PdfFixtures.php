@@ -2,15 +2,8 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\DataFixtures;
 
-use App\Entity\Document;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -47,7 +40,6 @@ class PdfFixtures extends Fixture implements FixtureGroupInterface {
             $upload = new UploadedFile(dirname(__DIR__, 2) . '/MediaBundle/Tests/data/pdf/' . $file, $file, 'application/pdf', null, true);
             $pdf = new Pdf();
             $pdf->setFile($upload);
-            $pdf->setPublic(0 === ($i % 2));
             $pdf->setOriginalName($file);
             $pdf->setDescription("<p>This is paragraph {$i}</p>");
             $pdf->setLicense("<p>This is paragraph {$i}</p>");
@@ -59,9 +51,7 @@ class PdfFixtures extends Fixture implements FixtureGroupInterface {
         $this->manager->setCopy(false);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setManager(PdfManager $manager) : void {
         $this->manager = $manager;
     }

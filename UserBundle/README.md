@@ -33,7 +33,7 @@ nines_user:
     after_logout_route: homepage
 ```
 
-* `roles` is a list of roles a user may be granted. The example includes all 
+* `roles` is a list of roles a user may be granted. The example includes all
 roles defined in the Nines Bundles. Roles must be defined in `security.yaml`
   (see below) to be useful.
 * The four route entries are the names of a route to redirect the user to after
@@ -55,15 +55,14 @@ framework:
 
 The complete security configuration is below. The configuration includes an opt-in
 "remember me" cookie valid for one week, and some default security requirements
-for the various bundles. It also puts most of the site behind a login. Remove 
+for the various bundles. It also puts most of the site behind a login. Remove
 the last two lines of the configuration to open the site.
 
 ```yaml
 # config/packages/security.yaml
 security:
-    encoders:
-        Nines\UserBundle\Entity\User:
-            algorithm: auto
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     providers:
         app_user_provider:
@@ -75,15 +74,20 @@ security:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
-            guard:
-                authenticators:
-                    - Nines\UserBundle\Security\LoginFormAuthenticator
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: nines_user_security_login
+                check_path: nines_user_security_login
+                post_only: true
+                form_only: true
+                enable_csrf: true
+                username_parameter: email
+                password_parameter: password
             user_checker: Nines\UserBundle\Security\UserChecker
             logout:
                 path: nines_user_security_logout
                 target: homepage
-
             remember_me:
                 secret: '%kernel.secret%'
                 lifetime: 604800 # 1 week
@@ -99,20 +103,20 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # Default controller stuff - open to the public
-        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/privacy$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/privacy$, roles: PUBLIC_ACCESS }
 
         # user controller stuff - open to the public
-        - { path: ^/request$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/request$, roles: PUBLIC_ACCESS }
+        - { path: ^/reset, roles: PUBLIC_ACCESS }
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
 
-        - { path: ^/editor/upload, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/editor/upload, roles: PUBLIC_ACCESS }
 
         # media bundle
-        - { path: ^/audio, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/image, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/pdf, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/audio, roles: PUBLIC_ACCESS }
+        - { path: ^/image, roles: PUBLIC_ACCESS }
+        - { path: ^/pdf, roles: PUBLIC_ACCESS }
 
         # keep the rest of the site private
         - { path: ^/, roles: ROLE_USER }
@@ -131,7 +135,7 @@ Embed the user login/profile/logout menu in your base template:
 
 #### Console Commands
 
-These shell commands will create an admin user, activate the account, set the 
+These shell commands will create an admin user, activate the account, set the
 password and grant the admin role:
 
 ```console

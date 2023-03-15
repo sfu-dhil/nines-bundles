@@ -14,13 +14,12 @@ the TinyMCE editor.
             'label' => 'Description',
             'required' => true,
             'attr' => [
-                'help_block' => '',
                 'class' => 'tinymce',
             ],
         ]);
 ```
 
-You can add the editor selectively when a form requires it, or globally so that 
+You can add the editor selectively when a form requires it, or globally so that
 it is available everywhere.
 
 Selective Usage
@@ -40,8 +39,8 @@ with the twig block system.
 Global Usage
 ------------
 
-Add the widget template in the base template to make it available everywhere. 
-This may be undesirable, as it will be available even on pages that do not need 
+Add the widget template in the base template to make it available everywhere.
+This may be undesirable, as it will be available even on pages that do not need
 it.
 
 ```twig

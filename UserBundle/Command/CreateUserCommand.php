@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Nines\UserBundle\Entity\User;
 use Nines\UserBundle\Services\UserManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -21,10 +16,9 @@ use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[AsCommand(name: 'nines:user:create')]
 class CreateUserCommand extends AbstractUserCommand {
     private ?UserManager $manager = null;
-
-    protected static $defaultName = 'nines:user:create';
 
     public function __construct(UserManager $manager, ValidatorInterface $validator, EntityManagerInterface $em) {
         parent::__construct($validator, $em);
@@ -65,7 +59,7 @@ class CreateUserCommand extends AbstractUserCommand {
         $user->setEmail($input->getArgument('email'));
         $user->setFullname($input->getArgument('fullname'));
         $user->setAffiliation($input->getArgument('affiliation'));
-        $password = $this->manager->encodePassword($user, $this->manager->generatePassword());
+        $password = $this->manager->hashPassword($user, $this->manager->generatePassword());
         $user->setPassword($password);
         $this->manager->requestReset($user);
         $this->manager->sendReset($user, []);

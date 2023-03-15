@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
@@ -19,15 +13,14 @@ abstract class TermType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder->add('label', TextType::class, [
             'label' => 'Label',
-            'attr' => [
-                'help_block' => 'A human-readable name.',
-            ],
+            'help' => 'A human-readable name.',
         ]);
         $builder->add('description', TextareaType::class, [
+            'label' => 'Description',
             'required' => false,
+            'help' => 'A simple description of the item.',
             'attr' => [
                 'class' => 'tinymce',
-                'help_block' => 'A simple description of the item.',
             ],
         ]);
     }

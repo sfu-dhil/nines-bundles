@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Form;
 
 use Nines\FeedbackBundle\Entity\Comment;
@@ -32,16 +26,10 @@ class CommentType extends AbstractType {
         $builder->add('fullname', TextType::class, [
             'label' => 'Fullname',
             'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('email', EmailType::class, [
             'label' => 'Email',
             'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('followUp', ChoiceType::class, [
             'label' => 'Follow Up',
@@ -52,15 +40,11 @@ class CommentType extends AbstractType {
                 'No' => false,
             ],
             'required' => true,
-            'attr' => [
-                'help_block' => '',
-            ],
         ]);
         $builder->add('content', TextareaType::class, [
             'label' => 'Content',
             'required' => true,
             'attr' => [
-                'help_block' => '',
                 'class' => 'tinymce',
             ],
         ]);

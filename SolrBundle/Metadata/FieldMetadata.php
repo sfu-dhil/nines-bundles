@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Metadata;
 
 use Nines\UtilBundle\Entity\AbstractEntity;
@@ -53,7 +47,7 @@ class FieldMetadata extends Metadata {
      *
      * @var array<int,string>
      */
-    private ?array $mutatorArgs = null;
+    private ?array $mutatorArgs = [];
 
     /**
      * Name of functions to filter the data returned by the
@@ -77,10 +71,6 @@ class FieldMetadata extends Metadata {
      * FieldMetadata constructor.
      */
     public function __construct() {
-        $this->getterArgs = [];
-        $this->mutatorArgs = [];
-        $this->filters = [];
-        $this->filterArgs = [];
     }
 
     /**

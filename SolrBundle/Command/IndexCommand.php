@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,6 +11,7 @@ use Nines\SolrBundle\Exception\SolrException;
 use Nines\SolrBundle\Mapper\EntityMapper;
 use Nines\SolrBundle\Services\SolrManager;
 use ReflectionException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
@@ -27,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Index data in the Solr index.
  */
+#[AsCommand(name: 'nines:solr:index')]
 class IndexCommand extends Command {
     /**
      * Default batch size. Change with the -b parameter.
@@ -38,8 +34,6 @@ class IndexCommand extends Command {
     private ?EntityManagerInterface $em = null;
 
     private ?SolrManager $manager = null;
-
-    protected static $defaultName = 'nines:solr:index';
 
     /**
      * Configure the command.
@@ -71,7 +65,7 @@ class IndexCommand extends Command {
         $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
 
         $batch = (int) $input->getOption('batch');
-        $classes = array_map(fn($s) => false === mb_strpos($s, '\\') ? 'App\\Entity\\' . $s : $s, $input->getArgument('classes'));
+        $classes = array_map(fn ($s) => false === mb_strpos($s, '\\') ? 'App\\Entity\\' . $s : $s, $input->getArgument('classes'));
 
         if ($input->getOption('clear')) {
             $this->manager->clear();
@@ -110,29 +104,17 @@ class IndexCommand extends Command {
         return 0;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityMapper(EntityMapper $mapper) : void {
         $this->mapper = $mapper;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrManager(SolrManager $manager) : void {
         $this->manager = $manager;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Mapper;
 
 use Doctrine\Common\Util\ClassUtils;
@@ -30,7 +24,11 @@ class EntityMapper {
      *
      * @var array<string,string>
      */
-    private ?array $fields = null;
+    private ?array $fields = [
+        'id' => 'id',
+        'class' => 'class_s',
+        'type' => 'type_s',
+    ];
 
     /**
      * Map of entity field names to boost values.
@@ -47,11 +45,6 @@ class EntityMapper {
      * @see EntityMapperFactory
      */
     public function __construct() {
-        $this->fields = [
-            'id' => 'id',
-            'class' => 'class_s',
-            'type' => 'type_s',
-        ];
     }
 
     /**
@@ -230,11 +223,7 @@ class EntityMapper {
         return array_keys($this->map);
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrLogger(SolrLogger $logger) : void {
         $this->logger = $logger;
     }

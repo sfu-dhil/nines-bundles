@@ -2,20 +2,14 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Service;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Exception;
 use Nines\DublinCoreBundle\Entity\Value;
 use Nines\DublinCoreBundle\Entity\ValueInterface;
@@ -51,8 +45,9 @@ class ValueManager implements EventSubscriber {
      * @throws Exception
      */
     public function setValues(AbstractEntity $entity, $values) : void {
+        $class = ClassUtils::getClass($entity);
         if ( ! $entity instanceof ValueInterface) {
-            throw new Exception(get_class($entity) . ' does not implement ValueInterface.');
+            throw new Exception($class . ' does not implement ValueInterface.');
         }
         foreach ($this->findValues($entity) as $value) {
             $this->em->remove($value);
@@ -89,20 +84,12 @@ class ValueManager implements EventSubscriber {
         }
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setValueRepository(ValueRepository $valueRepository) : void {
         $this->valueRepository = $valueRepository;
     }

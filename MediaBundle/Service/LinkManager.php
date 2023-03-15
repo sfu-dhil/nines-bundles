@@ -2,19 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Service;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Nines\MediaBundle\Entity\Link;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Nines\MediaBundle\Repository\LinkRepository;
@@ -27,11 +21,7 @@ use Nines\UtilBundle\Entity\AbstractEntityInterface;
 class LinkManager extends AbstractFileManager implements EventSubscriber {
     private ?LinkRepository $linkRepository = null;
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLinkRepository(LinkRepository $linkRepository) : void {
         $this->linkRepository = $linkRepository;
     }

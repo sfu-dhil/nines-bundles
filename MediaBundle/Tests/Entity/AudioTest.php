@@ -14,7 +14,6 @@ class AudioTest extends TestCase {
         $this->assertInstanceOf(Audio::class, $this->audio);
     }
 
-
     protected function setUp() : void {
         parent::setUp();
         $this->audio = new Audio();

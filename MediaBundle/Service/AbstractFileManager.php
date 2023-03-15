@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -97,6 +91,16 @@ abstract class AbstractFileManager {
         return round($bytes);
     }
 
+    protected function remove(File $file) : void {
+        // In a test environment we don't want to actually remove the files
+        if ($this->remove) {
+            $fs = new Filesystem();
+            if ($path = $file->getRealPath()) {
+                $fs->remove($path);
+            }
+        }
+    }
+
     public function setUploadDir(string $dir) : void {
         if ('/' !== $dir[0]) {
             $this->uploadDir = $this->root . '/' . $dir;
@@ -117,7 +121,7 @@ abstract class AbstractFileManager {
             $file->guessExtension(),
         ]);
         if ( ! file_exists($this->uploadDir)) {
-            mkdir($this->uploadDir, 0777, true);
+            mkdir($this->uploadDir, 0o777, true);
         }
         if ($this->copy) {
             copy($file->getPathname(), $this->uploadDir . '/' . $filename);
@@ -128,28 +132,12 @@ abstract class AbstractFileManager {
         return $filename;
     }
 
-    protected function remove(File $file) : void {
-        // In a test environment we don't want to actually remove the files
-        if ($this->remove) {
-            $fs = new Filesystem();
-            $fs->remove($file->getRealPath());
-        }
-    }
-
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLogger(LoggerInterface $logger) : void {
         $this->logger = $logger;
     }

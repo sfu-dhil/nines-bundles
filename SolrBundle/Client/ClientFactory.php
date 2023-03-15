@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Client;
 
 use Nines\SolrBundle\Exception\NotConfiguredException;
@@ -85,11 +79,7 @@ class ClientFactory {
         return self::$client;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLoggerPlugin(LoggerPlugin $loggerPlugin) : void {
         $this->loggerPlugin = $loggerPlugin;
     }
@@ -101,11 +91,7 @@ class ClientFactory {
         $this->url = $this->parameters->get('nines_solr.url');
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setParameters(ParameterBagInterface $parameters) : void {
         $this->parameters = $parameters;
         $this->reset();

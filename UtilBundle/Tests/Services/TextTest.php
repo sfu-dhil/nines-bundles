@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Tests\Services;
 
 use Nines\UtilBundle\Services\Text;
@@ -158,6 +152,6 @@ class TextTest extends ServiceTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->text = self::$container->get(Text::class);
+        $this->text = static::getContainer()->get(Text::class);
     }
 }

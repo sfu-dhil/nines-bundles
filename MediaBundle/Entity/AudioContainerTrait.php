@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 trait AudioContainerTrait {
     /**
-     * @var Audio[]|Collection<int,Audio>
+     * @var Collection<int,Audio>
      */
     protected ?Collection $audios = null;
 
@@ -43,10 +37,7 @@ trait AudioContainerTrait {
         return $this->audios->contains($audio);
     }
 
-    /**
-     * @param array<Audio>|Collection<int,Audio> $audios
-     */
-    public function setAudios($audios) : self {
+    public function setAudios(array|Collection $audios) : self {
         if (is_array($audios)) {
             $this->audios = new ArrayCollection($audios);
         } else {
@@ -56,38 +47,27 @@ trait AudioContainerTrait {
         return $this;
     }
 
-    /**
-     * @return array<Audio>
-     */
     public function getAudios() : array {
         return $this->audios->toArray();
     }
 
-    /**
-     * @param string $checksum
-     * @return bool
-     */
-    public function hasAudioByChecksum(string $checksum) : bool {
-        foreach ($this->audios as $audio) {
+    public function getAudioByChecksum(string $checksum) : ?Audio {
+        foreach ($this->getAudios() as $audio) {
             if ($audio->getChecksum() === $checksum) {
-                return true;
+                return $audio;
             }
         }
 
-        return false;
+        return null;
     }
 
-    /**
-     * @param string $sourceUrl
-     * @return bool
-     */
-    public function hasAudioBySourceUrl(string $sourceUrl) : bool {
-        foreach ($this->audios as $audio) {
+    public function getAudioBySourceUrl(string $sourceUrl) : ?Audio {
+        foreach ($this->getAudios() as $audio) {
             if ($audio->getSourceUrl() === $sourceUrl) {
-                return true;
+                return $audio;
             }
         }
 
-        return false;
+        return null;
     }
 }

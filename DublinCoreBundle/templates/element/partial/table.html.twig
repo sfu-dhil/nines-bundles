@@ -1,4 +1,4 @@
-<table class="table table-bordered table-condensed table-hover table-striped">
+<table class="table table-striped table-sm">
     <thead>
         <tr>
             <th>ID</th>
@@ -14,7 +14,7 @@
         {% for element in elements %}
             <tr>
                 <td>
-                    <a href="{{ path('nines_dc_element_show', { 'id': element.id }) }}">
+                    <a href="{{ path('nines_dc_element_show', {'id': element.id}) }}">
                         {{ element.id }}
                     </a>
                 </td>
@@ -27,7 +27,7 @@
                 </td>
 
                 <td>
-                    {{ element.description|raw }}
+                    {{ element.description|default('')|sanitize_html }}
                 </td>
 
                 <td>
@@ -35,7 +35,7 @@
                 </td>
 
                 <td>
-                    {{ element.comment|raw }}
+                    {{ element.comment|default('')|sanitize_html }}
                 </td>
 
             </tr>

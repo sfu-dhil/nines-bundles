@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,6 +14,7 @@ use Nines\MediaBundle\Entity\Pdf;
  * @method Pdf[] findAll()
  * @method Pdf[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|Pdf findOneBy(array $criteria, array $orderBy = null)
+ *
  * @phpstan-extends ServiceEntityRepository<Pdf>
  */
 class PdfRepository extends ServiceEntityRepository {
@@ -30,7 +25,8 @@ class PdfRepository extends ServiceEntityRepository {
     public function indexQuery() : Query {
         return $this->createQueryBuilder('pdf')
             ->orderBy('pdf.originalName')
-            ->getQuery();
+            ->getQuery()
+        ;
     }
 
     public function searchQuery(string $q) : Query {

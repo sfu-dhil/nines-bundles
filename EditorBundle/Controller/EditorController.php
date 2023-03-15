@@ -2,18 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\EditorBundle\Controller;
 
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,12 +27,11 @@ class EditorController extends AbstractController {
     }
 
     /**
-     * @Route("/upload/image", name="nines_editor_image_upload", methods={"POST"})
-     * @IsGranted("ROLE_USER")
-     *
      * @throws Exception
      */
-    public function editorUploadImageAction(Request $request, Packages $assetsManager) : JsonResponse {
+    #[Route(path: '/upload/image', name: 'nines_editor_image_upload', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
+    public function editorUploadImageAction(Request $request) : JsonResponse {
         if (1 !== $request->files->count()) {
             throw new BadRequestHttpException('Expected one file parameter. Got ' . $request->files->count() . ' instead.');
         }
@@ -60,8 +52,8 @@ class EditorController extends AbstractController {
 
     /**
      * @param mixed $filename
-     * @Route("/upload/image/{filename}", name="nines_editor_image_view", methods={"GET"})
      */
+    #[Route(path: '/upload/image/{filename}', name: 'nines_editor_image_view', methods: ['GET'])]
     public function editorViewImageAction(Request $request, $filename) : BinaryFileResponse {
         if (preg_match(self::FORBIDDEN, $filename)) {
             throw new BadRequestHttpException('Invalid file name: ' . $filename);

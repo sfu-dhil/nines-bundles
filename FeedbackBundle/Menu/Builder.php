@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Menu;
 
 use Knp\Menu\ItemInterface;
@@ -29,13 +23,22 @@ class Builder extends AbstractBuilder {
 
         $feedback->addChild('Comments', [
             'route' => 'nines_feedback_comment_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item',
+            ],
         ]);
         $feedback->addChild('Comment Notes', [
             'route' => 'nines_feedback_comment_note_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item',
+            ],
         ]);
         $this->addDivider($feedback);
         $feedback->addChild('Comment States', [
             'route' => 'nines_feedback_comment_status_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item',
+            ],
         ]);
 
         return $feedback->getParent();

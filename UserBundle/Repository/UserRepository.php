@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -16,8 +10,8 @@ use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 use Nines\UserBundle\Entity\User;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method null|User find($id, $lockMode = null, $lockVersion = null)
@@ -25,6 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @method User[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|User findOneBy(array $criteria, array $orderBy = null)
  * @method null|User findOneByEmail(string $email)
+ *
  * @phpstan-extends ServiceEntityRepository<User>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface {
@@ -38,12 +33,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      * @throws OptimisticLockException
      * @throws ORMException
      */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword) : void {
+    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword) : void {
         if ( ! $user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
+            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
-        $user->setPassword($newEncodedPassword);
+        $user->setPassword($newHashedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
     }

@@ -2,37 +2,25 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Logger;
 
+use Monolog\LogRecord;
+use Monolog\Processor\ProcessorInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class RequestProcessor {
-    private ?RequestStack $stack = null;
-
-    public function __construct(RequestStack $stack) {
-        $this->stack = $stack;
+class RequestProcessor implements ProcessorInterface {
+    public function __construct(
+        protected RequestStack $requestStack,
+    ) {
     }
 
-    /**
-     * Add the client IP address to the log record.
-     *
-     * @param array<string,mixed> $record
-     *
-     * @return array<string,mixed>
-     */
-    public function __invoke(array $record) : array {
-        $request = $this->stack->getCurrentRequest();
+    public function __invoke(LogRecord $record) : LogRecord {
+        $request = $this->requestStack->getCurrentRequest();
         if ( ! $request) {
             return $record;
         }
-        $record['extra']['ip'] = $request->getClientIp();
-        $record['extra']['url'] = $request->getUri();
+        $record->extra['ip'] = $request->getClientIp();
+        $record->extra['url'] = $request->getUri();
 
         return $record;
     }

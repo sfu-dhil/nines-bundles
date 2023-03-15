@@ -2,14 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Nines\UserBundle\Entity\User;
 use Nines\UserBundle\Form\Admin\UserPasswordType;
@@ -17,16 +12,13 @@ use Nines\UserBundle\Form\Admin\UserType;
 use Nines\UserBundle\Repository\UserRepository;
 use Nines\UserBundle\Services\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-/**
- * @IsGranted("ROLE_USER_ADMIN")
- */
+#[IsGranted('ROLE_USER_ADMIN')]
 class AdminController extends AbstractController {
     /**
      * @throws Exception
@@ -37,27 +29,22 @@ class AdminController extends AbstractController {
         return base64_encode($bytes);
     }
 
-    /**
-     * @Route("/", name="nines_user_admin_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'nines_user_admin_index', methods: ['GET'])]
     public function index(UserRepository $userRepository) : Response {
         return $this->render('@NinesUser/admin/index.html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }
 
-    /**
-     * @Route("/new", name="nines_user_admin_new", methods={"GET", "POST"})
-     */
-    public function new(Request $request, UserPasswordEncoderInterface $encoder) : Response {
+    #[Route(path: '/new', name: 'nines_user_admin_new', methods: ['GET', 'POST'])]
+    public function new(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher) : Response {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $password = $encoder->encodePassword($user, $this->generatePassword());
+            $password = $passwordHasher->hashPassword($user, $this->generatePassword());
             $user->setPassword($password);
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
@@ -72,29 +59,24 @@ class AdminController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="nines_user_admin_show", methods={"GET"})
-     * @Template
-     */
+    #[Route(path: '/{id}', name: 'nines_user_admin_show', methods: ['GET'])]
     public function show(User $user) : Response {
         return $this->render('@NinesUser/admin/show.html.twig', [
             'user' => $user,
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="nines_user_admin_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, User $user) : Response {
+    #[Route(path: '/{id}/edit', name: 'nines_user_admin_edit', methods: ['GET', 'POST'])]
+    public function edit(EntityManagerInterface $entityManager, Request $request, User $user) : Response {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
 
             $this->addFlash('success', 'The user account has been updated.');
 
-            return $this->redirectToRoute('nines_user_admin_index');
+            return $this->redirectToRoute('nines_user_admin_show', ['id' => $user->getId()]);
         }
 
         return $this->render('@NinesUser/admin/edit.html.twig', [
@@ -103,17 +85,15 @@ class AdminController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/{id}/password", name="nines_user_admin_password", methods={"GET", "POST"})
-     */
-    public function password(Request $request, User $user, UserManager $manager) : Response {
+    #[Route(path: '/{id}/password', name: 'nines_user_admin_password', methods: ['GET', 'POST'])]
+    public function password(EntityManagerInterface $entityManager, Request $request, User $user, UserManager $manager) : Response {
         $form = $this->createForm(UserPasswordType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $password = $form->get('new_password')->getData();
             $manager->changePassword($user, $password);
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The user password has been updated.');
 
             return $this->redirectToRoute('nines_user_admin_index');
@@ -125,12 +105,9 @@ class AdminController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="nines_user_admin_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, User $user) : Response {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
+    #[Route(path: '/{id}', name: 'nines_user_admin_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, User $user) : Response {
+        if ($this->isCsrfTokenValid('delete_user' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
             $this->addFlash('success', 'The account has been removed.');

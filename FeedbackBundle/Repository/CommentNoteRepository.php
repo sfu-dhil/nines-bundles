@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -20,6 +14,7 @@ use Nines\FeedbackBundle\Entity\CommentNote;
  * @method CommentNote[] findAll()
  * @method CommentNote[] findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  * @method null|CommentNote findOneBy(array $criteria, array $orderBy = null)
+ *
  * @phpstan-extends ServiceEntityRepository<\Nines\FeedbackBundle\Entity\CommentNote>
  */
 class CommentNoteRepository extends ServiceEntityRepository {
@@ -30,7 +25,8 @@ class CommentNoteRepository extends ServiceEntityRepository {
     public function indexQuery() : Query {
         return $this->createQueryBuilder('commentNote')
             ->orderBy('commentNote.id')
-            ->getQuery();
+            ->getQuery()
+        ;
     }
 
     public function searchQuery(string $q) : Query {

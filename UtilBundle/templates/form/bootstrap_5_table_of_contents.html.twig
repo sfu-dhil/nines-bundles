@@ -1,0 +1,33 @@
+{% use "@NinesUtil/form/bootstrap_5_layout.html.twig" %}
+
+{%- block form_label -%}
+    {% if id -%}
+        {% set label_attr = label_attr|merge({'id': id ~ '_label'}) %}
+    {%- endif -%}
+    {{ parent() }}
+{%- endblock form_label -%}
+
+{%- block form_start -%}
+    <div class="row">
+        <div class="col">
+            {{ parent() }}
+{%- endblock form_start -%}
+
+{%- block form_end -%}
+            {{ parent() }}
+        </div>
+        <div class="col-auto d-none d-lg-block mx-3">
+            <div class="sticky-top">
+                <strong class="h6 text-muted">Table of Contents</strong>
+                <hr class="my-2">
+                <nav id="table-of-contents-sidebar" class="nav flex-column">
+                    {%- for field in form.children -%}
+                        {%- if 'hidden' not in field.vars.block_prefixes and field.vars.label and field.vars.id -%}
+                            <a href="#{{ field.vars.id }}_label" class="link-secondary small mb-1">{{ field.vars.label }}</a>
+                        {%- endif -%}
+                    {%- endfor -%}
+                </nav>
+            </div>
+        </div>
+    </div>
+{%- endblock form_end -%}

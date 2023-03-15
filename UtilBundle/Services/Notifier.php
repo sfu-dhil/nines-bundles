@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Services;
 
 use Psr\Log\LoggerInterface;
@@ -28,11 +22,7 @@ class Notifier {
         $this->sender = $sender;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMailer(MailerInterface $mailer) : void {
         $this->mailer = $mailer;
     }
@@ -67,20 +57,12 @@ class Notifier {
         return $sent;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLogger(LoggerInterface $logger) : void {
         $this->logger = $logger;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setLinker(EntityLinker $linker) : void {
         $this->linker = $linker;
     }

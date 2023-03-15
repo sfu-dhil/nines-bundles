@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Tests\Controller;
 
 use DateTimeImmutable;
@@ -270,6 +264,8 @@ class SecurityControllerTest extends ControllerTestCase {
 
     /**
      * @dataProvider loginRedirectData
+     *
+     * @param ?string $referrer
      */
     public function testLoginRedirects(?string $referrer, string $redirect = '/') : void {
         $headers = [];
@@ -318,6 +314,6 @@ class SecurityControllerTest extends ControllerTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->repository = self::$container->get(UserRepository::class);
+        $this->repository = static::getContainer()->get(UserRepository::class);
     }
 }

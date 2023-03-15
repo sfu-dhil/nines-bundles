@@ -1,9 +1,9 @@
-<table class='table table-bordered table-condensed table-hover table-striped'>
+<table class="table table-striped table-sm">
     <tbody>
         <tr>
             <th>Content</th>
             <td>
-                {{ comment_note.content|raw }}
+                {{ comment_note.content|default('')|sanitize_html }}
             </td>
         </tr>
 

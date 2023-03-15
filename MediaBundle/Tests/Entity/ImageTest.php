@@ -14,7 +14,6 @@ class ImageTest extends TestCase {
         $this->assertInstanceOf(Image::class, $this->image);
     }
 
-
     protected function setUp() : void {
         parent::setUp();
         $this->image = new Image();

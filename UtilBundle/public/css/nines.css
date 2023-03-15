@@ -6,7 +6,7 @@ html {
 }
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 85px;
 }
 .footer {
     position: absolute;
@@ -58,70 +58,62 @@ label.required::after {
 }
 
 a[href ^= 'mailto:']::after {
-    content: "\2709";
-    position: relative;
-    top: 1px;
+    content: "\f32c";
     display: inline-block;
-    padding-left: 0.5ex;
-    font-family: 'Glyphicons Halflings';
+    font-family: bootstrap-icons !important;
     font-style: normal;
-    font-weight: 400;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
     line-height: 1;
+    vertical-align: -.125em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    padding-left: 0.5ex;
 }
 
 a[href ^= 'http://']::after,
 a[href ^= 'https://']::after {
-    content: "\e164";
-    position: relative;
-    top: 1px;
+    content: "\F1C5";
     display: inline-block;
-    padding-left: 0.5ex;
-    font-family: 'Glyphicons Halflings';
+    font-family: bootstrap-icons !important;
     font-style: normal;
-    font-weight: 400;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
     line-height: 1;
+    vertical-align: -.125em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    padding-left: 0.5ex;
 }
 
-tbody tr th {
-    width: 20%;
+.breadcrumb .breadcrumb-item {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+.card {
+    margin-bottom: 20px;
+}
+
+.popover .popover-body {
+    padding: 0px;
+}
+
+div.collection span[class*="-collection-actions"] {
+    width: inherit !important;
+}
+
+div.collection-media > div:not(:last-child),
 div.collection-complex > div:not(:last-child) {
     padding-top: 15px;
     border: 1px solid rgba(128, 128, 128, 0.31);
 }
 
 /* Image gallery styles. */
-.thumbnail {
-    word-wrap: break-word;
-}
-
-.thumbnail-small {
-    max-width: 160px;
-    max-height: 124px;
-    margin: 0 auto;
-}
-
-.img-container {
-    height: 160px;
-    text-align: center;
-    margin-top: 15px;
-}
-
-.thumbnail .caption {
-    margin-top: 15px;
-}
-.thumbnail .title {
-    margin-bottom: 15px;
-}
-.thumbnail .img-thumbnail {
-    max-width: 100%;
-    max-height: 100%;
-}
 
 .modal {
     top: 50px;

@@ -2,33 +2,22 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Nines\UserBundle\Form\Profile\ChangePasswordType;
 use Nines\UserBundle\Form\Profile\ProfileType;
 use Nines\UserBundle\Services\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-/**
- * @IsGranted("ROLE_USER")
- */
+#[IsGranted('ROLE_USER')]
 class ProfileController extends AbstractController {
-    /**
-     * @Route("/", name="nines_user_profile_index", methods={"GET"})
-     * @Template
-     */
+    #[Route(path: '/', name: 'nines_user_profile_index', methods: ['GET'])]
     public function index() : Response {
         $user = $this->getUser();
 
@@ -37,33 +26,30 @@ class ProfileController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/edit", name="nines_user_profile_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, UserPasswordEncoderInterface $encoder) : Response {
+    #[Route(path: '/edit', name: 'nines_user_profile_edit', methods: ['GET', 'POST'])]
+    public function edit(EntityManagerInterface $entityManager, Request $request, UserPasswordHasherInterface $passwordHasher) : Response {
         $user = $this->getUser();
         $form = $this->createForm(ProfileType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($encoder->isPasswordValid($user, $form->get('password')->getData())) {
-                $this->getDoctrine()->getManager()->flush();
+            if ($passwordHasher->isPasswordValid($user, $form->get('password')->getData())) {
+                $entityManager->flush();
                 $this->addFlash('success', 'Your profile has been updated.');
 
                 return $this->redirectToRoute('nines_user_profile_index');
             }
-            $this->addFlash('failure', 'The password does not match.');
+            $this->addFlash('danger', 'The password does not match.');
         }
 
         return $this->render('@NinesUser/profile/edit.html.twig', [
+            'user' => $user,
             'form' => $form->createView(),
         ]);
     }
 
-    /**
-     * @Route("/password", name="nines_user_profile_password", methods={"GET", "POST"})
-     */
-    public function password(Request $request, UserManager $manager) : Response {
+    #[Route(path: '/password', name: 'nines_user_profile_password', methods: ['GET', 'POST'])]
+    public function password(EntityManagerInterface $entityManager, Request $request, UserManager $manager) : Response {
         $user = $this->getUser();
         $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
@@ -73,12 +59,12 @@ class ProfileController extends AbstractController {
             if ($manager->validatePassword($user, $current)) {
                 $password = $form->get('new_password')->getData();
                 $manager->changePassword($user, $password);
-                $this->getDoctrine()->getManager()->flush();
+                $entityManager->flush();
                 $this->addFlash('success', 'Your password has been updated.');
 
                 return $this->redirectToRoute('nines_user_profile_index');
             }
-            $this->addFlash('failure', 'The password does not match.');
+            $this->addFlash('danger', 'The password does not match.');
         }
 
         return $this->render('@NinesUser/profile/password.html.twig', [

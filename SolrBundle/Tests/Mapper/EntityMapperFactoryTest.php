@@ -2,16 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Tests\Mapper;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Nines\SolrBundle\Annotation\Document;
 use Nines\SolrBundle\Annotation\Field;
 use Nines\SolrBundle\Mapper\EntityMapperFactory;
@@ -22,8 +15,7 @@ use ReflectionClass;
 
 class EntityMapperFactoryTest extends ServiceTestCase {
     public function testGetProperties() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $this->assertCount(9, $properties);
@@ -38,8 +30,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testGetIdProperty() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();
@@ -53,8 +44,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testGetParentProperties() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
 
@@ -62,8 +52,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testAnalyzeIdField() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(ComplexId::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();
@@ -76,8 +65,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testAnalyzeSimpleField() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();
@@ -97,8 +85,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testAnalyzeFieldGetter() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();
@@ -112,8 +99,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testAnalyzeFieldFilters() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();
@@ -127,8 +113,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testAnalyzeComputedField() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();
@@ -148,8 +133,7 @@ class EntityMapperFactoryTest extends ServiceTestCase {
     }
 
     public function testAnalyzeCopyField() : void {
-        $emf = self::$container->get(EntityMapperFactory::class);
-        AnnotationRegistry::registerLoader('class_exists');
+        $emf = static::getContainer()->get(EntityMapperFactory::class);
         $refClass = new ReflectionClass(Entity::class);
         $properties = $emf->getProperties($refClass);
         $reader = new AnnotationReader();

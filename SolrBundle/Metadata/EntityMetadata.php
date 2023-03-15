@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Metadata;
 
 use Nines\SolrBundle\Annotation\Field;
@@ -26,29 +20,26 @@ class EntityMetadata extends Metadata {
     /**
      * @var CopyFieldMetadata[]
      */
-    private ?array $copyFields = null;
+    private ?array $copyFields = [];
 
     /**
      * List of key, value pairs to add to all documents going into Solr.
      *
      * @var array<string,string>
      */
-    private ?array $fixed = null;
+    private ?array $fixed = [];
 
     /**
      * Map of entity field name => FieldMetadata.
      *
      * @var array<string,FieldMetadata>;
      */
-    private $fieldMetadata;
+    private $fieldMetadata = [];
 
     /**
      * EntityMetadata constructor.
      */
     public function __construct() {
-        $this->fixed = [];
-        $this->fieldMetadata = [];
-        $this->copyFields = [];
     }
 
     /**

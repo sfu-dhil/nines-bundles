@@ -56,7 +56,6 @@ Add the ``tinymce`` class to the form widgets that will be WISIWYGish.
             'label' => 'Content',
             'required' => false,
             'attr' => array(
-                'help_block' => '',
                 'class' => 'tinymce',
             ),
         ));

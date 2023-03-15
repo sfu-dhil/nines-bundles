@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Form;
 
 use Nines\MediaBundle\Entity\Link;
@@ -34,7 +28,6 @@ class LinkableType {
             ],
             'attr' => [
                 'class' => 'collection collection-complex',
-                'help_block' => '',
             ],
             'mapped' => false,
         ]);

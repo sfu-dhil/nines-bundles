@@ -1,4 +1,4 @@
-<table class='table table-bordered table-condensed table-hover table-striped'>
+<table class="table table-striped table-sm">
     <tbody>
         <tr>
             <th>Name</th>
@@ -15,7 +15,7 @@
         <tr>
             <th>Description</th>
             <td>
-                {{ element.description|raw }}
+                {{ element.description|default('')|sanitize_html }}
             </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@
         <tr>
             <th>Comment</th>
             <td>
-                {{ element.comment|raw }}
+                {{ element.comment|default('')|sanitize_html }}
             </td>
         </tr>
 
@@ -35,10 +35,10 @@
             <th>Value</th>
             <td>
                 {% if element.values|length > 0 %}
-                    <ul>
+                    <ul class="list-unstyled">
                         {% for value in element.values %}
                             <li>
-                                <a href='{{ path("nines_dc_value_show", {"id":value.id }) }}'>
+                                <a href='{{ path("nines_dc_value_show", {"id": value.id}) }}'>
                                     {{ value }}
                                 </a>
                             </li>

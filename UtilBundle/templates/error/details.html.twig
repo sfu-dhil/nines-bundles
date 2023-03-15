@@ -1,23 +1,21 @@
-<dl class="dl-horizontal" id='error-details'>
-    <dt>Date</dt>
-    <dd>{{ date }}</dd>
-    <dt>IP</dt>
-    <dd>{{ ip }}</dd>
-    <dt>URL</dt>
-    <dd>{{ url }}</dd>
-    <dt>Referrer</dt>
-    <dd>{{ referrer|default('No referrer') }}</dd>
-    <dt>Class</dt>
-    <dd>{{ status }} - {{ class }}</dd>
-    <dt>Message</dt>
-    <dd>{{ message }}</dd>
-    <dt>Browser Info</dt>
-    <dd id='browser-info'></dd>
+<dl id='error-details' class="row">
+    <dt class="col-sm-2 text-sm-end">Date</dt>
+    <dd class="col-sm-10">{{ date }}</dd>
+    <dt class="col-sm-2 text-sm-end">IP</dt>
+    <dd class="col-sm-10">{{ ip }}</dd>
+    <dt class="col-sm-2 text-sm-end">URL</dt>
+    <dd class="col-sm-10">{{ url }}</dd>
+    <dt class="col-sm-2 text-sm-end">Referrer</dt>
+    <dd class="col-sm-10">{{ referrer|default('No referrer') }}</dd>
+    <dt class="col-sm-2 text-sm-end">Class</dt>
+    <dd class="col-sm-10">{{ status }} - {{ class }}</dd>
+    <dt class="col-sm-2 text-sm-end">Message</dt>
+    <dd class="col-sm-10">{{ message }}</dd>
+    <dt class="col-sm-2 text-sm-end">Browser Info</dt>
+    <dd id='browser-info' class="col-sm-10"></dd>
 </dl>
 
-<p class='clearfix'>
-    <button class="btn btn-default pull-right" id='copy-btn'>Copy Details</button>
-</p>
+<button class="btn btn-primary" id='copy-btn'>Copy Details</button>
 
 {% if is_granted('ROLE_ADMIN') %}
     <div>

@@ -2,18 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Services;
 
 use DateTimeImmutable;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Nines\UserBundle\Entity\User;
 use Nines\UtilBundle\Entity\ContributorInterface;
 use Symfony\Component\Security\Core\Security;
@@ -31,6 +25,7 @@ class ContributionManager implements EventSubscriber {
         if ( ! $entity instanceof ContributorInterface) {
             return;
         }
+
         /** @var ?User $user */
         $user = $this->security->getUser();
         if ( ! $user) {
@@ -39,18 +34,11 @@ class ContributionManager implements EventSubscriber {
         $entity->addContribution(new DateTimeImmutable(), $user->getFullname());
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSecurity(Security $security) : void {
         $this->security = $security;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function getSubscribedEvents() : array {
         return [
             Events::preUpdate,
@@ -58,16 +46,10 @@ class ContributionManager implements EventSubscriber {
         ];
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function preUpdate(LifecycleEventArgs $args) : void {
         $this->addContributor($args->getEntity());
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function prePersist(LifecycleEventArgs $args) : void {
         $this->addContributor($args->getEntity());
     }

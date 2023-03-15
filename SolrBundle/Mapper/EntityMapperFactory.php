@@ -2,20 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Mapper;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Mapping\Annotation;
 use Exception;
 use Nines\SolrBundle\Annotation\ComputedField;
 use Nines\SolrBundle\Annotation\CopyField;
@@ -59,9 +51,8 @@ class EntityMapperFactory {
         $mapper = new EntityMapper();
         $mapper->setSolrLogger($logger);
 
-        AnnotationRegistry::registerLoader('class_exists');
         $cache = new PhpFilesAdapter('doctrine_queries');
-        $reader = new PsrCachedReader(new AnnotationReader(), $cache, ('prod' !== $this->env));
+        $reader = new PsrCachedReader(new AnnotationReader(), $cache, 'prod' !== $this->env);
         $this->em->getMetadataFactory()->getAllMetadata();
 
         foreach ($this->em->getMetadataFactory()->getAllMetadata() as $meta) {
@@ -226,7 +217,7 @@ class EntityMapperFactory {
         $fieldMeta = new CopyFieldMetadata();
         $fieldMeta->setName($copyField->to);
         $solrName = $copyField->to . Field::TYPE_MAP[$copyField->type];
-        $from = array_map(fn($s) => $solrNames[$s], $copyField->from);
+        $from = array_map(fn ($s) => $solrNames[$s], $copyField->from);
         $fieldMeta->setFrom($from);
         $fieldMeta->setSolrName($solrName);
 
@@ -246,20 +237,12 @@ class EntityMapperFactory {
         return self::$mapper;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrLogger(SolrLogger $logger) : void {
         $this->logger = $logger;
     }

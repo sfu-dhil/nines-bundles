@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -17,25 +11,18 @@ use Nines\UtilBundle\Entity\LinkedEntityInterface;
 use Nines\UtilBundle\Entity\LinkedEntityTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass=LinkRepository::class)
- * @ORM\Table(name="nines_media_link", indexes={
- *     @ORM\Index(name="nines_media_link_ft", columns={"url", "text"}, flags={"fulltext"}),
- *     @ORM\Index(columns={"entity"})
- * })
- */
+#[ORM\Table(name: 'nines_media_link')]
+#[ORM\Index(name: 'nines_media_link_ft', columns: ['url', 'text'], flags: ['fulltext'])]
+#[ORM\Index(columns: ['entity'])]
+#[ORM\Entity(repositoryClass: LinkRepository::class)]
 class Link extends AbstractEntity implements LinkedEntityInterface {
     use LinkedEntityTrait;
 
-    /**
-     * @Assert\Url
-     * @ORM\Column(type="string", length=500, nullable=false)
-     */
+    #[Assert\Url]
+    #[ORM\Column(type: 'string', length: 500, nullable: false)]
     private ?string $url = null;
 
-    /**
-     * @ORM\Column(type="string", length=191, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 191, nullable: true)]
     private ?string $text = null;
 
     public function __construct() {
@@ -51,31 +38,22 @@ class Link extends AbstractEntity implements LinkedEntityInterface {
         return "<a href='{$this->url}'>{$host}</a>";
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function getUrl() : ?string {
         return $this->url;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function setUrl(string $url) : self {
         $this->url = $url;
 
         return $this;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function getText() : ?string {
         return $this->text;
     }
 
     public function setText(?string $text) : self {
-        $this->text = preg_replace('/(^\p{Z})|(\p{Z}$)/u', '', $text);
+        $this->text = null === $text ? null : preg_replace('/(^\p{Z})|(\p{Z}$)/u', '', $text);
 
         return $this;
     }

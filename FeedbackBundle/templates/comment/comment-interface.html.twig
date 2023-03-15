@@ -1,21 +1,19 @@
-{% set className = entity|class_name %}
-<div class="panel-group" id="commentWidget" role="tablist" aria-multiselectable="true">
-    <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="widgetHeader">
-            <h4 class="panel-title">
-                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#commentWidget" href="#commentList" aria-expanded="false" aria-controls="widgetHeader">
-                    Comments for <i>{{ entity|u.trim(60, '...') }}</i> </a>
-            </h4>
-        </div>
-        <div id="commentList" class="panel-collapse collapse" role="tabpanel" aria-labelledby="widgetHeader">
-            <div class="panel-body">
-                {% include '@NinesFeedback/comment/comment-form.html.twig' with { 'entity': entity } %}
-                {% if is_granted('ROLE_FEEDBACK_ADMIN') %}
-                    {% include '@NinesFeedback/comment/comments-admin.html.twig' %}
-                {% else %}
-                    {% include '@NinesFeedback/comment/comments-view.html.twig' %}
-                {% endif %}
-            </div>
-        </div>
+<div class="card card-light">
+    <div class="card-header" role="tab" id="widgetHeader">
+        <h4 class="card-title">
+            <a class="collapsed" role="button" data-bs-toggle="collapse" href="#commentList" aria-expanded="false" aria-controls="commentList">
+                Comments for <i>{{ entity|u.trim(60, '...') }}</i>
+            </a>
+        </h4>
     </div>
+    <ul class="list-group collapse" id="commentList">
+        <li class="list-group-item">
+            {% include '@NinesFeedback/comment/comment-form.html.twig' with {'entity': entity} %}
+        </li>
+        {% if is_granted('ROLE_FEEDBACK_ADMIN') %}
+            {% include '@NinesFeedback/comment/comments-admin.html.twig' %}
+        {% else %}
+            {% include '@NinesFeedback/comment/comments-view.html.twig' %}
+        {% endif %}
+    </ul>
 </div>

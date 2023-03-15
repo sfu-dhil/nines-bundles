@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,29 +12,23 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Element.
- *
- * @ORM\Table(name="nines_dc_element", uniqueConstraints={
- *     @ORM\UniqueConstraint(columns={"uri"})
- * })
- * @ORM\Entity(repositoryClass="Nines\DublinCoreBundle\Repository\ElementRepository")
  */
+#[ORM\Table(name: 'nines_dc_element')]
+#[ORM\UniqueConstraint(columns: ['uri'])]
+#[ORM\Entity(repositoryClass: 'Nines\DublinCoreBundle\Repository\ElementRepository')]
 class Element extends AbstractTerm {
-    /**
-     * @ORM\Column(type="string", length=190, nullable=false)
-     * @Assert\Url
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: 'string', length: 190, nullable: false)]
+    #[Assert\Url]
+    #[Assert\NotBlank]
     private ?string $uri = null;
 
-    /**
-     * @ORM\Column(type="text")
-     */
+    #[ORM\Column(type: 'text')]
     private ?string $comment = null;
 
     /**
      * @var Collection<int,Value>|Value[]
-     * @ORM\OneToMany(targetEntity="Value", mappedBy="element")
      */
+    #[ORM\OneToMany(targetEntity: 'Value', mappedBy: 'element')]
     private $values;
 
     /**
@@ -53,8 +41,6 @@ class Element extends AbstractTerm {
 
     /**
      * Set uri.
-     *
-     * @codeCoverageIgnore
      */
     public function setUri(string $uri) : self {
         $this->uri = $uri;
@@ -64,8 +50,6 @@ class Element extends AbstractTerm {
 
     /**
      * Get uri.
-     *
-     * @codeCoverageIgnore
      */
     public function getUri() : ?string {
         return $this->uri;
@@ -74,7 +58,7 @@ class Element extends AbstractTerm {
     /**
      * Set comment.
      *
-     * @codeCoverageIgnore
+     * @param ?string $comment
      */
     public function setComment(?string $comment) : self {
         $this->comment = $comment;
@@ -84,8 +68,6 @@ class Element extends AbstractTerm {
 
     /**
      * Get comment.
-     *
-     * @codeCoverageIgnore
      */
     public function getComment() : ?string {
         return $this->comment;
@@ -93,7 +75,6 @@ class Element extends AbstractTerm {
 
     /**
      * @return Collection<int,Value>|Value[]
-     * @codeCoverageIgnore
      */
     public function getValues() : Collection {
         return $this->values;

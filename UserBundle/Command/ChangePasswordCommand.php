@@ -2,17 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Nines\UserBundle\Entity\User;
 use Nines\UserBundle\Services\UserManager;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Helper\SymfonyQuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -21,10 +16,9 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
+#[AsCommand(name: 'nines:user:password')]
 class ChangePasswordCommand extends AbstractUserCommand {
     private ?UserManager $manager = null;
-
-    protected static $defaultName = 'nines:user:password';
 
     public function __construct(UserManager $manager, ValidatorInterface $validator, EntityManagerInterface $em) {
         parent::__construct($validator, $em);
@@ -48,6 +42,7 @@ class ChangePasswordCommand extends AbstractUserCommand {
 
     protected function execute(InputInterface $input, OutputInterface $output) : int {
         $email = $input->getArgument('email');
+
         /** @var ?User $user */
         $user = $this->em->getRepository(User::class)->findOneBy(['email' => $email]);
 
@@ -70,8 +65,8 @@ class ChangePasswordCommand extends AbstractUserCommand {
             $password = $input->getArgument('password');
         }
 
-        $encoded = $this->manager->encodePassword($user, $password);
-        $user->setPassword($encoded);
+        $hashed = $this->manager->hashPassword($user, $password);
+        $user->setPassword($hashed);
 
         $this->em->flush();
         $output->writeln("Password for {$user->getEmail()} changed.");

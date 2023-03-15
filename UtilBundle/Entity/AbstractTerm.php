@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -16,42 +10,36 @@ use Nines\SolrBundle\Annotation as Solr;
 /**
  * An abstract term has a computer friendly name, a human readable label,
  * and a description.
- *
- * @ORM\MappedSuperclass
- * @ORM\Table(
- *     indexes={
- *         @ORM\Index(columns={"label"}, flags={"fulltext"}),
- *         @ORM\Index(columns={"description"}, flags={"fulltext"}),
- *         @ORM\Index(columns={"label", "description"}, flags={"fulltext"})
- *     },
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(columns={"name"})
- *     }
- * )
  */
+#[ORM\Table]
+#[ORM\Index(columns: ['label'], flags: ['fulltext'])]
+#[ORM\Index(columns: ['description'], flags: ['fulltext'])]
+#[ORM\Index(columns: ['label', 'description'], flags: ['fulltext'])]
+#[ORM\UniqueConstraint(columns: ['name'])]
+#[ORM\MappedSuperclass]
 abstract class AbstractTerm extends AbstractEntity {
     /**
      * Name of the term.
      *
-     * @ORM\Column(type="string", length=191)
      * @Solr\Field(type="string")
      */
+    #[ORM\Column(type: 'string', length: 191)]
     private ?string $name = null;
 
     /**
      * Human readable term label.
      *
-     * @ORM\Column(type="string", length=200)
      * @Solr\Field(type="string")
      */
+    #[ORM\Column(type: 'string', length: 200)]
     private ?string $label = null;
 
     /**
      * Description of the term.
      *
-     * @ORM\Column(type="text", nullable=true)
      * @Solr\Field(type="text")
      */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
     public function __construct() {

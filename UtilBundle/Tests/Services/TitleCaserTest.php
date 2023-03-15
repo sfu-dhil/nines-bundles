@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Tests\Services;
 
 use Nines\UtilBundle\Services\TitleCaser;
@@ -265,6 +259,6 @@ class TitleCaserTest extends ServiceTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->titleCaser = self::$container->get(TitleCaser::class);
+        $this->titleCaser = static::getContainer()->get(TitleCaser::class);
     }
 }

@@ -2,16 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Nines\UtilBundle\Entity\AbstractTerm;
 use Nines\UtilBundle\Services\Text;
 
@@ -38,7 +32,7 @@ class TermNameListener {
      * Automatically generate a slug for an AbstractTerm.
      */
     public function prePersist(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ( ! $entity instanceof AbstractTerm) {
             return;
         }
@@ -49,7 +43,7 @@ class TermNameListener {
      * Automatically update a slug for an AbstractTerm.
      */
     public function preUpdate(PreUpdateEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ( ! $entity instanceof AbstractTerm) {
             return;
         }

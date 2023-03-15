@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Services;
 
 use Knp\Component\Pager\PaginatorInterface;
@@ -62,6 +56,7 @@ class SolrManager {
      * Execute a query and returl the result.
      *
      * @param ?array<string,mixed> $options
+     * @param ?PaginatorInterface $pager
      *
      * @throws NotConfiguredException
      */
@@ -175,11 +170,7 @@ class SolrManager {
         return $this->hydrator;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setHydrator(DoctrineHydrator $hydrator) : self {
         $this->hydrator = $hydrator;
 
@@ -191,10 +182,9 @@ class SolrManager {
     }
 
     /**
-     * @required
-     *
      * @param ?Client $client
      */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setClient(?Client $client) : self {
         $this->client = $client;
 
@@ -205,22 +195,14 @@ class SolrManager {
         return $this->mapper;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setMapper(EntityMapper $mapper) : self {
         $this->mapper = $mapper;
 
         return $this;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrLogger(SolrLogger $logger) : void {
         $this->logger = $logger;
     }

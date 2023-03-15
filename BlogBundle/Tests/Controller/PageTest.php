@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\BlogBundle\Tests\Controller;
 
 use Nines\BlogBundle\Repository\PageRepository;
@@ -138,20 +132,9 @@ class PageTest extends ControllerTestCase {
         $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
     }
 
-    public function testAnonNewPopup() : void {
-        $crawler = $this->client->request('GET', '/page/new_popup');
-        $this->assertResponseRedirects('/login', Response::HTTP_FOUND);
-    }
-
     public function testUserNew() : void {
         $this->login(UserFixtures::USER);
         $crawler = $this->client->request('GET', '/page/new');
-        $this->assertSame(403, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testUserNewPopup() : void {
-        $this->login(UserFixtures::USER);
-        $crawler = $this->client->request('GET', '/page/new_popup');
         $this->assertSame(403, $this->client->getResponse()->getStatusCode());
     }
 
@@ -172,27 +155,6 @@ class PageTest extends ControllerTestCase {
 
         $this->client->submit($form);
         $this->assertResponseRedirects('/page/6', Response::HTTP_FOUND);
-        $responseCrawler = $this->client->followRedirect();
-        $this->assertResponseIsSuccessful();
-    }
-
-    public function testAdminNewPopup() : void {
-        $this->login(UserFixtures::ADMIN);
-        $formCrawler = $this->client->request('GET', '/page/new');
-        $this->assertResponseIsSuccessful();
-
-        $form = $formCrawler->selectButton('Save')->form([
-            'page[inMenu]' => 1,
-            'page[public]' => 1,
-            'page[homepage]' => 1,
-            'page[includeComments]' => 1,
-            'page[title]' => 'Updated Title',
-            'page[excerpt]' => '<p>Updated Text</p>',
-            'page[content]' => '<p>Updated Text</p>',
-        ]);
-
-        $this->client->submit($form);
-        $this->assertResponseRedirects('/page/7', Response::HTTP_FOUND);
         $responseCrawler = $this->client->followRedirect();
         $this->assertResponseIsSuccessful();
     }
@@ -225,7 +187,7 @@ class PageTest extends ControllerTestCase {
 
     public function testAdminDelete() : void {
         /** @var \Nines\BlogBundle\Repository\PageRepository $repo */
-        $repo = self::$container->get(PageRepository::class);
+        $repo = static::getContainer()->get(PageRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);

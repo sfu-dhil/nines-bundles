@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -25,11 +19,13 @@ trait ValueTrait {
     }
 
     /**
+     * @param ?string $name
+     *
      * @return Collection<int,Value>|Value[]
      */
     public function getValues(?string $name = null) {
         if ($name) {
-            return $this->values->filter(fn(Value $v) => $v->getElement()->getName() === $name);
+            return $this->values->filter(fn (Value $v) => $v->getElement()->getName() === $name);
         }
 
         return $this->values;

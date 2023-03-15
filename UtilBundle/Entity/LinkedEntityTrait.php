@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Entity;
 
 use Doctrine\Common\Util\ClassUtils;
@@ -18,9 +12,8 @@ trait LinkedEntityTrait {
     /**
      * A string of the form entity:id where entity is the un-namespaced
      * class name in lowercase and id is the numeric id.
-     *
-     * @ORM\Column(type="string", length=120)
      */
+    #[ORM\Column(type: 'string', length: 120)]
     private ?string $entity = null;
 
     public function getEntity() : ?string {

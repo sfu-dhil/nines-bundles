@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Tests\Entity;
 
 use Nines\DublinCoreBundle\Entity\Element;
@@ -20,7 +14,7 @@ class ElementTest extends TestCase {
         $this->assertCount(0, $element->getValues());
         $value = new Value();
         $value->setData('abc');
-        $element->addValue(($value));
+        $element->addValue($value);
         $this->assertCount(1, $element->getValues());
     }
 

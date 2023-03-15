@@ -24,8 +24,8 @@ For convenience, a few data fixtures are pre-configured and ready to be loaded.
 There are three types of fixtures: `test` for testing, `dev` for development,
 and `prod` with content suitable for production.
 
-The `prod` fixtures include all metadata elements defined in the 
-[DCMI Terms][dcmi] namespace. They can be loaded as in this example, which 
+The `prod` fixtures include all metadata elements defined in the
+[DCMI Terms][dcmi] namespace. They can be loaded as in this example, which
 should be used with caution:
 
 ```shell
@@ -36,16 +36,16 @@ Entities
 --------
 
 Each metadata element (title, creator, etc) corresponds to an `element` entity
-which is stored in the database and editable in the usual way through the 
+which is stored in the database and editable in the usual way through the
 ElementController.
 
 A value is a piece of data associated with an entity. The relationship between
-value and entity is indirect, by way of Util Bundle's 
+value and entity is indirect, by way of Util Bundle's
 [LinkedEntity](../../UtilBundle/doc/usage.md) system.
 
 Entities which accept Dublin Core Metadata must implement the ValueInterface and
 may use the ValueTrait for convenience. The ValueTrait includes a constructor
-which must be called for proper initialization of the object. A poem with 
+which must be called for proper initialization of the object. A poem with
 metadata might look like the example below.
 
 ```php
@@ -53,9 +53,7 @@ use Nines\DublinCoreBundle\Entity\ValueInterface;
 use Nines\DublinCoreBundle\Entity\ValueTrait;
 use Nines\UtilBundle\Entity\AbstractEntity;
 
-/**
- * @ORM\Entity(repositoryClass=PoemRepository::class)
- */
+#[ORM\Entity(repositoryClass: PoemRepository::class)]
 class Poem extends AbstractEntity implements ValueInterface {
     use ValueTrait {
         ValueTrait::__construct as private value_constructor;
@@ -67,14 +65,14 @@ class Poem extends AbstractEntity implements ValueInterface {
     }
 ```
 
-Values are not directly editable via the ValueController. It serves as a 
+Values are not directly editable via the ValueController. It serves as a
 read-only tool.
 
 Forms
 -----
 
-The bundle includes a ValueType form definition which can inject all the 
-necessary elements for editing. It can be used as in the example below. Note 
+The bundle includes a ValueType form definition which can inject all the
+necessary elements for editing. It can be used as in the example below. Note
 that the ElementRepository must be passed to the `ValueType::add` static method
 and that the DublinCoreMapper is required.
 
@@ -139,7 +137,7 @@ class PoemType extends AbstractType {
 Menus
 -----
 
-The bundle provides one menu in Menu/Builder.php. It will link to the element 
+The bundle provides one menu in Menu/Builder.php. It will link to the element
 and value list pages.
 
 ```twig
@@ -151,10 +149,10 @@ and value list pages.
 Templates
 ---------
 
-Templates are provided in `templates/` and can be 
+Templates are provided in `templates/` and can be
 [easily overridden][override].
 
-A partial template is also provided to embed a table of metadata in a page. It can 
+A partial template is also provided to embed a table of metadata in a page. It can
 be embedded as shown below. Note that the `entity` parameter is required.
 
 ```twig

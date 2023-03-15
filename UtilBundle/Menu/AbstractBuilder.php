@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
@@ -17,6 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class AbstractBuilder implements ContainerAwareInterface {
     use ContainerAwareTrait;
@@ -48,57 +43,54 @@ class AbstractBuilder implements ContainerAwareInterface {
     }
 
     protected function dropdown(string $name) : ItemInterface {
+        $slugger = new AsciiSlugger();
+        $slug = $slugger->slug($name);
+
         $root = $this->factory->createItem('root');
         $root->setChildrenAttributes([
-            'class' => 'nav navbar-nav',
+            'class' => 'navbar-nav',
         ]);
-        $root->setAttribute('dropdown', true);
+        $slugger = new AsciiSlugger();
 
-        $menu = $root->addChild('feedback', [
+        return $root->addChild('feedback', [
             'uri' => '#',
             'label' => $name,
+            'attributes' => [
+                'class' => 'nav-item dropdown',
+            ],
+            'linkAttributes' => [
+                'class' => 'nav-link dropdown-toggle',
+                'role' => 'button',
+                'data-bs-toggle' => 'dropdown',
+                'id' => "dropdown-{$slug}",
+            ],
+            'childrenAttributes' => [
+                'class' => 'dropdown-menu text-small shadow',
+                'aria-labelledby' => "dropdown-{$slug}",
+            ],
         ]);
-        $menu->setAttribute('dropdown', true);
-        $menu->setLinkAttribute('class', 'dropdown-toggle');
-        $menu->setLinkAttribute('data-toggle', 'dropdown');
-        $menu->setChildrenAttribute('class', 'dropdown-menu');
-
-        return $menu;
     }
 
     protected function addDivider(ItemInterface $item, ?string $name = 'divider') : void {
         $divider = $item->addChild($name, [
             'label' => '',
-        ]);
-        $divider->setAttributes([
-            'role' => 'separator',
-            'class' => 'divider',
+            'attributes' => [
+                'class' => 'dropdown-divider',
+            ],
         ]);
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setFactory(FactoryInterface $factory) : void {
         $this->factory = $factory;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAuthChecker(AuthorizationCheckerInterface $authChecker) : void {
         $this->authChecker = $authChecker;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setTokenStorage(TokenStorageInterface $tokenStorage) : void {
         $this->tokenStorage = $tokenStorage;
     }

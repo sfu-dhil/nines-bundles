@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\TestCase;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,6 +17,6 @@ abstract class ServiceTestCase extends KernelTestCase {
         } else {
             self::bootKernel();
         }
-        $this->em = self::$container->get(EntityManagerInterface::class);
+        $this->em = static::getContainer()->get(EntityManagerInterface::class);
     }
 }

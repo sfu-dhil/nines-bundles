@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\BlogBundle\Menu;
 
 use Knp\Menu\ItemInterface;
@@ -55,6 +49,9 @@ class Builder extends AbstractBuilder {
 
         $menu->addChild('All Announcements', [
             'route' => 'nines_blog_post_index',
+            'linkAttributes' => [
+                'class' => 'dropdown-item',
+            ],
         ]);
 
         if ($this->hasRole('ROLE_BLOG_ADMIN')) {
@@ -62,9 +59,15 @@ class Builder extends AbstractBuilder {
 
             $menu->addChild('Post Categories', [
                 'route' => 'nines_blog_post_category_index',
+                'linkAttributes' => [
+                    'class' => 'dropdown-item',
+                ],
             ]);
             $menu->addChild('Post Statuses', [
                 'route' => 'nines_blog_post_status_index',
+                'linkAttributes' => [
+                    'class' => 'dropdown-item',
+                ],
             ]);
         }
 
@@ -88,6 +91,9 @@ class Builder extends AbstractBuilder {
                 'routeParameters' => [
                     'id' => $page->getId(),
                 ],
+                'linkAttributes' => [
+                    'class' => 'dropdown-item',
+                ],
             ]);
         }
 
@@ -95,35 +101,26 @@ class Builder extends AbstractBuilder {
             $this->addDivider($menu);
             $menu->addChild('All Pages', [
                 'route' => 'nines_blog_page_index',
+                'linkAttributes' => [
+                    'class' => 'dropdown-item',
+                ],
             ]);
         }
 
         return $menu->getParent();
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setPostStatusRepository(PostStatusRepository $postStatusRepository) : void {
         $this->postStatusRepository = $postStatusRepository;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setPostRepository(PostRepository $postRepository) : void {
         $this->postRepository = $postRepository;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setPageRepository(PageRepository $pageRepository) : void {
         $this->pageRepository = $pageRepository;
     }

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Form\Profile;
 
 use Nines\UserBundle\Entity\User;
@@ -24,16 +18,21 @@ class ProfileType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
         $builder
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+            ])
             ->add('fullname', TextType::class, [
                 'label' => 'Full Name',
             ])
-            ->add('affiliation')
+            ->add('affiliation', TextType::class, [
+                'label' => 'Affiliation',
+            ])
             ->add('password', PasswordType::class, [
                 'label' => 'Confirm Password',
                 'required' => true,
                 'mapped' => false,
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver) : void {

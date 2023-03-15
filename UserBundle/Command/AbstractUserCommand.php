@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,14 +12,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractUserCommand extends Command {
     protected ?ValidatorInterface $validator = null;
-
-    protected ?UserPasswordEncoderInterface $encoder = null;
 
     protected ?EntityManagerInterface $em = null;
 
@@ -52,6 +43,7 @@ abstract class AbstractUserCommand extends Command {
 
     /**
      * @param ?array<Constraint> $constraints
+     * @param ?bool $hidden
      */
     protected function question(string $question, ?array $constraints = [], ?bool $hidden = false) : Question {
         $question = new Question($question);
@@ -60,7 +52,7 @@ abstract class AbstractUserCommand extends Command {
             $question->setHiddenFallback(false);
         }
         if (count($constraints) > 0) {
-            $question->setValidator(function($answer) use ($constraints) {
+            $question->setValidator(function ($answer) use ($constraints) {
                 $errors = $this->validator->validate($answer, $constraints);
                 if ($errors->count()) {
                     throw new RuntimeException($errors[0]->getMessage());

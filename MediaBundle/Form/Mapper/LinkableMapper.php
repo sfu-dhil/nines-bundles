@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Form\Mapper;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,10 +9,10 @@ use Exception;
 use Nines\MediaBundle\Entity\Link;
 use Nines\MediaBundle\Entity\LinkableInterface;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
+use Symfony\Component\Form\Extension\Core\DataMapper\DataMapper;
 use Symfony\Component\Form\Form;
 
-class LinkableMapper extends PropertyPathMapper implements DataMapperInterface {
+class LinkableMapper extends DataMapper implements DataMapperInterface {
     private ?EntityManagerInterface $em = null;
 
     private bool $parentCall = true;
@@ -38,6 +32,7 @@ class LinkableMapper extends PropertyPathMapper implements DataMapperInterface {
         if ($this->parentCall) {
             parent::mapDataToForms($viewData, $forms);
         }
+
         /** @var Form[] $forms */
         $forms = iterator_to_array($forms);
         $data = [];
@@ -85,11 +80,7 @@ class LinkableMapper extends PropertyPathMapper implements DataMapperInterface {
         }
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }

@@ -1,4 +1,4 @@
-<table class='table table-bordered table-condensed table-hover table-striped'>
+<table class="table table-striped table-sm">
     <tbody>
         <tr>
             <th>Full name</th>
@@ -29,7 +29,7 @@
         <tr>
             <th>Content</th>
             <td>
-                {{ comment.content|raw }}
+                {{ comment.content|default('')|sanitize_html }}
             </td>
         </tr>
         <tr>

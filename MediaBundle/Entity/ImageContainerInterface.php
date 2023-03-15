@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Entity;
 
 use Doctrine\Common\Collections\Collection;
@@ -20,25 +14,11 @@ interface ImageContainerInterface extends AbstractEntityInterface {
 
     public function containsImage(Image $image) : bool;
 
-    /**
-     * @param array<Image>|Collection<int,Image> $images
-     */
-    public function setImages($images) : self;
+    public function setImages(array|Collection $images) : self;
 
-    /**
-     * @return array<Image>
-     */
     public function getImages() : array;
 
-    /**
-     * @param string $checksum
-     * @return bool
-     */
-    public function hasImageByChecksum(string $checksum) : bool;
+    public function getImageByChecksum(string $checksum) : ?Image;
 
-    /**
-     * @param string $sourceUrl
-     * @return bool
-     */
-    public function hasImageBySourceUrl(string $sourceUrl) : bool;
+    public function getImageBySourceUrl(string $sourceUrl) : ?Image;
 }

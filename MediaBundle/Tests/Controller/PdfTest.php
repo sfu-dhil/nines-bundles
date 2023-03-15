@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Tests\Controller;
 
 use Nines\UserBundle\DataFixtures\UserFixtures;
@@ -78,11 +72,6 @@ class PdfTest extends ControllerTestCase {
 
     public function testAnonView() : void {
         $crawler = $this->client->request('GET', '/pdf/1/view');
-        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-    }
-
-    public function testAnonViewPublic() : void {
-        $crawler = $this->client->request('GET', '/pdf/2/view');
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'application/pdf');
     }
@@ -103,11 +92,6 @@ class PdfTest extends ControllerTestCase {
 
     public function testAnonThumb() : void {
         $crawler = $this->client->request('GET', '/pdf/1/thumb');
-        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-    }
-
-    public function testAnonThumbPublic() : void {
-        $crawler = $this->client->request('GET', '/pdf/2/thumb');
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'image/png');
     }

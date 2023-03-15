@@ -32,7 +32,6 @@ class ArtefactFixtures extends Fixture {
             $upload = new UploadedFile(dirname(__DIR__, 2) . '/lib/Nines/MediaBundle/Tests/data/image/' . $file, $file, 'image/jpeg', null, true);
             $image = new Image();
             $image->setFile($upload);
-            $image->setPublic(0 === $i % 2);
             $image->setOriginalName($file);
             $image->setDescription("<p>This is paragraph {$i}</p>");
             $image->setLicense("<p>This is paragraph {$i}</p>");
@@ -82,7 +81,6 @@ class RecordingFixtures extends Fixture {
             $upload = new UploadedFile(dirname(__DIR__, 2) . '/lib/Nines/MediaBundle/Tests/data/audio/' . $file, $file, 'audio/mp3', null, true);
             $audio = new Audio();
             $audio->setFile($upload);
-            $audio->setPublic(0 === $i % 2);
             $audio->setOriginalName($file);
             $audio->setDescription("<p>This is paragraph {$i}</p>");
             $audio->setLicense("<p>This is paragraph {$i}</p>");
@@ -129,7 +127,6 @@ class DocumentFixtures extends Fixture {
             $upload = new UploadedFile(dirname(__DIR__, 2) . '/lib/Nines/MediaBundle/Tests/data/pdf/' . $file, $file, 'application/pdf', null, true);
             $pdf = new Pdf();
             $pdf->setFile($upload);
-            $pdf->setPublic(0 === ($i % 2));
             $pdf->setOriginalName($file);
             $pdf->setDescription("<p>This is paragraph {$i}</p>");
             $pdf->setLicense("<p>This is paragraph {$i}</p>");
@@ -185,7 +182,7 @@ class BookmarkFixtures extends Fixture {
 Tests
 -----
 
-Below are some sample tests you can add for your controllers, to make sure they 
+Below are some sample tests you can add for your controllers, to make sure they
 are configured correctly.
 
 
@@ -209,11 +206,10 @@ are configured correctly.
         $crawler = $this->client->request('GET', '/artefact/1/new_image');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(ImageManager::class);
+        $manager = static::getContainer()->get(ImageManager::class);
         $manager->setCopy(true);
 
         $form = $crawler->selectButton('Create')->form([
-            'image[public]' => 1,
             'image[description]' => 'Description',
             'image[license]' => 'License',
         ]);
@@ -242,11 +238,10 @@ are configured correctly.
         $crawler = $this->client->request('GET', '/artefact/1/edit_image/1');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(ImageManager::class);
+        $manager = static::getContainer()->get(ImageManager::class);
         $manager->setCopy(true);
 
         $form = $crawler->selectButton('Update')->form([
-            'image[public]' => 0,
             'image[description]' => 'Updated Description',
             'image[license]' => 'Updated License',
         ]);
@@ -271,7 +266,7 @@ are configured correctly.
     }
 
     public function testAdminDeleteImage() : void {
-        $repo = self::$container->get(ImageRepository::class);
+        $repo = static::getContainer()->get(ImageRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
@@ -290,7 +285,7 @@ are configured correctly.
     }
 
     public function testAdminDeleteWrongImage() : void {
-        $repo = self::$container->get(ImageRepository::class);
+        $repo = static::getContainer()->get(ImageRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
@@ -328,11 +323,10 @@ are configured correctly.
         $crawler = $this->client->request('GET', '/recording/1/new_audio');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(AudioManager::class);
+        $manager = static::getContainer()->get(AudioManager::class);
         $manager->setCopy(true);
 
         $form = $crawler->selectButton('Create')->form([
-            'audio[public]' => 1,
             'audio[description]' => 'Description',
             'audio[license]' => 'License',
         ]);
@@ -361,11 +355,10 @@ are configured correctly.
         $crawler = $this->client->request('GET', '/recording/1/edit_audio/1');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(AudioManager::class);
+        $manager = static::getContainer()->get(AudioManager::class);
         $manager->setCopy(true);
 
         $form = $crawler->selectButton('Update')->form([
-            'audio[public]' => 0,
             'audio[description]' => 'Updated Description',
             'audio[license]' => 'Updated License',
         ]);
@@ -390,7 +383,7 @@ are configured correctly.
     }
 
     public function testAdminDeleteAudio() : void {
-        $repo = self::$container->get(AudioRepository::class);
+        $repo = static::getContainer()->get(AudioRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
@@ -409,7 +402,7 @@ are configured correctly.
     }
 
     public function testAdminDeleteWrongAudio() : void {
-        $repo = self::$container->get(AudioRepository::class);
+        $repo = static::getContainer()->get(AudioRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
@@ -448,11 +441,10 @@ are configured correctly.
         $crawler = $this->client->request('GET', '/document/1/new_pdf');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(PdfManager::class);
+        $manager = static::getContainer()->get(PdfManager::class);
         $manager->setCopy(true);
 
         $form = $crawler->selectButton('Create')->form([
-            'pdf[public]' => 1,
             'pdf[description]' => 'Description',
             'pdf[license]' => 'License',
         ]);
@@ -481,11 +473,10 @@ are configured correctly.
         $crawler = $this->client->request('GET', '/document/1/edit_pdf/1');
         $this->assertResponseIsSuccessful();
 
-        $manager = self::$container->get(PdfManager::class);
+        $manager = static::getContainer()->get(PdfManager::class);
         $manager->setCopy(true);
 
         $form = $crawler->selectButton('Update')->form([
-            'pdf[public]' => 0,
             'pdf[description]' => 'Updated Description',
             'pdf[license]' => 'Updated License',
         ]);
@@ -510,7 +501,7 @@ are configured correctly.
     }
 
     public function testAdminDeletePdf() : void {
-        $repo = self::$container->get(PdfRepository::class);
+        $repo = static::getContainer()->get(PdfRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
@@ -529,7 +520,7 @@ are configured correctly.
     }
 
     public function testAdminDeleteWrongPdf() : void {
-        $repo = self::$container->get(PdfRepository::class);
+        $repo = static::getContainer()->get(PdfRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);
@@ -550,8 +541,8 @@ are configured correctly.
 
 ### Links
 
-Entities containing links must be tested in a different way. Test data must be 
-added to the raw form data directly, otherwise the test runner will complain 
+Entities containing links must be tested in a different way. Test data must be
+added to the raw form data directly, otherwise the test runner will complain
 that the form fields do not exist.
 
 ```php

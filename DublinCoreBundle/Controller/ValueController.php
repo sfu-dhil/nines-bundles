@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\DublinCoreBundle\Controller;
 
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
@@ -19,15 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/value")
- */
+#[Route(path: '/value')]
 class ValueController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="nines_dc_value_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'nines_dc_value_index', methods: ['GET'])]
     public function index(Request $request, ValueRepository $valueRepository) : Response {
         $query = $valueRepository->indexQuery();
         $pageSize = (int) $this->getParameter('page_size');
@@ -38,9 +28,7 @@ class ValueController extends AbstractController implements PaginatorAwareInterf
         ]);
     }
 
-    /**
-     * @Route("/search", name="nines_dc_value_search", methods={"GET"})
-     */
+    #[Route(path: '/search', name: 'nines_dc_value_search', methods: ['GET'])]
     public function search(Request $request, ValueRepository $valueRepository) : Response {
         $q = $request->query->get('q');
         if ($q) {
@@ -58,9 +46,7 @@ class ValueController extends AbstractController implements PaginatorAwareInterf
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="nines_dc_value_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'nines_dc_value_show', methods: ['GET'])]
     public function show(Value $value) : Response {
         return $this->render('@NinesDublinCore/value/show.html.twig', [
             'value' => $value,

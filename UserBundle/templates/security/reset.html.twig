@@ -3,17 +3,12 @@
 {% block title %}Password Reset{% endblock %}
 
 {% block body %}
-
-    <div class='panel panel-default'>
-        <div class='panel-heading'>Password Reset</div>
-        <div class='panel-body'>
-            {{ form_start(form) }}
-            {{ form_widget(form) }}
-            <div class='col-sm-offset-2 col-sm-10'>
-                <button type="submit" id="_submit" name="_submit" class='btn btn-default'>Reset</button>
-            </div>
-            {{ form_end(form) }}
-        </div>
+    <div class="w-100 m-auto text-center" style="max-width: 330px;">
+        {% form_theme form 'bootstrap_5_layout.html.twig' %}
+        {{ form_start(form) }}
+        <h1 class="h3 mb-3 fw-normal">Password Reset</h1>
+        {{ form_widget(form) }}
+        <button class="w-100 btn btn-lg btn-primary mt-3" type="submit" id="_submit" name="_submit">Reset</button>
+        {{ form_end(form) }}
     </div>
-
 {% endblock %}

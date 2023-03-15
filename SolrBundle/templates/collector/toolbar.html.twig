@@ -2,31 +2,9 @@
 
 {% block toolbar %}
     {% if collector.getQueries|length + collector.getLogs|length > 0 %}
-        {% set icon %}
-            {# this is the content displayed as a panel in the toolbar #}
-            <svg xmlns="http://www.w3.org/2000/svg" width='24' height='24' viewBox='0 0 24 24'>
-                <circle r='6' cx='8' cy='8' fill="none" stroke="#aaa" stroke-width="2" />
-                <line x1='14' y1='14' x2='20' y2='20' stroke='#aaa' stroke-width='2' />
-            </svg>
-            <span class="sf-toolbar-value">{{ collector.getQueries|length + collector.getLogs|length}}</span>
-        {% endset %}
-
-        {% set text %}
-            {% for level, count in collector.getCounts %}
-            <div class='sf-toolbar-info-piece'>
-                <b>{{ level }}</b>
-                <span class='sf-toolbar-status'>{{ count }}</span>
-            </div>
-            {% endfor %}
-            <div class='sf-toolbar-info-piece'>
-                <b>queries</b>
-                <span class='sf-toolbar-status'>{{ collector.getQueries|length }}</span>
-            </div>
-        {% endset %}
-
         {# the 'link' value set to 'false' means that this panel doesn't
            show a section in the web profiler #}
-        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+        {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', {link: true}) }}
     {% endif %}
 {% endblock %}
 
@@ -62,17 +40,17 @@
         Query string: <b>{{ query.options.query }}</b><br>
 
         Filters:
-        {% for name, filter in query.filterQueries %}
+        {% for filter in query.filterQueries %}
             {{ filter.options.query }}{% if not loop.last %}, {% endif %}
         {% endfor %}<br/>
 
         Facets:
-        {% for name, facet in query.facetSet.facets %}
+        {% for facet in query.facetSet.facets %}
             {{ facet.options.field }}{% if not loop.last %}, {% endif %}
         {% endfor %}<br/>
 
         Highlighting:
-        {% for name, field in query.highlighting.fields %}
+        {% for field in query.highlighting.fields %}
             {{ field.name }}{% if not loop.last %}, {% endif %}
         {% endfor %}<br/>
 
@@ -82,7 +60,7 @@
         {% endfor %}<br/>
 
         Sorting:
-        {% for k,v in query.sorts %}
+        {% for k, v in query.sorts %}
             {{ k }} {{ v }}{% if not loop.last %}, {% endif %}
         {% endfor %}
         </div>

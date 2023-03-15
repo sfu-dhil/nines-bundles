@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Tests\Controller;
 
 use Nines\FeedbackBundle\Entity\Comment;
@@ -121,7 +115,7 @@ class CommentStatusTest extends ControllerTestCase {
         $this->em->flush();
 
         /** @var CommentStatusRepository $repo */
-        $repo = self::$container->get(CommentStatusRepository::class);
+        $repo = static::getContainer()->get(CommentStatusRepository::class);
         $preCount = count($repo->findAll());
 
         $this->login(UserFixtures::ADMIN);

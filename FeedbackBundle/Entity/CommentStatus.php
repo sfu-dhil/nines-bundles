@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,18 +11,16 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * CommentStatus.
- *
- * @ORM\Table(name="nines_feedback_comment_status")
- * @ORM\Entity(repositoryClass="Nines\FeedbackBundle\Repository\CommentStatusRepository")
  */
+#[ORM\Table(name: 'nines_feedback_comment_status')]
+#[ORM\Entity(repositoryClass: 'Nines\FeedbackBundle\Repository\CommentStatusRepository')]
 class CommentStatus extends AbstractTerm {
     /**
      * List of the comments with this status.
      *
-     * @ORM\OneToMany(targetEntity="Comment", mappedBy="status")
-     *
      * @var Collection<int,Comment>|Comment[]
      */
+    #[ORM\OneToMany(targetEntity: 'Comment', mappedBy: 'status')]
     private $comments;
 
     public function __construct() {

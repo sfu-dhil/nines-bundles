@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Tests\Controller;
 
 use Nines\UserBundle\DataFixtures\UserFixtures;
@@ -78,11 +72,6 @@ class AudioTest extends ControllerTestCase {
 
     public function testAnonPlay() : void {
         $crawler = $this->client->request('GET', '/audio/1/play');
-        $this->assertResponseStatusCodeSame(Response::HTTP_FORBIDDEN);
-    }
-
-    public function testAnonPlayPublic() : void {
-        $crawler = $this->client->request('GET', '/audio/2/play');
         $this->assertResponseIsSuccessful();
         $this->assertResponseHeaderSame('Content-Type', 'audio/mpeg');
     }

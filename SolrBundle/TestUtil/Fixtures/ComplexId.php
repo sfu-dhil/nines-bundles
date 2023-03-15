@@ -2,30 +2,23 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\TestUtil\Fixtures;
 
 use Doctrine\ORM\Mapping as ORM;
 use Nines\SolrBundle\Annotation as Solr;
 
 /**
- * @ORM\Entity
  * @Solr\Document
  */
+#[ORM\Entity]
 class ComplexId {
     /**
-     * @ORM\Id
      * @Solr\Id(name="idname", getter="idGetter('abc', 1, true)")
      */
-    private ?int $id = null;
+    #[ORM\Id]
+    private ?int $id = 7;
 
     public function __construct() {
-        $this->id = 7;
     }
 
     public function getId() : int {

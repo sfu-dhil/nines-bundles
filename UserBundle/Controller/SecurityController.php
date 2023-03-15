@@ -2,18 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Controller;
 
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Nines\UserBundle\Entity\User;
 use Nines\UserBundle\Form\Security\RequestTokenType;
 use Nines\UserBundle\Form\Security\ResetPasswordType;
 use Nines\UserBundle\Repository\UserRepository;
@@ -24,11 +17,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\UrlMatcherInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
@@ -77,9 +70,7 @@ class SecurityController extends AbstractController {
         $this->saveTargetPath($session, 'main', $header);
     }
 
-    /**
-     * @Route("/login", name="nines_user_security_login")
-     */
+    #[Route(path: '/login', name: 'nines_user_security_login')]
     public function login(Request $request, AuthenticationUtils $authenticationUtils, UserManager $manager, SessionInterface $session, RouterInterface $router) : Response {
         if ($this->getUser()) {
             $this->addFlash('success', 'You are already logged in.');
@@ -95,11 +86,10 @@ class SecurityController extends AbstractController {
     }
 
     /**
-     * @Route("/request", name="nines_user_security_request_token", methods={"GET", "POST"})
-     *
      * @throws Exception
      * @throws TransportExceptionInterface
      */
+    #[Route(path: '/request', name: 'nines_user_security_request_token', methods: ['GET', 'POST'])]
     public function request(Request $request, UserManager $manager, EntityManagerInterface $em) : Response {
         $form = $this->createForm(RequestTokenType::class);
         $form->handleRequest($request);
@@ -121,10 +111,8 @@ class SecurityController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/reset/{token}", name="nines_user_security_reset_password", methods={"GET", "POST"})
-     */
-    public function reset(Request $request, UserRepository $repository, UserPasswordEncoderInterface $encoder, EntityManagerInterface $em, UserManager $manager, string $token) : Response {
+    #[Route(path: '/reset/{token}', name: 'nines_user_security_reset_password', methods: ['GET', 'POST'])]
+    public function reset(Request $request, UserRepository $repository, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em, UserManager $manager, string $token) : Response {
         $user = $repository->findOneBy(['resetToken' => $token]);
         if ( ! $user) {
             $this->addFlash('danger', 'That security token is not valid.');
@@ -140,7 +128,7 @@ class SecurityController extends AbstractController {
         $form = $this->createForm(ResetPasswordType::class);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword($encoder->encodePassword($user, $form->get('password')->getData()));
+            $user->setPassword($passwordHasher->hashPassword($user, $form->get('password')->getData()));
             $user->setResetToken(null);
             $user->setResetExpiry(null);
             $em->flush();
@@ -158,9 +146,7 @@ class SecurityController extends AbstractController {
         ]);
     }
 
-    /**
-     * @Route("/logout", name="nines_user_security_logout")
-     */
+    #[Route(path: '/logout', name: 'nines_user_security_logout')]
     public function logout(UserManager $manager) : RedirectResponse {
         return $this->redirectToRoute($manager->getAfterLogout());
     }

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Logging;
 
 use Psr\Log\AbstractLogger;
@@ -29,24 +23,21 @@ class SolrLogger extends AbstractLogger {
      *
      * @var array<int,mixed>
      */
-    private ?array $logs = null;
+    private ?array $logs = [];
 
     /**
      * Count the log entries in various levels.
      *
      * @var array<string,int>
      */
-    private ?array $counts = null;
+    private ?array $counts = [];
 
     /**
      * @var Query[]
      */
-    private ?array $queries = null;
+    private ?array $queries = [];
 
     public function __construct() {
-        $this->logs = [];
-        $this->counts = [];
-        $this->queries = [];
     }
 
     /**

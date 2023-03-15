@@ -2,13 +2,35 @@
 
 {% block title %}Link Details {% endblock %}
 
- {% block pageheader %}
-     <h1>Link Details</h1>
- {% endblock %}
+{% block pageheader %}
+    <h1>Link Details</h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('nines_media_link_index') }}">Links</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ link.text }}</li>
+{% endblock %}
 
 {% block body %}
-
-    {% embed '@NinesMedia/link/partial/detail.html.twig' %}
-    {% endembed %}
-
+    <dl class="row">
+        <dt class="col-sm-2 text-sm-end">Entity</dt>
+        <dd class="col-sm-10">
+            {% include '@NinesUtil/linked_entity/link.html.twig' with {
+                'entity': link
+            } %}
+        </dd>
+        <dt class="col-sm-2 text-sm-end">Url</dt>
+        <dd class="col-sm-10">{{ link.url }}</dd>
+        <dt class="col-sm-2 text-sm-end">Text</dt>
+        <dd class="col-sm-10">{{ link.text }}</dd>
+        <dt class="col-sm-2 text-sm-end">HTML</dt>
+        <dd class="col-sm-10">{{ link }}</dd>
+        <dt class="col-sm-2 text-sm-end">Rendered</dt>
+        <dd class="col-sm-10">{{ link|default('')|sanitize_html }}</dd>
+        <dt class="col-sm-2 text-sm-end">Created</dt>
+        <dd class="col-sm-10">{{ link.created|date }}</dd>
+        <dt class="col-sm-2 text-sm-end">Updated</dt>
+        <dd class="col-sm-10">{{ link.updated|date }}</dd>
+    </dl>
 {% endblock %}

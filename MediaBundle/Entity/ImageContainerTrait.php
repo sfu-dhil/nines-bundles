@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -15,7 +9,7 @@ use Doctrine\Common\Collections\Collection;
 
 trait ImageContainerTrait {
     /**
-     * @var Collection<int,Image>|Image[]
+     * @var Collection<int,Image>
      */
     protected $images;
 
@@ -43,10 +37,7 @@ trait ImageContainerTrait {
         return $this->images->contains($image);
     }
 
-    /**
-     * @param array<Image>|Collection<int,Image> $images
-     */
-    public function setImages($images) : self {
+    public function setImages(array|Collection $images) : self {
         if (is_array($images)) {
             $this->images = new ArrayCollection($images);
         } else {
@@ -56,38 +47,27 @@ trait ImageContainerTrait {
         return $this;
     }
 
-    /**
-     * @return array<Image>
-     */
     public function getImages() : array {
         return $this->images->toArray();
     }
 
-    /**
-     * @param string $checksum
-     * @return bool
-     */
-    public function hasImageByChecksum(string $checksum) : bool {
-        foreach ($this->images as $image) {
+    public function getImageByChecksum(string $checksum) : ?Image {
+        foreach ($this->getImages() as $image) {
             if ($image->getChecksum() === $checksum) {
-                return true;
+                return $image;
             }
         }
 
-        return false;
+        return null;
     }
 
-    /**
-     * @param string $sourceUrl
-     * @return bool
-     */
-    public function hasImageBySourceUrl(string $sourceUrl) : bool {
-        foreach ($this->images as $image) {
+    public function getImageBySourceUrl(string $sourceUrl) : ?Image {
+        foreach ($this->getImages() as $image) {
             if ($image->getSourceUrl() === $sourceUrl) {
-                return true;
+                return $image;
             }
         }
 
-        return false;
+        return null;
     }
 }

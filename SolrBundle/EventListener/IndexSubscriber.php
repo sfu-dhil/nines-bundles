@@ -2,18 +2,12 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Nines\SolrBundle\Exception\NotConfiguredException;
 use Nines\SolrBundle\Services\SolrManager;
 use ReflectionException;
@@ -47,7 +41,7 @@ class IndexSubscriber implements EventSubscriber {
      * @throws ReflectionException
      */
     public function preRemove(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         try {
             $this->manager->remove($entity);
@@ -65,7 +59,7 @@ class IndexSubscriber implements EventSubscriber {
      * @throws ReflectionException
      */
     public function postPersist(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         try {
             $this->manager->index($entity);
@@ -83,7 +77,7 @@ class IndexSubscriber implements EventSubscriber {
      * @throws ReflectionException
      */
     public function postUpdate(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
 
         try {
             $this->manager->index($entity);
@@ -110,11 +104,7 @@ class IndexSubscriber implements EventSubscriber {
         }
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setSolrManager(SolrManager $manager) : void {
         $this->manager = $manager;
     }

@@ -1,14 +1,14 @@
 {# @var options array #}
 {# @var string header #}
-{% set queryParams = app.request.query.all %}
+{% set query_params = app.request.query.all %}
 <h3>{{ header }}</h3>
 <div class='facet'>
     <label for='order' class='sr-only'>Order</label>
     <select name='order' id='order' class='form-control'>
-        {% for k,v in options %}
+        {% for k, v in options %}
             {% set selected %}
                 {% apply spaceless %}
-                    {% if ('order' in queryParams|keys) and (k == queryParams['order']) %}
+                    {% if ('order' in query_params|keys) and (k == query_params['order']) %}
                         selected='selected'
                     {% endif %}
                 {% endapply %}

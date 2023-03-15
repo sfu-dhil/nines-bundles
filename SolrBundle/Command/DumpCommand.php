@@ -2,16 +2,11 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Command;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Nines\SolrBundle\Mapper\EntityMapper;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,12 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Map an entity to a Solr document and display the result.
  */
+#[AsCommand(name: 'nines:solr:dump')]
 class DumpCommand extends Command {
     private ?EntityManagerInterface $em = null;
 
     private ?EntityMapper $mapper = null;
-
-    protected static $defaultName = 'nines:solr:dump';
 
     /**
      * Configure the command.
@@ -69,20 +63,12 @@ class DumpCommand extends Command {
         return 0;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityMapper(EntityMapper $mapper) : void {
         $this->mapper = $mapper;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }

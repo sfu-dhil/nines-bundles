@@ -1,7 +1,7 @@
 Configuring the Util Bundle
 ===========================
 
-Configuring the bundle is covered in the main [Nines Bundles](../../README.md) 
+Configuring the bundle is covered in the main [Nines Bundles](../../README.md)
 documentation. This documentation describes the bundle configuration options.
 
 Requirements
@@ -13,7 +13,7 @@ This bundle makes use of other Nines Bundles:
 Configuration Options
 --------------------
 
-The configuration options are described below 
+The configuration options are described below
 
 ```yaml
 # config/packages/nines_user.yaml
@@ -33,14 +33,14 @@ nines_user:
 ```
 
 Roles is a list of roles to present to administrative users when managing user
-accounts. The list above includes all roles defined in Nines bundles, but you 
+accounts. The list above includes all roles defined in Nines bundles, but you
 can add or remove from the list as needed.
 
-The `after_*` options indicate where a user should be redirected after 
+The `after_*` options indicate where a user should be redirected after
 performing the named action.
 
-> The user bundle will also record the most recent page visit for anonymous 
-users and redirect them there after a successful login. If the user hasn't 
+> The user bundle will also record the most recent page visit for anonymous
+users and redirect them there after a successful login. If the user hasn't
 visited a page, they will be redirected to `after_login_route`.
 
 Security Configuration
@@ -60,16 +60,15 @@ framework:
         name: NU_SESSION
 ```
 
-The recommended security configuration is included below, including a "remember 
-me" functionality with a cookie called "NU_REMEMBER_ME". 
+The recommended security configuration is included below, including a "remember
+me" functionality with a cookie called "NU_REMEMBER_ME".
 
 ```yaml
 # config/packages/security.yaml
 # config/packages/security.yaml
 security:
-    encoders:
-        Nines\UserBundle\Entity\User:
-            algorithm: auto
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
     providers:
         app_user_provider:
@@ -81,10 +80,16 @@ security:
             pattern: ^/(_(profiler|wdt|error)|css|images|js)/
             security: false
         main:
-            anonymous: lazy
-            guard:
-                authenticators:
-                    - Nines\UserBundle\Security\LoginFormAuthenticator
+            lazy: true
+            provider: app_user_provider
+            form_login:
+                login_path: nines_user_security_login
+                check_path: nines_user_security_login
+                post_only: true
+                form_only: true
+                enable_csrf: true
+                username_parameter: email
+                password_parameter: password
             user_checker: Nines\UserBundle\Security\UserChecker
             logout:
                 path: nines_user_security_logout
@@ -110,20 +115,20 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         # Default controller stuff - open to the public
-        - { path: ^/$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/privacy$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/$, roles: PUBLIC_ACCESS }
+        - { path: ^/privacy$, roles: PUBLIC_ACCESS }
 
         # user controller stuff - open to the public
-        - { path: ^/request$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/reset, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/request$, roles: PUBLIC_ACCESS }
+        - { path: ^/reset, roles: PUBLIC_ACCESS }
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
 
-        - { path: ^/editor/upload, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/editor/upload, roles: PUBLIC_ACCESS }
 
         # media bundle
-        - { path: ^/audio, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/image, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/pdf, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/audio, roles: PUBLIC_ACCESS }
+        - { path: ^/image, roles: PUBLIC_ACCESS }
+        - { path: ^/pdf, roles: PUBLIC_ACCESS }
 
         # keep the rest of the site private
         - { path: ^/, roles: ROLE_USER }

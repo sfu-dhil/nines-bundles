@@ -1,23 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PDFDetails {% endblock %}
+{% block title %}PDF {{ pdf.originalName }}{% endblock %}
 
- {% block pageheader %}
-     <h1>PDFDetails</h1>
- {% endblock %}
+{% block pageheader %}
+    <h1>PDF Details</h1>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Home</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('nines_media_pdf_index') }}">PDFs</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{{ pdf.originalName }}</li>
+{% endblock %}
+
+{% block action_buttons %}
+    <a href="{{ path('nines_media_pdf_view', {'id': pdf.id}) }}" class="btn btn-primary" target="_blank">
+        <i class="bi bi-download"></i> Download
+    </a>
+{% endblock %}
 
 {% block body %}
+    <figure class="text-center w-100">
+        <img src="{{ path('nines_media_pdf_thumb', {'id': pdf.id}) }}" class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption">{{ pdf.originalName }}</figcaption>
+    </figure>
 
-    <div class='btn-toolbar pull-right'>
-        <div class='btn-group'>
-            <a href="{{ path('nines_media_pdf_view', { 'id': pdf.id }) }}" class="btn btn-primary" target="_blank">
-                <span class='glyphicon glyphicon-download'></span>
-                Download
-            </a>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 g-4">
+        <div class="col">
+            <h6><i class="bi bi-filetype-pdf"></i> PDF Path</h6>
+            {{ pdf.path }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-image"></i> Thumbnail Path</h6>
+            {{ pdf.thumbPath }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-file-earmark"></i> PDF Size</h6>
+            {{ pdf.fileSize|byte_size }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-calendar-event"></i> Created</h6>
+            {{ pdf.created|date('Y-m-d') }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-calendar-event"></i> Last Updated</h6>
+            {{ pdf.updated|date('Y-m-d') }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-info-circle"></i> Description</h6>
+            {{ pdf.description|default('')|sanitize_html }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-list-task"></i> License</h6>
+            {{ pdf.license|default('')|sanitize_html }}
+        </div>
+        <div class="col">
+            <h6><i class="bi bi-link-45deg"></i> Entity</h6>
+            {% include '@NinesUtil/linked_entity/link.html.twig' with {
+                'entity': pdf
+            } %}
         </div>
     </div>
-
-    {% embed '@NinesMedia/pdf/partial/detail.html.twig' %}
-    {% endembed %}
-
 {% endblock %}

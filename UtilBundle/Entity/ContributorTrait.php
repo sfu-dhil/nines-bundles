@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Entity;
 
 use DateTimeInterface;
@@ -15,10 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 trait ContributorTrait {
     /**
-     * @ORM\Column(type="array", nullable=false)
-     *
      * @var array<int,array<string,string>>
      */
+    #[ORM\Column(type: 'array', nullable: false)]
     private ?array $contributions = null;
 
     public function __construct() {
@@ -32,7 +25,7 @@ trait ContributorTrait {
         if ( ! $this->contributions) {
             return [];
         }
-        usort($this->contributions, function($a, $b) {
+        usort($this->contributions, function ($a, $b) {
             $d = $b['date'] <=> $a['date'];
             if ($d) {
                 return $d;

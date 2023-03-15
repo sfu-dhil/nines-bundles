@@ -2,14 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\BlogBundle\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Bundle\PaginatorBundle\Definition\PaginatorAwareInterface;
 use Nines\BlogBundle\Entity\Post;
 use Nines\BlogBundle\Form\PostType;
@@ -23,15 +18,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/post")
- */
+#[Route(path: '/post')]
 class PostController extends AbstractController implements PaginatorAwareInterface {
     use PaginatorTrait;
 
-    /**
-     * @Route("/", name="nines_blog_post_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'nines_blog_post_index', methods: ['GET'])]
     public function index(Request $request, PostRepository $postRepository) : Response {
         $query = $postRepository->indexQuery($this->isGranted('ROLE_USER'));
         $pageSize = (int) $this->getParameter('page_size');
@@ -42,9 +33,7 @@ class PostController extends AbstractController implements PaginatorAwareInterfa
         ]);
     }
 
-    /**
-     * @Route("/search", name="nines_blog_post_search", methods={"GET"})
-     */
+    #[Route(path: '/search', name: 'nines_blog_post_search', methods: ['GET'])]
     public function search(Request $request, PostRepository $postRepository) : Response {
         $q = $request->query->get('q');
         if ($q) {
@@ -62,11 +51,9 @@ class PostController extends AbstractController implements PaginatorAwareInterfa
         ]);
     }
 
-    /**
-     * @Route("/new", name="nines_blog_post_new", methods={"GET", "POST"})
-     * @IsGranted("ROLE_BLOG_ADMIN")
-     */
-    public function new(Request $request) : Response {
+    #[Route(path: '/new', name: 'nines_blog_post_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_BLOG_ADMIN')]
+    public function new(EntityManagerInterface $entityManager, Request $request) : Response {
         /** @var User $user */
         $user = $this->getUser();
         $post = new Post();
@@ -76,7 +63,6 @@ class PostController extends AbstractController implements PaginatorAwareInterfa
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($post);
             $entityManager->flush();
             $this->addFlash('success', 'The new post has been saved.');
@@ -90,33 +76,21 @@ class PostController extends AbstractController implements PaginatorAwareInterfa
         ]);
     }
 
-    /**
-     * @Route("/new_popup", name="nines_blog_post_new_popup", methods={"GET", "POST"})
-     * @IsGranted("ROLE_BLOG_ADMIN")
-     */
-    public function new_popup(Request $request) : Response {
-        return $this->new($request);
-    }
-
-    /**
-     * @Route("/{id}", name="nines_blog_post_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'nines_blog_post_show', methods: ['GET'])]
     public function show(Post $post) : Response {
         return $this->render('@NinesBlog/post/show.html.twig', [
             'post' => $post,
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_BLOG_ADMIN")
-     * @Route("/{id}/edit", name="nines_blog_post_edit", methods={"GET", "POST"})
-     */
-    public function edit(Request $request, Post $post) : Response {
+    #[IsGranted('ROLE_BLOG_ADMIN')]
+    #[Route(path: '/{id}/edit', name: 'nines_blog_post_edit', methods: ['GET', 'POST'])]
+    public function edit(EntityManagerInterface $entityManager, Request $request, Post $post) : Response {
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $entityManager->flush();
             $this->addFlash('success', 'The updated post has been saved.');
 
             return $this->redirectToRoute('nines_blog_post_show', ['id' => $post->getId()]);
@@ -128,13 +102,10 @@ class PostController extends AbstractController implements PaginatorAwareInterfa
         ]);
     }
 
-    /**
-     * @IsGranted("ROLE_BLOG_ADMIN")
-     * @Route("/{id}", name="nines_blog_post_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Post $post) : RedirectResponse {
+    #[IsGranted('ROLE_BLOG_ADMIN')]
+    #[Route(path: '/{id}', name: 'nines_blog_post_delete', methods: ['DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, Request $request, Post $post) : RedirectResponse {
         if ($this->isCsrfTokenValid('delete' . $post->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($post);
             $entityManager->flush();
             $this->addFlash('success', 'The post has been deleted.');

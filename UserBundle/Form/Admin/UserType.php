@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Form\Admin;
 
 use Nines\UserBundle\Entity\User;
@@ -33,7 +27,7 @@ class UserType extends AbstractType {
         $builder
             ->add('active', ChoiceType::class, [
                 'label' => 'Active',
-                'expanded' => true,
+                'expanded' => false,
                 'multiple' => false,
                 'choices' => [
                     'Yes' => true,
@@ -42,17 +36,23 @@ class UserType extends AbstractType {
                 'required' => true,
                 'placeholder' => false,
             ])
-            ->add('email', EmailType::class)
+            ->add('email', EmailType::class, [
+                'label' => 'Email',
+            ])
             ->add('fullname', TextType::class, [
                 'label' => 'Full Name',
             ])
-            ->add('affiliation')
+            ->add('affiliation', TextType::class, [
+                'label' => 'Affiliation',
+            ])
             ->add('roles', ChoiceType::class, [
+                'label' => 'Roles',
                 'choices' => $this->manager->getRoles(),
-                'choice_label' => fn($value, $key, $index) => $value,
+                'choice_label' => fn ($value, $key, $index) => $value,
                 'expanded' => true,
                 'multiple' => true,
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver) : void {

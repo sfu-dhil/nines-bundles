@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Query;
 
 use Nines\SolrBundle\Mapper\EntityMapper;
@@ -33,7 +27,7 @@ class QueryBuilder {
     /**
      * The query string for the query.
      */
-    private ?string $q = null;
+    private ?string $q = '*:*';
 
     /**
      * List of fields to query.
@@ -85,14 +79,16 @@ class QueryBuilder {
      *
      * @var string[]
      */
-    private ?array $fields = null;
+    private ?array $fields = ['*', 'score'];
 
     /**
      * List of field => direction pairs to sort the query results.
      *
      * @var string[]
      */
-    private ?array $sorting = null;
+    private ?array $sorting = [
+        'score' => 'desc',
+    ];
 
     /**
      * Geographic filters to apply to the query.
@@ -104,12 +100,7 @@ class QueryBuilder {
     private ?Helper $helper = null;
 
     public function __construct(EntityMapper $mapper) {
-        $this->q = '*:*';
         $this->mapper = $mapper;
-        $this->fields = ['*', 'score'];
-        $this->sorting = [
-            'score' => 'desc',
-        ];
         $this->helper = new Helper();
     }
 
@@ -122,7 +113,7 @@ class QueryBuilder {
      */
     protected function solrName($field) {
         if (is_array($field)) {
-            return array_map(fn($s) => $this->mapper->getSolrName($s) ?? $s, $field);
+            return array_map(fn ($s) => $this->mapper->getSolrName($s) ?? $s, $field);
         }
 
         return $this->mapper->getSolrName($field) ?? $field;
@@ -130,6 +121,8 @@ class QueryBuilder {
 
     /**
      * Set the query string.
+     *
+     * @param ?int $escape
      */
     public function setQueryString(string $q, ?int $escape = self::ESCAPE_NONE) : void {
         switch ($escape) {
@@ -263,7 +256,7 @@ class QueryBuilder {
      * @param array<int,string> $fields
      */
     public function setFields(array $fields = []) : void {
-        $this->fields = array_map(fn($s) => $this->solrName($s), $fields);
+        $this->fields = array_map(fn ($s) => $this->solrName($s), $fields);
     }
 
     /**
@@ -309,29 +302,32 @@ class QueryBuilder {
         }
         if (count($this->queryFields) > 0) {
             $dismax = $query->getDisMax();
-            $qf = array_map(fn($k, $v) => $k . ($v ? "^{$v}" : ''), array_keys($this->queryFields), $this->queryFields);
+            $qf = array_map(fn ($k, $v) => $k . ($v ? "^{$v}" : ''), array_keys($this->queryFields), $this->queryFields);
             $dismax->setQueryFields(implode(' ', $qf));
         }
 
         foreach ($this->filters as $key => $values) {
             $terms = $values;
             if (is_array($values)) {
-                $terms = implode(' or ', array_map(fn($s) => '"' . $s . '"', $values));
+                $terms = implode(' or ', array_map(fn ($s) => '"' . $s . '"', $values));
             }
             $query->createFilterQuery('fq_' . $key)->addTag('exclude')
-                ->setQuery("{$key}:({$terms})");
+                ->setQuery("{$key}:({$terms})")
+            ;
         }
 
         foreach ($this->filterRanges as $key => $ranges) {
-            $range = implode(' OR ', array_map(fn($range) => "[{$range['start']} TO {$range['end']}]", $ranges));
+            $range = implode(' OR ', array_map(fn ($range) => "[{$range['start']} TO {$range['end']}]", $ranges));
 
             $query->createFilterQuery('fr_' . $key)->addTag('exclude')
-                ->setQuery("{$key}:({$range})");
+                ->setQuery("{$key}:({$range})")
+            ;
         }
 
         foreach ($this->geoFilters as $key => $filter) {
             $query->createFilterQuery('fq_' . $key)->addTag('exclude')
-                ->setQuery();
+                ->setQuery()
+            ;
         }
 
         $facetSet = $query->getFacetSet();

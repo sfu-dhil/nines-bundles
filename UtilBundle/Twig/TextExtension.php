@@ -2,18 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Twig;
 
 use InvalidArgumentException;
 use ReflectionClass;
-use Soundasleep\Html2Text;
-use Soundasleep\Html2TextException;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
@@ -54,7 +46,7 @@ class TextExtension extends AbstractExtension {
      * Get the full class name of an object.
      */
     public function className(object $object) : string {
-        return get_class($object);
+        return $object::class;
     }
 
     /**
@@ -85,15 +77,5 @@ class TextExtension extends AbstractExtension {
 
     public function unescape(string $value) : string {
         return html_entity_decode($value, ENT_QUOTES | ENT_SUBSTITUTE | ENT_HTML5, 'UTF-8');
-    }
-
-    /**
-     * @throws Html2TextException
-     */
-    public function html2txt(string $value) : string {
-        $converted = Html2Text::convert($value);
-        $converted = htmlspecialchars($converted, ENT_NOQUOTES | ENT_XML1);
-        $converted = preg_replace("/\n\n+/", '&#10;&#10;', $converted);
-        return preg_replace('/\[[^\]]*\]\(([^\)]*)\)/', '$1', $converted);
     }
 }

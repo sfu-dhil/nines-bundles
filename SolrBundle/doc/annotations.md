@@ -15,7 +15,7 @@ use Nines\SolrBundle\Annotation as Solr;
 
 `@Solr\Document` applies to entity classes that should be indexed in Solr.
 Additional annotations are necessary for any data to actually be indexed.
-This annotation can include `@Solr\CopyField` and `@Solr\ComputedField` 
+This annotation can include `@Solr\CopyField` and `@Solr\ComputedField`
 annotations as well.
 
 ```php
@@ -37,7 +37,7 @@ class Title extends {
 
 > The Doctrine library used to parse the annotations has some syntatic sugar to
 allow simplifying the `@Solr\CopyField` and `@Solr\ComputedFields` declarations.
-That syntax is brittle and likely to change. For best results, use the full 
+That syntax is brittle and likely to change. For best results, use the full
 declaration syntax described above.
 
 ### Id
@@ -50,22 +50,21 @@ the ID. It must be applied to one property in the indexed class.
     /**
      * The entity's ID.
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
      * @Solr\Id
      */
+    #[ORM\Column(name: "id", type: 'string')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected ?int $id = null;
 ```
 
 The actual ID stored in Solr will be something like `App\Entity\Title:1234` to
-guarantee that the ID is unique. The Solr bundle will also use this information 
+guarantee that the ID is unique. The Solr bundle will also use this information
 to fetch Title #1234 from the database.
 
 ### Field
 
-Entity properities with the `@Solr\Field` annotation will be indexed in Solr. 
+Entity properities with the `@Solr\Field` annotation will be indexed in Solr.
 Field annotations support the following properties
 
 | Name      | Type             | Required | Description                                                                            |
@@ -74,28 +73,28 @@ Field annotations support the following properties
 | `boost`   | float            | No       | Unused. In future will be used to set the field boost in queries                       |
 | `getter`  | string           | No       | The name of the function to use to fetch the data. Defaults to getFieldName            |
 | `mutator` | string           | No       | If specified, the named function will be called on the *object* returned by the getter |
-| `filters` | array of strings | No       | List of functions that will be used to filter the data.                                | 
+| `filters` | array of strings | No       | List of functions that will be used to filter the data.                                |
 
-In the example below, `description` is an indexed text field. The field data 
-will be run through the `strip_tags` function and through `html_entity_decode`. 
-The data is always the first argument to the filter functions, and additional 
-arguments maybe be specified. 
+In the example below, `description` is an indexed text field. The field data
+will be run through the `strip_tags` function and through `html_entity_decode`.
+The data is always the first argument to the filter functions, and additional
+arguments maybe be specified.
 
 ```php
     /**
-     * @ORM\Column(type="text")
      * @Solr\Field(type="text", boost=0.5, filters={"strip_tags", "html_entity_decode(51, 'UTF-8')"})
      */
+    #[ORM\Column(type: 'text')]
     private ?string $description = null;
 ```
 
 > 51 is a magic number in this example. It is `ENT_QUOTES|ENT_HTML5`. The Solr
-bundle is not able to handle anything other than simple constants as arguments. 
+bundle is not able to handle anything other than simple constants as arguments.
 See the flags in [html_entity_decode][html_entity_decode] for more information.
 
-In the next example the method `getCreated` returns a DateTimeInterface object 
-which must be converted to a string. The `mutator` property is used to 
-accomplish this. 
+In the next example the method `getCreated` returns a DateTimeInterface object
+which must be converted to a string. The `mutator` property is used to
+accomplish this.
 
 ```php
     /**
@@ -107,7 +106,7 @@ accomplish this.
 #### Field Types
 
 **Single values**
- 
+
 - `boolean` - true or false or null. Nulls are considered false in Solr.
 - `date` - A string containing a date formatted YYYY-MM-DD.
 - `datetime` - A string containing a date & time formatted exactly as `Y-m-d\TH:i:s\Z` where `\T` and `\Z` are literal T and Z characters.
@@ -123,29 +122,29 @@ accomplish this.
 
 **Multiple values**
 
-Arrays are also supported with the same types as above. Use one of these 
+Arrays are also supported with the same types as above. Use one of these
 pluralized field type names with the same semantics as above.
 
 - `booleans`
-- `dates` 
-- `datetimes` 
-- `doubles` 
+- `dates`
+- `datetimes`
+- `doubles`
 - `floats`
 - `integers`
 - `longs`
-- `strings` 
-- `texts` 
-- `texts_en` 
-- `texts_sortable` 
+- `strings`
+- `texts`
+- `texts_en`
+- `texts_sortable`
 
 > Text-types cannot be used for sorting or for faceting/filtering in a reliable
 way. `texts_sortable` may work depending on the version of Solr.
 
 ### CopyField
 
-The `@Solr\CopyField` anotation is used inside the `@Solr\Document` annotation 
+The `@Solr\CopyField` anotation is used inside the `@Solr\Document` annotation
 to create "catchall" fields that combine multple fields in one. In this example
-we create a Solr title field that contains the main and sub title fields. This 
+we create a Solr title field that contains the main and sub title fields. This
 allows a simpler search for titles.
 
 ```php
@@ -162,11 +161,11 @@ Multiple copy field definitions are supported.
 
 ### ComputedField
 
-The `@Solr\ComputedField` annotation is used for instances where indexed data 
-must be calculated from other fields. Use cases include indexing data available 
+The `@Solr\ComputedField` annotation is used for instances where indexed data
+must be calculated from other fields. Use cases include indexing data available
 via complex foreign key relationships or combining multiple fields in one.
 
-In the example below, the latitude and longitude properties are combined into 
+In the example below, the latitude and longitude properties are combined into
 a single location field called coordinates.
 
 ```php
@@ -186,8 +185,8 @@ class Place {
 
 ## Foreign Key Relationships
 
-It is possible to index data available via foreign keys via getter, so long as 
-the getter returns an array of indexable data. In this example, `residences` is 
+It is possible to index data available via foreign keys via getter, so long as
+the getter returns an array of indexable data. In this example, `residences` is
 in a foreign key relationship to Place. The `getResidences` method can return
 an array of `Place` objects or an array of strings.
 
@@ -195,15 +194,14 @@ an array of `Place` objects or an array of strings.
     /**
      * @var Collection|Place[]
      *
-     * @ORM\ManyToMany(targetEntity="Place", inversedBy="residents")
-     * @ORM\OrderBy({"sortableName": "ASC"})
-     *
      * @Solr\Field(type="texts", boost=0.3, getter="getResidences(true)")
      */
+    #[ORM\ManyToMany(targetEntity: 'Place', inversedBy: 'residents')]
+    #[ORM\OrderBy(["sortableName" => "ASC"])]
     private $residences;
 ```
 
-The getResidences method will optionally flatten the aliases from Place objects 
+The getResidences method will optionally flatten the aliases from Place objects
 to string as in this example below.
 
 ```php

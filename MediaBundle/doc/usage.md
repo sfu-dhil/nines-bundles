@@ -31,7 +31,7 @@ $ ./bin/console doctrine:fixtures:load --group=prod
 Entities
 --------
 
-This bundle supports image and audio files, PDFs, and links. 
+This bundle supports image and audio files, PDFs, and links.
 
 ### Images
 
@@ -49,9 +49,9 @@ class Artefact extends AbstractEntity implements ImageContainerInterface {
     use ImageContainerTrait {
         ImageContainerTrait::__construct as private image_constructor;
     }
-    
+
     // ...
-    
+
     public function __construct() {
         parent::__construct();
         $this->image_constructor();
@@ -78,9 +78,7 @@ class Recording extends AbstractEntity implements AudioContainerInterface {
         AudioContainerTrait::__construct as private audio_constructor;
     }
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: 'string')]
     private ?string $title = null;
 
     public function __construct() {
@@ -107,7 +105,7 @@ class Document extends AbstractEntity implements PdfContainerInterface {
     use PdfContainerTrait {
     PdfContainerTrait::__construct as private pdf_constructor;
     }
-    
+
     // ...
 
     public function __construct() {
@@ -118,7 +116,7 @@ class Document extends AbstractEntity implements PdfContainerInterface {
 
 ### Links
 
-Links are not media files and do not involve uploads, but they're included in 
+Links are not media files and do not involve uploads, but they're included in
 this bundle for historical reasons. Add them to an entity with the interface and
 trait.
 
@@ -151,7 +149,7 @@ In the examples below, the controller defines the routes for manipulating images
 associated with an artefact. The controller passes most of the work off to the
 trait.
 
-The controller traits use forms defined in the bundle, but they can be 
+The controller traits use forms defined in the bundle, but they can be
 [overridden][override].
 
 ### Images
@@ -163,9 +161,9 @@ The controller traits use forms defined in the bundle, but they can be
 class ArtefactController extends AbstractController implements PaginatorAwareInterface {
     use ImageControllerTrait;
     use PaginatorTrait;
-    
+
     // ...
-    
+
     /**
      * @Route("/{id}/new_image", name="artefact_new_image", methods={"GET", "POST"})
      * @IsGranted("ROLE_CONTENT_ADMIN")
@@ -173,7 +171,7 @@ class ArtefactController extends AbstractController implements PaginatorAwareInt
      * @throws Exception
      */
     public function newImage(Request $request, EntityManagerInterface $em, Artefact $artefact) : Response {
-        $context = $this->newImageAction($request, $em, $artefact, 'artefact_show');
+        $context = $this->newImageAction($request, $em, $artefact, 'artefact_show', ['id' => $artefact->getId()]);
         if ($context instanceof RedirectResponse) {
             return $context;
         }
@@ -191,7 +189,7 @@ class ArtefactController extends AbstractController implements PaginatorAwareInt
      * @throws Exception
      */
     public function editImage(Request $request, EntityManagerInterface $em, Artefact $artefact, Image $image) : Response {
-        $context = $this->editImageAction($request, $em, $artefact, $image, 'artefact_show');
+        $context = $this->editImageAction($request, $em, $artefact, $image, 'artefact_show', ['id' => $artefact->getId()]);
         if ($context instanceof RedirectResponse) {
             return $context;
         }
@@ -207,7 +205,7 @@ class ArtefactController extends AbstractController implements PaginatorAwareInt
      * @IsGranted("ROLE_CONTENT_ADMIN")
      */
     public function deleteImage(Request $request, EntityManagerInterface $em, Artefact $artefact, Image $image) : RedirectResponse {
-        return $this->deleteImageAction($request, $em, $artefact, $image, 'artefact_show');
+        return $this->deleteImageAction($request, $em, $artefact, $image, 'artefact_show', ['id' => $artefact->getId()]);
     }
 ```
 
@@ -231,7 +229,7 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
      * @throws Exception
      */
     public function newAudio(Request $request, EntityManagerInterface $em, Recording $recording) : Response {
-        $context = $this->newAudioAction($request, $em, $recording, 'recording_show');
+        $context = $this->newAudioAction($request, $em, $recording, 'recording_show', ['id' => $recording->getId()]);
         if ($context instanceof RedirectResponse) {
             return $context;
         }
@@ -249,7 +247,7 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
      * @throws Exception
      */
     public function editAudio(Request $request, EntityManagerInterface $em, Recording $recording, Audio $audio, AudioManager $fileUploader) : Response {
-        $context = $this->editAudioAction($request, $em, $recording, $audio, 'recording_show');
+        $context = $this->editAudioAction($request, $em, $recording, $audio, 'recording_show', ['id' => $recording->getId()]);
         if ($context instanceof RedirectResponse) {
             return $context;
         }
@@ -267,7 +265,7 @@ class RecordingController extends AbstractController implements PaginatorAwareIn
      * @throws Exception
      */
     public function deleteAudio(Request $request, EntityManagerInterface $em, Recording $recording, Audio $audio) : RedirectResponse {
-        return $this->deleteAudioAction($request, $em, $recording, $audio, 'recording_show');
+        return $this->deleteAudioAction($request, $em, $recording, $audio, 'recording_show', ['id' => $recording->getId()]);
     }
 }
 ```
@@ -282,7 +280,7 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
     use PaginatorTrait;
     use PdfControllerTrait;
 
-    // ... 
+    // ...
 
     /**
      * @Route("/{id}/new_pdf", name="document_new_pdf", methods={"GET", "POST"})
@@ -291,7 +289,7 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
      * @throws Exception
      */
     public function newPdf(Request $request, EntityManagerInterface $em, Document $document) : Response {
-        $context = $this->newPdfAction($request, $em, $document, 'document_show');
+        $context = $this->newPdfAction($request, $em, $document, 'document_show', ['id' => $document->getId()]);
         if ($context instanceof RedirectResponse) {
             return $context;
         }
@@ -309,7 +307,7 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
      * @throws Exception
      */
     public function editPdf(Request $request, EntityManagerInterface $em, Document $document, Pdf $pdf, PdfManager $fileUploader) : Response {
-        $context = $this->editPdfAction($request, $em, $document, $pdf, 'document_show');
+        $context = $this->editPdfAction($request, $em, $document, $pdf, 'document_show', ['id' => $document->getId()]);
         if ($context instanceof RedirectResponse) {
             return $context;
         }
@@ -327,9 +325,9 @@ class DocumentController extends AbstractController implements PaginatorAwareInt
      * @throws Exception
      */
     public function deletePdf(Request $request, EntityManagerInterface $em, Document $document, Pdf $pdf) : RedirectResponse {
-        return $this->deletePdfAction($request, $em, $document, $pdf, 'document_show');
+        return $this->deletePdfAction($request, $em, $document, $pdf, 'document_show', ['id' => $document->getId()]);
     }
-}    
+}
 ```
 
 ### Links
@@ -338,7 +336,7 @@ Managing links is a little more complex. The bundle provides a LinkType partial
 form and a DataMapper to make sure the links are properly associated with the
 entities.
 
-This is done so that the link form can be embedded in an entity form type. 
+This is done so that the link form can be embedded in an entity form type.
 
 #### LinkType form partial
 
@@ -356,7 +354,7 @@ class BookmarkType extends AbstractType {
         LinkableType::add($builder, $options);
         $builder->setDataMapper($this->mapper);
     }
-    
+
     // ...
 
     /**
@@ -372,7 +370,7 @@ Additional Controllers
 ----------------------
 
 The bundle also provides read-only access to the media entities to users who
-are granted `ROLE_MEDIA_ADMIN`. There is no general usefulness to these 
+are granted `ROLE_MEDIA_ADMIN`. There is no general usefulness to these
 controllers, but they are helpful for debugging and data quality checking.
 
 Menus
@@ -390,47 +388,60 @@ controllers described above.
 Templates
 ---------
 
-Templates are provided in `templates/` and can be 
+Templates are provided in `templates/` and can be
 [easily overridden][override].
 
 ### Image templates
 
 The example below includes all the necessary controls to add, edit, view, and
-delete images from an artefact entity. The `list.html.twig` template will
+delete images from an artefact entity. The `list-item.html.twig` template will
 display the image thumbnails with links to larger versions.
 
 ```twig
     <h2>Artefact Images</h2>
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('artefact_new_image', {'id': artefact.id }) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> Add Image </a>
+        <div class='btn-toolbar'>
+            <div class='btn-group ms-auto'>
+                <a href="{{ path('artefact_image_new', {'id': artefact.id}) }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add Image </a>
             </div>
         </div>
-        <div class='clearfix'></div>
     {% endif %}
-
-    {% include '@NinesMedia/image/ui/list.html.twig' with {
-        'container': artefact,
-        'path_new': 'artefact_new_image',
-        'path_edit': 'artefact_edit_image',
-        'path_delete': 'artefact_delete_image',
-    } %}
+    {% for image in artefact.images %}
+        {% embed '@NinesMedia/image/partial/list-item.html.twig' with {
+            'image': image,
+            'path_show': path('artefact_image_view', {'artefact_id': artefact.id, 'id': image.id}),
+            'path_edit': path('artefact_image_edit', {'artefact_id': artefact.id, 'id': image.id}),
+            'path_delete': path('artefact_image_delete', {'artefact_id': artefact.id, 'id': image.id}),
+        } %}
+        {% endembed %}
+    {% endfor %}
 ```
 
 ### Audio templates
 
-Audio templates are provided for playing the audio files, and includes the 
+Audio templates are provided for playing the audio files, and includes the
 relevant controls.
 
 ```twig
-    {% include '@NinesMedia/audio/ui/player.html.twig' with {
-        'container': recording,
-        'new_path': 'recording_new_audio',
-        'edit_path': 'recording_edit_audio',
-        'delete_path': 'recording_delete_audio'
-    } %}
+    <h2>Recording Audio</h2>
+    {% if is_granted('ROLE_CONTENT_ADMIN') %}
+        <div class='btn-toolbar'>
+            <div class='btn-group ms-auto'>
+                <a href="{{ path('recording_audio_new', {'id': recording.id}) }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add Audio </a>
+            </div>
+        </div>
+    {% endif %}
+    {% for audio in recording.audios %}
+        {% embed '@NinesMedia/audio/partial/list-item.html.twig' with {
+            'audio': audio,
+            'path_show': path('recording_audio_view', {'recording_id': recording.id, 'id': image.id}),
+            'path_edit': path('recording_audio_edit', {'recording_id': recording.id, 'id': image.id}),
+            'path_delete': path('recording_audio_delete', {'recording_id': recording.id, 'id': image.id}),
+        } %}
+        {% endembed %}
+    {% endfor %}
 ```
 
 ### PDF templates
@@ -440,32 +451,20 @@ PDF thumbnails can be embedded in a template and will link to a PDF viewer.
 ```twig
     <h2>Document PDFs</h2>
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a href="{{ path('document_new_pdf', {'id': document.id }) }}" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus"></span> Add Pdf </a>
+        <div class='btn-toolbar'>
+            <div class='btn-group ms-auto'>
+                <a href="{{ path('document_pdf_new', {'id': document.id}) }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Add Pdf </a>
             </div>
         </div>
-        <div class='clearfix'></div>
     {% endif %}
-    {% embed '@NinesMedia/pdf/ui/list.html.twig' with {
-        'container': document,
-        'path_delete': 'document_delete_pdf',
-        'path_edit': 'document_edit_pdf',
-    } %}
-    {% endembed %}
+    {% for pdf in recording.pdfs %}
+        {% embed '@NinesMedia/pdf/partial/list-item.html.twig' with {
+            'pdf': pdf,
+            'path_show': path('document_pdf_view', {'document_id': document.id, 'id': image.id}),
+            'path_edit': path('document_pdf_edit', {'document_id': document.id, 'id': image.id}),
+            'path_delete': path('document_pdf_delete', {'document_id': document.id, 'id': image.id}),
+        } %}
+        {% endembed %}
+    {% endfor %}
 ```
-
-### Link templates
-
-Links can be embedded in a web page. No controls for editing the links are 
-provided, as they should be edited with the main entity form type.
-
-```twig
-    <h2>Links</h2>
-    {% embed '@NinesMedia/link/partial/list.html.twig' with {
-        'entity': bookmark } %}
-    {% endembed %}
-```
-
-[override]: https://symfony.com/doc/current/bundles/override.html#templates

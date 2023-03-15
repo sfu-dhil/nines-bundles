@@ -1,0 +1,42 @@
+{#
+    Image image
+    string path_show
+    string path_edit
+    string path_delete
+#}
+<figure class="figure position-relative text-center overflow-hidden w-100">
+    {% if is_granted('ROLE_CONTENT_ADMIN') and showActions ?? true %}
+        <div class="position-absolute top-0 end-0">
+            <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                <i class="bi bi-list"></i>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="{{ path('nines_media_image_view', {'id': image.id}) }}" target="_blank" class="dropdown-item">
+                        <i class="bi bi-download"></i> Download
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path_show }}" class="dropdown-item">
+                        <i class="bi bi-eye"></i> View
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path_edit }}" class="dropdown-item">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <form method="post" action="{{ path_delete }}" onsubmit="return confirm('Are you sure you want to delete this image?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <input type="hidden" name="_token" value="{{ csrf_token("delete_image" ~ image.id) }}">
+                        <button class="dropdown-item link-danger"><i class="bi bi-trash"></i> Delete</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+    <img src="{{ path('nines_media_image_thumb', {'id': image.id}) }}" class="figure-img img-fluid" />
+    <figcaption class="figure-caption">{{ image.originalName }}</figcaption>
+</figure>

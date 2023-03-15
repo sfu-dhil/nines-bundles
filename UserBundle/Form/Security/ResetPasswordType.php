@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Form\Security;
 
 use Symfony\Component\Form\AbstractType;
@@ -22,8 +16,24 @@ class ResetPasswordType extends AbstractType {
             'invalid_message' => 'The password fields must match.',
             'options' => ['attr' => ['class' => 'password-field']],
             'required' => true,
-            'first_options' => ['label' => 'Password'],
-            'second_options' => ['label' => 'Repeat Password'],
+            'first_options' => [
+                'label' => 'Password',
+                'row_attr' => [
+                    'class' => 'form-floating mb-3',
+                ],
+                'attr' => [
+                    'placeholder' => 'password',
+                ],
+            ],
+            'second_options' => [
+                'label' => 'Repeat Password',
+                'row_attr' => [
+                    'class' => 'form-floating',
+                ],
+                'attr' => [
+                    'placeholder' => 'password',
+                ],
+            ],
             'type' => PasswordType::class,
         ]);
     }

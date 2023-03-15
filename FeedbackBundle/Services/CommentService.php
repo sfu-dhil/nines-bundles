@@ -2,14 +2,9 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Services;
 
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -40,29 +35,17 @@ class CommentService {
         $this->publicStatusName = $publicStatusName;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityManager(EntityManagerInterface $em) : void {
         $this->em = $em;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setAuthorizationChecker(AuthorizationCheckerInterface $authChecker) : void {
         $this->authChecker = $authChecker;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setFormFactory(FormFactoryInterface $formFactory) : void {
         $this->formFactory = $formFactory;
     }
@@ -78,8 +61,9 @@ class CommentService {
      * @return Comment[]
      */
     public function findComments($entity) : array {
+        $class = ClassUtils::getClass($entity);
         if (is_object($entity)) {
-            $id = get_class($entity) . ':' . $entity->getId();
+            $id = $class . ':' . $entity->getId();
         } elseif (is_string($entity)) {
             $id = $entity;
         } else {
@@ -117,7 +101,8 @@ class CommentService {
      * @throws ORMException
      */
     public function addComment($entity, Comment $comment) : Comment {
-        $comment->setEntity(get_class($entity) . ':' . $entity->getId());
+        $entityClassName = ClassUtils::getClass($entity);
+        $comment->setEntity($entityClassName . ':' . $entity->getId());
         if ( ! $comment->getStatus()) {
             $status = $this->em->getRepository(CommentStatus::class)->findOneBy([
                 'name' => $this->defaultStatusName,

@@ -2,18 +2,13 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\Service;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Exception;
 use Nines\MediaBundle\Entity\Pdf;
 use Nines\MediaBundle\Entity\PdfContainerInterface;
@@ -73,7 +68,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
      * @throws Exception
      */
     public function prePersist(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Pdf) {
             $this->uploadFile($entity);
         }
@@ -85,7 +80,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
      * @throws Exception
      */
     public function preUpdate(PreUpdateEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Pdf) {
             $this->uploadFile($entity);
         }
@@ -96,7 +91,8 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
      * add the file object to the entity.
      */
     public function postLoad(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
+        $class = ClassUtils::getClass($entity);
         if ($entity instanceof Pdf) {
             $filePath = $this->uploadDir . '/' . $entity->getPath();
             if (file_exists($filePath)) {
@@ -113,9 +109,10 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
         }
         if ($entity instanceof PdfContainerInterface) {
             $repo = $this->em->getRepository(Pdf::class);
+
             /** @var Pdf[] $pdfs */
             $pdfs = $repo->findBy([
-                'entity' => get_class($entity) . ':' . $entity->getId(),
+                'entity' => $class . ':' . $entity->getId(),
             ]);
             $entity->setPdfs($pdfs);
         }
@@ -126,7 +123,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
      * remove the pdf and thumbnail files.'.
      */
     public function postRemove(LifecycleEventArgs $args) : void {
-        $entity = $args->getEntity();
+        $entity = $args->getObject();
         if ($entity instanceof Pdf && $entity->getFile()) {
             $fs = new Filesystem();
 
@@ -149,11 +146,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
         return $entity instanceof PdfContainerInterface;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setThumbnailer(Thumbnailer $thumbnailer) : void {
         $this->thumbnailer = $thumbnailer;
     }

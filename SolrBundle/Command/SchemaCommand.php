@@ -2,15 +2,10 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\Command;
 
 use Nines\SolrBundle\Mapper\EntityMapper;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,10 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 /**
  * Show a description of the Solr search schema.
  */
+#[AsCommand(name: 'nines:solr:schema')]
 class SchemaCommand extends Command {
     private ?EntityMapper $mapper = null;
-
-    protected static $defaultName = 'nines:solr:schema';
 
     /**
      * Configure the command.
@@ -82,11 +76,7 @@ class SchemaCommand extends Command {
         return 0;
     }
 
-    /**
-     * @required
-     *
-     * @codeCoverageIgnore
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setEntityMapper(EntityMapper $mapper) : void {
         $this->mapper = $mapper;
     }

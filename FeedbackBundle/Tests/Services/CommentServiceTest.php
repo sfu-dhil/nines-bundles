@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\FeedbackBundle\Tests\Services;
 
 use Exception;
@@ -68,6 +62,6 @@ class CommentServiceTest extends ServiceTestCase {
 
     protected function setUp() : void {
         parent::setUp();
-        $this->service = self::$container->get(CommentService::class);
+        $this->service = static::getContainer()->get(CommentService::class);
     }
 }

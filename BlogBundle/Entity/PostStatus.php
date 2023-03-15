@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\BlogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
@@ -17,20 +11,17 @@ use Nines\UtilBundle\Entity\AbstractTerm;
 
 /**
  * PostStatus.
- *
- * @ORM\Table(name="nines_blog_post_status")
- * @ORM\Entity(repositoryClass="Nines\BlogBundle\Repository\PostStatusRepository")
  */
+#[ORM\Table(name: 'nines_blog_post_status')]
+#[ORM\Entity(repositoryClass: 'Nines\BlogBundle\Repository\PostStatusRepository')]
 class PostStatus extends AbstractTerm {
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     private bool $public = false;
 
     /**
      * @var Collection<int,Post>|Post[]
-     * @ORM\OneToMany(targetEntity="Post", mappedBy="status")
      */
+    #[ORM\OneToMany(targetEntity: 'Post', mappedBy: 'status')]
     private $posts;
 
     /**
@@ -41,16 +32,10 @@ class PostStatus extends AbstractTerm {
         $this->posts = new ArrayCollection();
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function getPublic() : ?bool {
         return $this->public;
     }
 
-    /**
-     * @codeCoverageIgnore
-     */
     public function setPublic(bool $public) : self {
         $this->public = $public;
 
@@ -59,8 +44,6 @@ class PostStatus extends AbstractTerm {
 
     /**
      * @return Collection<int,Post>|Post[]
-     *
-     * @codeCoverageIgnore
      */
     public function getPosts() : Collection {
         return $this->posts;

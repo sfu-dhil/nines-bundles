@@ -2,25 +2,17 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\TestUtil\Fixtures;
 
 use Doctrine\ORM\Mapping as ORM;
 use Nines\SolrBundle\Annotation as Solr;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ParentEntity {
     /**
-     * @ORM\Id
      * @Solr\Id
      */
+    #[ORM\Id]
     private ?int $id = null;
 
     /**

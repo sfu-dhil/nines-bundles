@@ -2,15 +2,8 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\MediaBundle\DataFixtures;
 
-use App\Entity\Artefact;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -47,7 +40,6 @@ class ImageFixtures extends Fixture implements FixtureGroupInterface {
             $upload = new UploadedFile(dirname(__DIR__, 2) . '/MediaBundle/Tests/data/image/' . $file, $file, 'image/jpeg', null, true);
             $image = new Image();
             $image->setFile($upload);
-            $image->setPublic(0 === $i % 2);
             $image->setOriginalName($file);
             $image->setDescription("<p>This is paragraph {$i}</p>");
             $image->setLicense("<p>This is paragraph {$i}</p>");
@@ -58,9 +50,7 @@ class ImageFixtures extends Fixture implements FixtureGroupInterface {
         $this->manager->setCopy(false);
     }
 
-    /**
-     * @required
-     */
+    #[\Symfony\Contracts\Service\Attribute\Required]
     public function setManager(ImageManager $manager) : void {
         $this->manager = $manager;
     }

@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\SolrBundle\TestUtil;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -23,6 +17,7 @@ trait ClientTestTrait {
 
     /**
      * @param array|string $data
+     * @param ?int $status
      */
     protected function addResponse($data, ?int $status = 200) : void {
         if (is_array($data)) {
@@ -43,7 +38,7 @@ trait ClientTestTrait {
     }
 
     protected function mockClient() : Client {
-        $client = self::$container->get(Client::class);
+        $client = static::getContainer()->get(Client::class);
         $adapter = $this->mockAdapter();
         $client->setAdapter($adapter);
 

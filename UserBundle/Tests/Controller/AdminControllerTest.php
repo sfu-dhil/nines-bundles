@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UserBundle\Tests\Controller;
 
 use Doctrine\ORM\OptimisticLockException;
@@ -190,9 +184,9 @@ class AdminControllerTest extends ControllerTestCase {
         $this->client->followRedirect();
         $this->assertSelectorTextContains('div.alert', 'The user password has been updated.');
 
-        $encoder = $this->client->getContainer()->get('security.password_encoder');
+        $passwordHasher = $this->client->getContainer()->get('security.password_hashers');
         // Refresh the user from the database.
-        $changedUser = self::$container->get(UserRepository::class)->findOneByEmail(UserFixtures::USER['username']);
-        $this->assertTrue($encoder->isPasswordValid($changedUser, 'abc'));
+        $changedUser = static::getContainer()->get(UserRepository::class)->findOneByEmail(UserFixtures::USER['username']);
+        $this->assertTrue($passwordHasher->isPasswordValid($changedUser, 'abc'));
     }
 }

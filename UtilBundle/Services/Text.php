@@ -2,12 +2,6 @@
 
 declare(strict_types=1);
 
-/*
- * (c) 2022 Michael Joyce <mjoyce@sfu.ca>
- * This source file is subject to the GPL v2, bundled
- * with this source code in the file LICENSE.
- */
-
 namespace Nines\UtilBundle\Services;
 
 /**
@@ -22,8 +16,6 @@ class Text {
 
     /**
      * Build a plain, searchable version of a marked up text.
-     *
-     * @TODO Use html2text or similar
      */
     public function plain(string $content) : string {
         if ( ! $content) {
@@ -88,6 +80,8 @@ class Text {
 
     /**
      * Strip tags from HTML and then trim it to a number of words.
+     *
+     * @param ?int $length
      */
     public function trim(string $string, ?int $length = null, string $suffix = '...') : string {
         if (null === $length) {
