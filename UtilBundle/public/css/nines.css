@@ -51,7 +51,7 @@ body > .container {
 }
 
 /* Custom app styles */
-label.required::after {
+label.required::after, legend.required::after {
     content: ' *';
     color: red;
     font-weight: bold;
