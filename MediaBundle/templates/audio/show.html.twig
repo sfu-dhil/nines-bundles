@@ -23,7 +23,7 @@
         <audio controls src='{{ path('nines_media_audio_play', {'id': audio.id}) }}' type='{{ audio.mimeType }}' class="w-100">
             Your browser does not support playing audio.
         </audio>
-        <figcaption class="figure-caption">{{ audio.originalName }}</figcaption>
+        <figcaption class="figure-caption text-truncate">{{ audio.originalName }}</figcaption>
     </figure>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 g-4">

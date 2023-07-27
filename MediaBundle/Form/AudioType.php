@@ -40,7 +40,7 @@ class AudioType extends AbstractFileType {
                         <audio controls src="' . $this->router->generate('nines_media_audio_play', ['id' => $audio->getId()]) . '" type="' . $audio->getMimeType() . '" class="w-100">
                             Your browser does not support playing audio.
                         </audio>
-                        <figcaption class="figure-caption">' . $audio->getOriginalName() . '</figcaption>
+                        <figcaption class="figure-caption text-truncate">' . $audio->getOriginalName() . '</figcaption>
                     </figure>
                 ';
                 $form->add('file', FileType::class, $options);

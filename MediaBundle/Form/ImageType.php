@@ -38,7 +38,7 @@ class ImageType extends AbstractFileType {
                 $options['attr']['html_block'] = '
                     <figure class="text-center w-100">
                         <img src="' . $this->router->generate('nines_media_image_thumb', ['id' => $image->getId()]) . '" class="figure-img img-fluid">
-                        <figcaption class="figure-caption">' . $image->getOriginalName() . '</figcaption>
+                        <figcaption class="figure-caption text-truncate">' . $image->getOriginalName() . '</figcaption>
                     </figure>
                 ';
                 $form->add('file', FileType::class, $options);

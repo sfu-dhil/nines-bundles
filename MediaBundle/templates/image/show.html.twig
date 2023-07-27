@@ -21,7 +21,7 @@
 {% block body %}
     <figure class="text-center w-100">
         <img src="{{ path('nines_media_image_view', {'id': image.id}) }}" class="figure-img img-fluid rounded">
-        <figcaption class="figure-caption">{{ image.originalName }}</figcaption>
+        <figcaption class="figure-caption text-truncate">{{ image.originalName }}</figcaption>
     </figure>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 g-4">

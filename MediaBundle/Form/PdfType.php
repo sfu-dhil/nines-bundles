@@ -38,7 +38,7 @@ class PdfType extends AbstractFileType {
                 $options['attr']['html_block'] = '
                     <figure class="text-center w-100">
                         <img src="' . $this->router->generate('nines_media_pdf_thumb', ['id' => $pdf->getId()]) . '" class="figure-img img-fluid rounded">
-                        <figcaption class="figure-caption">' . $pdf->getOriginalName() . '</figcaption>
+                        <figcaption class="figure-caption text-truncate">' . $pdf->getOriginalName() . '</figcaption>
                     </figure>
                 ';
                 $form->add('file', FileType::class, $options);
