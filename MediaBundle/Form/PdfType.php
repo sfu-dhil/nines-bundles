@@ -34,6 +34,7 @@ class PdfType extends AbstractFileType {
 
                 $options = $form->get('file')->getConfig()->getOptions();
                 $options['label'] = 'Replacement Pdf';
+                $options['required'] = false;
                 $options['attr']['html_block'] = '
                     <figure class="text-center w-100">
                         <img src="' . $this->router->generate('nines_media_pdf_thumb', ['id' => $pdf->getId()]) . '" class="figure-img img-fluid rounded">

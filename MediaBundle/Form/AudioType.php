@@ -34,6 +34,7 @@ class AudioType extends AbstractFileType {
 
                 $options = $form->get('file')->getConfig()->getOptions();
                 $options['label'] = 'Replacement Audio';
+                $options['required'] = false;
                 $options['attr']['html_block'] = '
                     <figure class="text-center w-100">
                         <audio controls src="' . $this->router->generate('nines_media_audio_play', ['id' => $audio->getId()]) . '" type="' . $audio->getMimeType() . '" class="w-100">
