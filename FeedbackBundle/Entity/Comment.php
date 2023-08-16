@@ -12,66 +12,40 @@ use Nines\UtilBundle\Entity\LinkedEntityInterface;
 use Nines\UtilBundle\Entity\LinkedEntityTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Comment.
- */
 #[ORM\Table(name: 'nines_feedback_comment')]
 #[ORM\Index(name: 'comment_ft', columns: ['fullname', 'content'], flags: ['fulltext'])]
 #[ORM\Entity(repositoryClass: 'Nines\FeedbackBundle\Repository\CommentRepository')]
 class Comment extends AbstractEntity implements LinkedEntityInterface {
     use LinkedEntityTrait;
 
-    /**
-     * Full name of the commenter.
-     */
     #[ORM\Column(type: 'string', length: 120)]
     private ?string $fullname = null;
 
-    /**
-     * Commenter's email.
-     */
     #[ORM\Column(type: 'string', length: 120)]
     #[Assert\Email]
     private ?string $email = null;
 
-    /**
-     * True if the user would like a followup email.
-     */
     #[ORM\Column(type: 'boolean')]
     private bool $followUp = false;
 
-    /**
-     * Content of the comment.
-     */
     #[ORM\Column(type: 'text')]
     private ?string $content = null;
 
-    /**
-     * Status of the comment.
-     */
     #[ORM\ManyToOne(targetEntity: 'CommentStatus', inversedBy: 'comments')]
     #[ORM\JoinColumn(name: 'status_id', referencedColumnName: 'id', nullable: false, onDelete: 'CASCADE')]
     private ?CommentStatus $status = null;
 
     /**
-     * Any notes the application users have added to the note.
-     *
      * @var Collection<int,CommentNote>|CommentNote[]
      */
     #[ORM\OneToMany(targetEntity: 'CommentNote', mappedBy: 'comment', orphanRemoval: true)]
     private $notes;
 
-    /**
-     * Construct the comment.
-     */
     public function __construct() {
         parent::__construct();
         $this->notes = new ArrayCollection();
     }
 
-    /**
-     * Return the content of the comment.
-     */
     public function __toString() : string {
         return $this->content;
     }
@@ -120,9 +94,6 @@ class Comment extends AbstractEntity implements LinkedEntityInterface {
         return $this->status;
     }
 
-    /**
-     * @param ?CommentStatus $status
-     */
     public function setStatus(?CommentStatus $status) : self {
         $this->status = $status;
 

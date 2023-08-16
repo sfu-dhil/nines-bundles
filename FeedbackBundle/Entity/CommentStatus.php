@@ -9,15 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Nines\UtilBundle\Entity\AbstractTerm;
 
-/**
- * CommentStatus.
- */
 #[ORM\Table(name: 'nines_feedback_comment_status')]
 #[ORM\Entity(repositoryClass: 'Nines\FeedbackBundle\Repository\CommentStatusRepository')]
 class CommentStatus extends AbstractTerm {
     /**
-     * List of the comments with this status.
-     *
      * @var Collection<int,Comment>|Comment[]
      */
     #[ORM\OneToMany(targetEntity: 'Comment', mappedBy: 'status')]
