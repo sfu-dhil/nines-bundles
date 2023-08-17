@@ -64,6 +64,7 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
             Events::prePersist,
             Events::preUpdate,
             Events::postLoad,
+            Events::preRemove,
             Events::postRemove,
         ];
     }
@@ -137,11 +138,14 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
                 $this->logger->error("An error occurred removing {$ex->getPath()}: {$ex->getMessage()}");
             }
         }
+    }
+
+    public function preRemove(LifecycleEventArgs $args) : void {
+        $entity = $args->getObject();
         if ($entity instanceof ImageContainerInterface) {
             foreach ($entity->getImages() as $image) {
                 $this->em->remove($image);
             }
-            $this->em->flush();
         }
     }
 

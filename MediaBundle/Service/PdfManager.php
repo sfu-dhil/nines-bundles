@@ -58,6 +58,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
             Events::prePersist,
             Events::preUpdate,
             Events::postLoad,
+            Events::preRemove,
             Events::postRemove,
         ];
     }
@@ -134,11 +135,14 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
                 $this->logger->error("An error occurred removing {$ex->getPath()}: {$ex->getMessage()}");
             }
         }
-        if ($entity instanceof PdfContainerInterface) {
+    }
+
+    public function preRemove(LifecycleEventArgs $args) : void {
+        $entity = $args->getObject();
+        if ( $entity instanceof PdfContainerInterface) {
             foreach ($entity->getPdfs() as $pdf) {
                 $this->em->remove($pdf);
             }
-            $this->em->flush();
         }
     }
 

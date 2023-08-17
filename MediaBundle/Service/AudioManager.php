@@ -103,6 +103,15 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
         }
     }
 
+    public function preRemove(LifecycleEventArgs $args) : void {
+        $entity = $args->getObject();
+        if ($entity instanceof AudioContainerInterface) {
+            foreach ($entity->getAudios() as $audio) {
+                $this->em->remove($audio);
+            }
+        }
+    }
+
     public function acceptsAudios(AbstractEntity $entity) : bool {
         return $entity instanceof AudioContainerInterface;
     }
@@ -115,6 +124,7 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
             Events::prePersist,
             Events::preUpdate,
             Events::postLoad,
+            Events::preRemove,
             Events::postRemove,
         ];
     }
