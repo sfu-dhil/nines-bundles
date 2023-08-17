@@ -8,13 +8,12 @@
 {%- endblock form_label -%}
 
 {%- block form_start -%}
+    {{ parent() }}
     <div class="row">
         <div class="col">
-            {{ parent() }}
 {%- endblock form_start -%}
 
 {%- block form_end -%}
-            {{ parent() }}
         </div>
         <div class="col-auto d-none d-lg-block mx-3">
             <div class="sticky-top">
@@ -27,7 +26,15 @@
                         {%- endif -%}
                     {%- endfor -%}
                 </nav>
+                <hr class="my-2">
+                {% if table_of_contents_submit -%}
+                    <input type="submit" value="{{ table_of_contents_submit.label ?? 'Save' }}" class="btn btn-primary w-100 mb-2" />
+                {%- endif -%}
+                {% if table_of_contents_cancel -%}
+                    <a href="{{ table_of_contents_cancel.path }}" class="btn btn-warning w-100 mb-2"> {{ table_of_contents_cancel.label ?? 'Cancel' }} </a>
+                {%- endif -%}
             </div>
         </div>
     </div>
+    {{ parent() }}
 {%- endblock form_end -%}
