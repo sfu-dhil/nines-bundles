@@ -52,7 +52,7 @@ class AbstractBuilder implements ContainerAwareInterface {
         ]);
         $slugger = new AsciiSlugger();
 
-        return $root->addChild('feedback', [
+        return $root->addChild($slug, [
             'uri' => '#',
             'label' => $name,
             'attributes' => [
