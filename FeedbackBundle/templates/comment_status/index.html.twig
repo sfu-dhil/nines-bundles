@@ -4,9 +4,6 @@
 
 {% block pageheader %}
     <h1>Comment Status List</h1>
-    <p class="count">
-        Displaying {{ comment_statuses|length }} comment_statuses of {{ comment_statuses.getTotalItemCount }} total.
-    </p>
 {% endblock %}
 
 {% block body %}
@@ -23,6 +20,7 @@
     {% embed '@NinesUtil/term/partial/index.html.twig' with {
         'terms': comment_statuses,
         'path': 'nines_feedback_comment_status_show',
+        'caption': comment_statuses.getTotalItemCount ~ ' total',
     } %}
     {% endembed %}
 

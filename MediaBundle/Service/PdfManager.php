@@ -139,7 +139,7 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
 
     public function preRemove(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
-        if ( $entity instanceof PdfContainerInterface) {
+        if ($entity instanceof PdfContainerInterface) {
             foreach ($entity->getPdfs() as $pdf) {
                 $this->em->remove($pdf);
             }

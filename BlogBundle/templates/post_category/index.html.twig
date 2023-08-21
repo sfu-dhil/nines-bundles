@@ -2,9 +2,6 @@
 
 {% block pageheader %}
     <h1>Post Category List</h1>
-    <p class="count">
-        Displaying {{ post_categories|length }} post_categories of {{ post_categories.getTotalItemCount }} total.
-    </p>
 {% endblock %}
 
 {% block body %}
@@ -21,7 +18,8 @@
 
     {% embed '@NinesUtil/term/partial/index.html.twig' with {
         'terms': post_categories,
-        'path': 'nines_blog_post_category_show'
+        'path': 'nines_blog_post_category_show',
+        'caption': post_categories.getTotalItemCount ~ ' total',
     } %}
     {% endembed %}
 

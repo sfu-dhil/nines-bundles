@@ -4,28 +4,29 @@ UtilBundle Usage
 Implement `AbstractEntityInterface` and extend `AbstractEntity` for automatically
 generated IDs and timestamps.
 
-Extend the `AbstractTerm` class for handly lookup tables. Forms based on 
-`AbstractTerm`s can extend the `TermType` form and call it's `buildForm` method 
+Extend the `AbstractTerm` class for handly lookup tables. Forms based on
+`AbstractTerm`s can extend the `TermType` form and call it's `buildForm` method
 to add the label and description fields. Templates for `AbstractTerm`s can embed
-the provided partial templates `index.html.twig`, `search.html.twig`, and 
+the provided partial templates `index.html.twig`, `search.html.twig`, and
 `show.html.twig`. The templates include a `callback` block for extensibility.
 
 ```twig
     {% embed '@NinesUtil/term/partial/index.html.twig' with {
         'terms': categories,
         'path': 'category_show',
+        'caption': categories.getTotalItemCount ~ ' total',
     } %}
     {% endembed %}
 ```
 
-Database repository classes for `AbstractTerm` classes can extend the 
+Database repository classes for `AbstractTerm` classes can extend the
 `TermRepository` to reduce code duplication.
 
 The `ContentEntityInterface` and `ContentEntityTrait` add fields for content
-and an automatically generated excerpt. A Doctrine listener will generate the 
+and an automatically generated excerpt. A Doctrine listener will generate the
 excerpt when saving to the database.
 
-Track user contributions to entities with the `ContributorInterface` and 
+Track user contributions to entities with the `ContributorInterface` and
 `ContributorTrait`. A Doctrine listener will add the contributor name and date
 to a field in the entity.
 
@@ -36,7 +37,7 @@ isn't always possible (you may not know which entities are related). For that
 situation the `LinkedEntityInterface` and `LinkedEntityTrait` are useful.
 
 Extend the `AbstractBuilder` class to get some convienent Bootstrap 3 menuing
-functions. See `DublinCoreBundle/Menu/Builder.php` for a simple example. There's 
+functions. See `DublinCoreBundle/Menu/Builder.php` for a simple example. There's
 a more complex example in the BlogBundle.
 
 Services
@@ -54,9 +55,9 @@ Test Utilities
 
 * `ServiceTestCase` is a very simple extension of Symfony's `KernelTestCase` that
 provides an entity manager for subtests and configures the testing environment.
-* `CommandTestCase` extends `ServiceTestCase` and include a function to execute 
+* `CommandTestCase` extends `ServiceTestCase` and include a function to execute
 Symfony commands in a test environment and collect the result.
-* `ControllerTestCase` extends Symfony's WebTestCase and provides a method to 
+* `ControllerTestCase` extends Symfony's WebTestCase and provides a method to
 simulate a login, reset or commit any database changes, and dump the result
 of the most recent client http request.
 
@@ -78,7 +79,7 @@ nines_util:
 
 * `trim_length`: Excerpts will be limited to 50 words
 * `sender`: Notification emails will be sent from this address
-* `routing`: Entities can be automatically linked via the EntityLinker service, 
+* `routing`: Entities can be automatically linked via the EntityLinker service,
 but they must be configured here for it to work.
 
 ### Error Handler
