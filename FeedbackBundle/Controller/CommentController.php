@@ -72,10 +72,10 @@ class CommentController extends AbstractController implements PaginatorAwareInte
      */
     #[Route(path: '/new', name: 'nines_feedback_comment_new', methods: ['GET', 'POST'])]
     public function new(Request $request, CommentService $service, EntityManagerInterface $em, EntityLinker $linker, Notifier $notifier) : Response {
-        $id = $request->request->get('entity_id', null);
-        $class = $request->request->get('entity_class', null);
-        $repo = $em->getRepository($class);
-        $entity = $repo->find($id);
+        $entity_id = $request->request->get('entity_id', null);
+        $entity_class = $request->request->get('entity_class', null);
+        $repo = $em->getRepository($entity_class);
+        $entity = $repo->find($entity_id);
 
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -96,6 +96,7 @@ class CommentController extends AbstractController implements PaginatorAwareInte
         return $this->render('@NinesFeedback/comment/new.html.twig', [
             'comment' => $comment,
             'form' => $form->createView(),
+            'entity' => $entity,
         ]);
     }
 

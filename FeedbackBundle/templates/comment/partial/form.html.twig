@@ -1,4 +1,6 @@
 {{ form_start(form) }}
+<input type="hidden" name="entity_id" value="{{ entity.id }}" />
+<input type="hidden" name="entity_class" value="{{ entity|class_name }}" />
 {{ form_widget(form) }}
 <div class="mb-3 row">
     <div class="col-sm-2"></div>

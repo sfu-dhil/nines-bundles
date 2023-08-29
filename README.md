@@ -39,6 +39,7 @@ return [
     Nines\DublinCoreBundle\NinesDublinCoreBundle::class => ['all' => true],
     Nines\EditorBundle\NinesEditorBundle::class => ['all' => true],
     Nines\FeedbackBundle\NinesFeedbackBundle::class => ['all' => true],
+    EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle::class => ['all' => true],
     Nines\MakerBundle\NinesMakerBundle::class => ['dev' => true],
     Nines\MediaBundle\NinesMediaBundle::class => ['all' => true],
     Nines\SolrBundle\NinesSolrBundle::class => ['all' => true],

@@ -7,6 +7,7 @@ namespace Nines\FeedbackBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints as Recaptcha;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Nines\UtilBundle\Entity\LinkedEntityInterface;
 use Nines\UtilBundle\Entity\LinkedEntityTrait;
@@ -17,6 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: 'Nines\FeedbackBundle\Repository\CommentRepository')]
 class Comment extends AbstractEntity implements LinkedEntityInterface {
     use LinkedEntityTrait;
+
+    #[Recaptcha\IsTrue]
+    public $recaptcha;
 
     #[ORM\Column(type: 'string', length: 120)]
     private ?string $fullname = null;
