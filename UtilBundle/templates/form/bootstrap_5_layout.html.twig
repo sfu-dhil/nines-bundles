@@ -10,7 +10,7 @@
     {%- set is_collection = 'collection' in (form.parent.vars.attr.class ?? '') -%}
 
     {%- if is_collection -%}
-        <div class="row mb-3 gy-2 bg-white">
+        <div class="row mx-0 mb-3 gy-2 bg-white">
             <div class="col-lg">
     {%- endif -%}
     {% if attr.html_block is defined %}
