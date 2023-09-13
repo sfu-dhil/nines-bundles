@@ -38,13 +38,6 @@ body {
     content: none;
 }
 
-/* Menu bar styling */
-a.dropdown-toggle::after {
-    content: "▾";
-    padding-left: 0.3em;
-    font-size: small;
-}
-
 /* Move the content down, to make room for the nav bar. */
 body > .container {
     padding-top: 70px;

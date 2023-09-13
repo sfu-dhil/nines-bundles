@@ -42,7 +42,6 @@ return [
     EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle::class => ['all' => true],
     Nines\MakerBundle\NinesMakerBundle::class => ['dev' => true],
     Nines\MediaBundle\NinesMediaBundle::class => ['all' => true],
-    Nines\SolrBundle\NinesSolrBundle::class => ['all' => true],
     Nines\UserBundle\NinesUserBundle::class => ['all' => true],
     Nines\UtilBundle\NinesUtilBundle::class => ['all' => true],
 ];
@@ -113,7 +112,6 @@ Included Bundles
 * [EditorBundle](EditorBundle/doc/index.md) - Wrapper around CKEditor
 * [FeedbackBundle](FeedbackBundle/doc/index.md) - Attach comments to entities
 * [MediaBundle](MediaBundle/doc/index.md) - Upload media files and attach them to entities
-* [SolrBundle](SolrBundle/doc/index.md) - Solr server client
 * [UserBundle](UserBundle/doc/index.md) - User logins and security related things
 * [UtilBundle](UtilBundle/doc/index.md) - Various things that don't fit well elsewhere
 

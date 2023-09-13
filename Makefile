@@ -6,7 +6,7 @@ PHPCSF := ./vendor/bin/php-cs-fixer
 PHPSTAN := ./vendor/bin/phpstan
 TWIGCS := ./vendor/bin/twigcs
 
-BUNDLES := BlogBundle DublinCoreBundle EditorBundle FeedbackBundle MakerBundle MediaBundle SolrBundle UserBundle UtilBundle
+BUNDLES := BlogBundle DublinCoreBundle EditorBundle FeedbackBundle MakerBundle MediaBundle UserBundle UtilBundle
 
 ## -- Help
 help: ## Outputs this help screen

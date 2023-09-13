@@ -7,7 +7,6 @@ namespace Nines\UtilBundle\Entity;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Nines\SolrBundle\Annotation as Solr;
 use Stringable;
 
 /**
@@ -18,49 +17,24 @@ use Stringable;
 #[ORM\MappedSuperclass]
 #[ORM\HasLifecycleCallbacks]
 abstract class AbstractEntity implements AbstractEntityInterface, Stringable {
-    /**
-     * The entity's ID.
-     *
-     * @Solr\Id
-     */
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected ?int $id = null;
 
-    /**
-     * The DateTime the entity was created (persisted really).
-     *
-     * @Solr\Field(type="datetime", mutator="format('Y-m-d\TH:i:s\Z')")
-     */
     #[ORM\Column(type: 'datetime_immutable')]
     protected ?DateTimeInterface $created = null;
 
-    /**
-     * The DateTime the entity was last updated.
-     *
-     * @Solr\Field(type="datetime", mutator="format('Y-m-d\TH:i:s\Z')")
-     */
     #[ORM\Column(type: 'datetime_immutable')]
     protected ?DateTimeInterface $updated = null;
 
-    /**
-     * Constructor. Does nothing. Exists in case a subclass accidentally calls
-     * parent::__construct().
-     */
     public function __construct() {
     }
 
-    /**
-     * Get the ID.
-     */
     public function getId() : ?int {
         return $this->id;
     }
 
-    /**
-     * Get the created timestamp.
-     */
     public function getCreated() : DateTimeInterface {
         if ( ! $this->created) {
             return new DateTimeImmutable();
@@ -75,9 +49,6 @@ abstract class AbstractEntity implements AbstractEntityInterface, Stringable {
         return $this;
     }
 
-    /**
-     * Get the updated timestamp.
-     */
     public function getUpdated() : DateTimeInterface {
         return $this->updated;
     }
@@ -88,9 +59,6 @@ abstract class AbstractEntity implements AbstractEntityInterface, Stringable {
         return $this;
     }
 
-    /**
-     * Sets the created and updated timestamps.
-     */
     #[ORM\PrePersist]
     public function prePersist() : void {
         if ( ! $this->created) {
@@ -99,9 +67,6 @@ abstract class AbstractEntity implements AbstractEntityInterface, Stringable {
         }
     }
 
-    /**
-     * Sets the updated timestamp.
-     */
     #[ORM\PreUpdate]
     public function preUpdate() : void {
         $this->updated = new DateTimeImmutable();
