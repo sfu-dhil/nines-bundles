@@ -1,7 +1,7 @@
 {% if entity.links|length > 0 %}
     <ul class="list-unstyled">
         {% for link in entity.links %}
-            <li>{{ link|default('')|sanitize_html }}</li>
+            <li>{{ link|default('')|raw }}</li>
         {% endfor %}
     </ul>
 {% endif %}

@@ -21,8 +21,6 @@
         </div>
     </div>
 
-    <div class="clearfix"></div>
-
     <form method="get">
         <div class="row mb-4">
             <label for="q" class="col-sm-2 col-form-label">Search query</label>
@@ -40,22 +38,25 @@
 
     {% if q %}
         {% for post in posts %}
-            <div class="card card-light">
+            <div class="card card-light mb-3">
                 <div class="card-header">
-                    <h2 class="card-title pull-left">
-                        <a href="{{ path('nines_blog_post_show', {'id': post.id}) }}">
-                            {{ post.title }}
-                        </a>
+                    <h2 class="card-title row">
+                        <div class="col">
+                            <a href="{{ path('nines_blog_post_show', {'id': post.id}) }}">
+                                {{ post.title }}
+                            </a>
+                        </div>
+                        <div class="col-auto">
+                            {% if is_granted('ROLE_BLOG_ADMIN') %}
+                                {{ post.status.label }}
+                            {% endif %}
+                        </div>
                     </h2>
-                    {% if is_granted('ROLE_BLOG_ADMIN') %}
-                        <div class="card-title pull-right">{{ post.status.label }}</div>
-                    {% endif %}
-                    <div class="clearfix"></div>
                 </div>
                 <div class="card-body">
-                    {{ post.excerpt|default('')|sanitize_html }}
+                    {{ post.excerpt|default('')|raw }}
                 </div>
-                <div class="card-footer text-right nines-author">
+                <div class="card-footer text-end nines-author">
                     Posted {{ post.created|date }} by {{ post.user.fullname }} in
                     <a href="{{ path('nines_blog_post_category_show', {'id': post.category.id}) }}">
                         {{ post.category -}}

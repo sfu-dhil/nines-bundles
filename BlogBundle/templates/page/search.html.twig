@@ -30,22 +30,25 @@
 
     {% if q %}
         {% for page in pages %}
-            <div class="card card-light">
+            <div class="card card-light mb-3">
                 <div class="card-header">
-                    <h2 class="card-title pull-left">
-                        <a href="{{ path('nines_blog_page_show', {'id': page.id}) }}">
-                            {{ page.title }}
-                        </a>
+                    <h2 class="card-title row">
+                        <div class="col">
+                            <a href="{{ path('nines_blog_page_show', {'id': page.id}) }}">
+                                {{ page.title }}
+                            </a>
+                        </div>
+                        <div class="col-auto">
+                            {% if is_granted('ROLE_BLOG_ADMIN') %}
+                                {% if page.public %}Public{% else %}Private{% endif %}
+                            {% endif %}
+                        </div>
                     </h2>
-                    {% if is_granted('ROLE_BLOG_ADMIN') %}
-                        <div class="card-title pull-right">{% if page.public %}Public{% else %}Private{% endif %}</div>
-                    {% endif %}
-                    <div class="clearfix"></div>
                 </div>
                 <div class="card-body">
-                    {{ page.excerpt|default('')|sanitize_html }}
+                    {{ page.excerpt|default('')|raw }}
                 </div>
-                <div class="card-footer text-right nines-author">
+                <div class="card-footer text-end nines-author">
                     Posted {{ page.created|date }} by {{ page.user.fullname }}.
                 </div>
             </div>

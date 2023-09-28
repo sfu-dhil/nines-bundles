@@ -1,9 +1,9 @@
 {% set comments = comment_service.findComments(entity) %}
 {% if comments|length %}
     <li class="list-group-item">
-        <h2>Comments</h2>
+        <h4>Comments</h4>
         {% for comment in comments %}
-            <div class="card card-light">
+            <div class="card card-light mb-3">
                 <div class="card-body">
                     {{ comment.content }}
                 </div>
@@ -14,7 +14,7 @@
                     {% else %}
                         {{ comment.fullname }} - please do not contact.
                     {% endif %}
-                    <span class="pull-right">
+                    <span class="ms-auto mb-3">
                         <a href="{{ path('nines_feedback_comment_show', {'id': comment.id}) }}">{{ comment.created|date }}</a>
                     </span>
                 </div>

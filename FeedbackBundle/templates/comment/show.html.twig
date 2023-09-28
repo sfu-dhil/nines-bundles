@@ -24,8 +24,8 @@
     {% endembed %}
 
     {% if(is_granted('ROLE_FEEDBACK_ADMIN')) %}
-        <h2>Status Update</h2>
-        <div class="card card-light">
+        <h4>Status Update</h4>
+        <div class="card card-light mb-3">
             <div class="card-header">
                 <h3 class="card-title">Change the comment's status</h3>
             </div>
@@ -44,9 +44,9 @@
     {% endif %}
 
     {% if comment.notes|length > 0 %}
-        <h2>Notes</h2>
+        <h4>Notes</h4>
         {% for note in comment.notes %}
-            <div class="card card-light" id="note-{{ note.id }}">
+            <div class="card card-light mb-3" id="note-{{ note.id }}">
                 {% if is_granted('ROLE_FEEDBACK_ADMIN') %}
                     <div class='btn-toolbar'>
                         <div class='btn-group ms-auto'>
@@ -61,13 +61,13 @@
                 <div class="card-body">
                     {{ note.content }}
                 </div>
-                <div class="card-footer text-right nines-author">By {{ note.user.fullname }} on {{ note.created|date }}</div>
+                <div class="card-footer text-end nines-author">By {{ note.user.fullname }} on {{ note.created|date }}</div>
             </div>
         {% endfor %}
     {% endif %}
 
     {% if(is_granted('ROLE_FEEDBACK_ADMIN')) %}
-        <div class="card card-light">
+        <div class="card card-light mb-3">
             <div class="card-header">
                 <h3 class="card-title">Add a note</h3>
             </div>

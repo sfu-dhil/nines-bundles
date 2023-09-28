@@ -49,10 +49,10 @@
                             {{ pdf.fileSize|byte_size }}
                         </td>
                         <td>
-                            {{ pdf.description|default('')|sanitize_html }}
+                            {{ pdf.description|default('')|raw }}
                         </td>
                         <td>
-                            {{ pdf.license|default('')|sanitize_html }}
+                            {{ pdf.license|default('')|raw }}
                         </td>
                         <td>
                             {% include '@NinesUtil/linked_entity/link.html.twig' with {

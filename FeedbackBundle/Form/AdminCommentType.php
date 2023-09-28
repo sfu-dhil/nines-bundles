@@ -14,7 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class AdminCommentType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) : void {
-        $builder->add('status');
+        $builder->add('status', null, [
+            'label' => 'Status',
+        ]);
         $builder->setMethod('POST');
     }
 

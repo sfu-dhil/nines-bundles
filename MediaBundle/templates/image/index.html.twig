@@ -50,11 +50,11 @@
                         </td>
 
                         <td>
-                            {{ image.description|default('')|sanitize_html }}
+                            {{ image.description|default('')|raw }}
                         </td>
 
                         <td>
-                            {{ image.license|default('')|sanitize_html }}
+                            {{ image.license|default('')|raw }}
                         </td>
 
                         <td>

@@ -27,7 +27,7 @@
                 </td>
 
                 <td>
-                    {{ element.description|default('')|sanitize_html }}
+                    {{ element.description|default('')|raw }}
                 </td>
 
                 <td>
@@ -35,7 +35,7 @@
                 </td>
 
                 <td>
-                    {{ element.comment|default('')|sanitize_html }}
+                    {{ element.comment|default('')|raw }}
                 </td>
 
             </tr>

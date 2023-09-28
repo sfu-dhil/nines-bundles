@@ -8,7 +8,7 @@
 
     {% if is_granted('ROLE_BLOG_ADMIN') %}
         <div class="btn-toolbar">
-            <div class="btn-group pull-right">
+            <div class="btn-group ms-auto mb-3">
                 <a href="{{ path('nines_blog_post_index') }}" class="btn btn-primary">
                     <i class="bi bi-arrow-left"></i> Back
                 </a>
@@ -27,25 +27,24 @@
                 </div>
             </div>
         </div>
-        <div class="clearfix"></div>
     {% endif %}
 
     {% if is_granted('ROLE_BLOG_ADMIN') %}
-        <div class="card card-light">
+        <div class="card card-light mb-3">
             <div class="card-header">
                 <h2 class="card-title">
                     Excerpt
                 </h2>
             </div>
             <div class="card-body">
-                {{ post.excerpt|default('')|sanitize_html }}
+                {{ post.excerpt|default('')|raw }}
             </div>
         </div>
     {% endif %}
 
-    {{ post.content|default('')|sanitize_html }}
+    {{ post.content|default('')|raw }}
 
-    <div class="text-right nines-author">
+    <div class="text-end nines-author">
         Posted {{ post.created|date }} by {{ post.user.fullname }} in
         <a href="{{ path('nines_blog_post_category_show', {'id': post.category.id}) }}">
             {{ post.category -}}

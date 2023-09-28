@@ -28,17 +28,4 @@
         'term': comment_status
     } %}
     {% endembed %}
-
-    {% if comment_status.comments|length > 0 %}
-        <ul class="list-unstyled">
-            {% for comment in comment_status.comments %}
-                <li>
-                    <a href='{{ path("nines_feedback_comment_show", {"id": comment.id}) }}'>
-                        {{ comment }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-
 {% endblock %}

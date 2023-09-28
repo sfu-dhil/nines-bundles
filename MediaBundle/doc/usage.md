@@ -398,7 +398,7 @@ delete images from an artefact entity. The `list-item.html.twig` template will
 display the image thumbnails with links to larger versions.
 
 ```twig
-    <h2>Artefact Images</h2>
+    <h4>Artefact Images</h4>
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>
@@ -424,7 +424,7 @@ Audio templates are provided for playing the audio files, and includes the
 relevant controls.
 
 ```twig
-    <h2>Recording Audio</h2>
+    <h4>Recording Audio</h4>
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>
@@ -449,7 +449,7 @@ relevant controls.
 PDF thumbnails can be embedded in a template and will link to a PDF viewer.
 
 ```twig
-    <h2>Document PDFs</h2>
+    <h4>Document PDFs</h4>
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>

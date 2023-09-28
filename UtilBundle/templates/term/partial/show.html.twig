@@ -6,7 +6,7 @@
         </tr>
         <tr>
             <th>Description</th>
-            <td>{{ term.description|default('')|sanitize_html }}</td>
+            <td>{{ term.description|default('')|raw }}</td>
         </tr>
         {% block callback %}{% endblock %}
         <tr>

@@ -15,7 +15,7 @@
         <tr>
             <th>Description</th>
             <td>
-                {{ element.description|default('')|sanitize_html }}
+                {{ element.description|default('')|raw }}
             </td>
         </tr>
         <tr>
@@ -27,7 +27,7 @@
         <tr>
             <th>Comment</th>
             <td>
-                {{ element.comment|default('')|sanitize_html }}
+                {{ element.comment|default('')|raw }}
             </td>
         </tr>
 

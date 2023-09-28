@@ -49,11 +49,11 @@
                             {{ audio.fileSize|byte_size }}
                         </td>
                         <td>
-                            {{ audio.description|default('')|sanitize_html }}
+                            {{ audio.description|default('')|raw }}
                         </td>
 
                         <td>
-                            {{ audio.license|default('')|sanitize_html }}
+                            {{ audio.license|default('')|raw }}
                         </td>
                         <td>
                             {% include '@NinesUtil/linked_entity/link.html.twig' with {

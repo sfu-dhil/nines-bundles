@@ -27,7 +27,7 @@
         <dt class="col-sm-2 text-sm-end">HTML</dt>
         <dd class="col-sm-10">{{ link }}</dd>
         <dt class="col-sm-2 text-sm-end">Rendered</dt>
-        <dd class="col-sm-10">{{ link|default('')|sanitize_html }}</dd>
+        <dd class="col-sm-10">{{ link|default('')|raw }}</dd>
         <dt class="col-sm-2 text-sm-end">Created</dt>
         <dd class="col-sm-10">{{ link.created|date }}</dd>
         <dt class="col-sm-2 text-sm-end">Updated</dt>
