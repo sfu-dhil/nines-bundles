@@ -37,6 +37,6 @@
             </ul>
         </div>
     {% endif %}
-    <img src="{{ path('nines_media_image_thumb', {'id': image.id}) }}" class="figure-img img-fluid" />
+    <img src="{{ path('nines_media_image_thumb', {'id': image.id}) }}" class="figure-img img-fluid" alt="{{ image.description|striptags|e|raw }}" data-bs-toggle="tooltip"  data-bs-html="true" data-bs-placement="bottom" title="{{ image.description|e|raw }}" />
     <figcaption class="figure-caption text-truncate">{{ image.originalName }}</figcaption>
 </figure>

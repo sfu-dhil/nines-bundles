@@ -27,12 +27,17 @@
                     {%- endfor -%}
                 </nav>
                 <hr class="my-2">
-                {% if table_of_contents_submit -%}
-                    <input type="submit" value="{{ table_of_contents_submit.label ?? 'Save' }}" class="btn btn-primary w-100 mb-2" />
-                {%- endif -%}
-                {% if table_of_contents_cancel -%}
-                    <a href="{{ table_of_contents_cancel.path }}" class="btn btn-warning w-100 mb-2"> {{ table_of_contents_cancel.label ?? 'Cancel' }} </a>
-                {%- endif -%}
+                <div class="d-grid gap-2 d-block my-2">
+                    {% if table_of_contents_submit -%}
+                        <input type="submit" value="{{ table_of_contents_submit.label ?? 'Save' }}" class="btn btn-primary" />
+                    {%- endif -%}
+                    {% if table_of_contents_submit_and_continue -%}
+                        <input type="submit" name="submitAndContinue" value="{{ table_of_contents_submit_and_continue.label ?? 'Save & Continue' }}" class="btn btn-primary" />
+                    {%- endif -%}
+                    {% if table_of_contents_cancel -%}
+                        <a href="{{ table_of_contents_cancel.path }}" class="btn btn-warning"> {{ table_of_contents_cancel.label ?? 'Cancel' }} </a>
+                    {%- endif -%}
+                </div>
             </div>
         </div>
     </div>
