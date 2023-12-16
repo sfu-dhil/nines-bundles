@@ -195,6 +195,49 @@
         }
         imageModals();
         menuTabs();
+        $('.select2-simple').select2({
+            width: '100%',
+        });
+
+        const select2entityModal = document.getElementById('select2entity_modal')
+        if (select2entityModal) {
+            select2entityModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget
+                const contentRoute = button.getAttribute('data-modal-content-route');
+                $(select2entityModal).find('.modal-content').load(contentRoute, () => {
+                    // form submission
+                    $(select2entityModal).find('form').submit((formSubmitEvent) => {
+                        formSubmitEvent.preventDefault();
+                        $.post(
+                            $(select2entityModal).find('form').attr("action"),
+                            $(select2entityModal).find('form').serialize(),
+                            (data) => {
+                                if (data.success) {
+                                    $(select2entityModal).modal('hide');
+                                } else {
+                                    alert('There was a problem saving the form.');
+                                }
+                            },
+                        );
+                    });
+                    // initialize select2entity, select2 simple, and tinymce for modal content
+                    $(select2entityModal).find('.select2entity').select2entity();
+                    $(select2entityModal).find('.select2-simple').select2({
+                        width: '100%',
+                    });
+                    if (tinymce && $(select2entityModal).find('.tinymce').length > 0 ) {
+                        $(select2entityModal).find('.tinymce').each(function (index, textarea) {
+                            tinymce.execCommand('mceRemoveEditor', false, textarea.id);
+                            tinymce.execCommand("mceAddEditor", false, textarea.id);
+                        });
+                    }
+                });
+            });
+            select2entityModal.addEventListener('hidden.bs.modal', () => {
+                // remove current modal content on hide
+                $(select2entityModal).find('.modal-content').html('');
+            });
+        }
     });
 
 })(jQuery, window, document);
