@@ -158,7 +158,7 @@ be embedded as shown below. Note that the `entity` parameter is required.
 ```twig
 {# templates/poem/show.html.twig #}
 
-    {% embed '@NinesDublinCore/value/ui/table.html.twig' with {'entity': poem } %}
+    {% embed '@NinesDublinCore/value/ui/table.html.twig' with {entity: poem } %}
     {% endembed %}
 ```
 

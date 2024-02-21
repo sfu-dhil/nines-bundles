@@ -12,18 +12,18 @@
         <div class='btn-group ms-auto'>
             {% if is_granted('ROLE_DC_ADMIN') %}
                 <a href="{{ path('nines_dc_element_new') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> New </a>
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> New </a>
             {% endif %}
 
             <a href="{{ path('nines_dc_element_search') }}" class="btn btn-primary">
-                <i class="bi bi-search"></i> Search </a>
+                <i class="bi bi-search" aria-hidden="true"></i> Search </a>
         </div>
     </div>
 
     {% embed '@NinesUtil/term/partial/index.html.twig' with {
-        'terms': elements,
-        'path': 'nines_dc_element_show',
-        'caption': elements.getTotalItemCount ~ ' total',
+        terms: elements,
+        path: 'nines_dc_element_show',
+        caption: elements.getTotalItemCount ~ ' total',
     } %}
     {% endembed %}
 

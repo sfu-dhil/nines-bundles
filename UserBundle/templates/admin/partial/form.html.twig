@@ -8,7 +8,7 @@
             <a href="{{ path('nines_user_admin_index') }}" class="btn btn-warning"> Cancel </a>
         {% else %}
             <input type="submit" value="Update" class="btn btn-primary" />
-            <a href="{{ path('nines_user_admin_show', { 'id': user.id }) }}" class="btn btn-warning"> Cancel </a>
+            <a href="{{ path('nines_user_admin_show', { id: user.id }) }}" class="btn btn-warning"> Cancel </a>
         {% endif %}
     </div>
 </div>

@@ -6,5 +6,4 @@ namespace Nines\UtilBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class NinesUtilBundle extends Bundle {
-}
+class NinesUtilBundle extends Bundle {}

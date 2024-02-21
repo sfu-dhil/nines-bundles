@@ -28,8 +28,7 @@ abstract class AbstractEntity implements AbstractEntityInterface, Stringable {
     #[ORM\Column(type: 'datetime_immutable')]
     protected ?DateTimeInterface $updated = null;
 
-    public function __construct() {
-    }
+    public function __construct() {}
 
     public function getId() : ?int {
         return $this->id;

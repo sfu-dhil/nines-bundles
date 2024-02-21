@@ -20,8 +20,7 @@ class AbstractFileType extends AbstractType {
     public function __construct(
         protected UrlGeneratorInterface $router,
         protected ?File $existingFile = null,
-    ) {
-    }
+    ) {}
 
     /**
      * Add form fields to $builder.

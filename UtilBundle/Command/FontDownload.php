@@ -25,9 +25,6 @@ use Twig\Error\SyntaxError;
 class FontDownload extends Command {
     private ?Environment $twig = null;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure() : void {
         $this
             ->setDescription('Fetch the fonts defined in config/fonts.yaml')

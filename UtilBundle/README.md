@@ -12,9 +12,9 @@ the provided partial templates `index.html.twig`, `search.html.twig`, and
 
 ```twig
     {% embed '@NinesUtil/term/partial/index.html.twig' with {
-        'terms': categories,
-        'path': 'category_show',
-        'caption': categories.getTotalItemCount ~ ' total',
+        terms: categories,
+        path: 'category_show',
+        caption: categories.getTotalItemCount ~ ' total',
     } %}
     {% endembed %}
 ```

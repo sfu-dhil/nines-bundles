@@ -5,7 +5,7 @@
 {% block breadcrumbs %}
     <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ path('nines_media_pdf_index') }}">PDFs</a></li>
-    <li class="breadcrumb-item"><a href="{{ path('nines_media_pdf_show', {'id': pdf.id}) }}">{{ pdf.originalName }}</a></li>
+    <li class="breadcrumb-item"><a href="{{ path('nines_media_pdf_show', {id: pdf.id}) }}">{{ pdf.originalName }}</a></li>
     <li class="breadcrumb-item active" aria-current="page">Edit</li>
 {% endblock %}
 

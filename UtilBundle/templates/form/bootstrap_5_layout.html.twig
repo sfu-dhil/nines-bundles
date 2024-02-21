@@ -1,8 +1,21 @@
 {% use "bootstrap_5_layout.html.twig" %}
 
+{%- block form_start -%}
+    {%- if aria_label is defined -%}
+        {%- set attr = attr|merge({'aria-label': aria_label }) -%}
+    {%- endif -%}
+    {%- set attr = attr|merge({id: 'form_id_' ~ name }) -%}
+    {{ parent() }}
+{%- endblock form_start -%}
+
+{%- block widget_attributes -%}
+    {% set attr = attr|merge({tabindex: 0}) %}
+    {{ parent() }}
+{%- endblock widget_attributes -%}
+
 {%- block datalist_widget -%}
     {% set datalist_id = 'datalist_' ~ id %}
-    {% set attr = attr|merge({'list': datalist_id}) %}
+    {% set attr = attr|merge({list: datalist_id}) %}
     {{- block('form_widget') -}}
     <datalist id="{{ datalist_id }}">
         {% for item in datalist %}
@@ -21,7 +34,10 @@
 {%- endblock form_end -%}
 
 {%- block form_label -%}
-    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' h6')|trim}) %}
+    {% if id -%}
+        {% set label_attr = label_attr|merge({id: id ~ '_label'}) %}
+    {%- endif -%}
+    {% set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' h6')|trim}) %}
     {{ parent() }}
 {%- endblock form_label -%}
 
@@ -51,10 +67,10 @@
             {% if attr.add_route is defined or attr.add_path is defined %}
                 {% if attr.add_modal is defined and attr.add_modal %}
                     <button type="button" class="btn btn-primary select2entity-modal-btn" data-bs-toggle="modal" data-bs-target="#select2entity_modal" data-modal-content-route="{{ attr.add_route ?? path(attr.add_path) }}" data-modal-result-target="#{{ id }}">
-                        <i class="bi bi-plus-circle"></i> {{ attr.add_label }}
+                        <i class="bi bi-plus-circle" aria-hidden="true"></i> {{ attr.add_label }}
                     </button>
                 {% else %}
-                    <a href="{{ attr.add_route ?? path(attr.add_path) }}" class="btn btn-primary" target="_blank"><i class="bi bi-plus-circle"></i> {{ attr.add_label }}</a>
+                    <a href="{{ attr.add_route ?? path(attr.add_path) }}" class="btn btn-primary" target="_blank"><i class="bi bi-plus-circle" aria-hidden="true"></i> {{ attr.add_label }}</a>
                 {% endif %}
             {% endif %}
             {{- form_label(form) -}}
@@ -68,10 +84,10 @@
                     <div class="col-lg-auto">
                         {% if attr.add_modal is defined and attr.add_modal %}
                             <button type="button" class="btn btn-primary select2entity-modal-btn" data-bs-toggle="modal" data-bs-target="#select2entity_modal" data-modal-content-route="{{ attr.add_route ?? path(attr.add_path) }}" data-modal-result-target="#{{ id }}">
-                                <i class="bi bi-plus-circle"></i> {{ attr.add_label }}
+                                <i class="bi bi-plus-circle" aria-hidden="true"></i> {{ attr.add_label }}
                             </button>
                         {% else %}
-                            <a href="{{ attr.add_route ?? path(attr.add_path) }}" class="btn btn-primary" target="_blank"><i class="bi bi-plus-circle"></i> {{ attr.add_label }}</a>
+                            <a href="{{ attr.add_route ?? path(attr.add_path) }}" class="btn btn-primary" target="_blank"><i class="bi bi-plus-circle" aria-hidden="true"></i> {{ attr.add_label }}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -87,8 +103,8 @@
             </div>
             <div class="col-lg-auto text-end">
                 <div class="btn-group" role="group">
-                    <a href="#" class="btn btn-primary btn-sm collection-remove"><i class="bi bi-dash-circle"></i></a>
-                    <a href="#" class="btn btn-primary btn-sm collection-add"><i class="bi bi-plus-circle"></i></a>
+                    <a href="#" class="btn btn-primary btn-sm collection-remove"><i class="bi bi-dash-circle" aria-hidden="true"></i> <span class="visually-hidden">Remove</span></a>
+                    <a href="#" class="btn btn-primary btn-sm collection-add"><i class="bi bi-plus-circle" aria-hidden="true"></i> <span class="visually-hidden">Add New Item</span></a>
                 </div>
             </div>
         </div>

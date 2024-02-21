@@ -11,8 +11,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class RequestProcessor implements ProcessorInterface {
     public function __construct(
         protected RequestStack $requestStack,
-    ) {
-    }
+    ) {}
 
     public function __invoke(LogRecord $record) : LogRecord {
         $request = $this->requestStack->getCurrentRequest();

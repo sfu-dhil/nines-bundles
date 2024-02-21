@@ -186,7 +186,7 @@ class PageTest extends ControllerTestCase {
     }
 
     public function testAdminDelete() : void {
-        /** @var \Nines\BlogBundle\Repository\PageRepository $repo */
+        /** @var PageRepository $repo */
         $repo = static::getContainer()->get(PageRepository::class);
         $preCount = count($repo->findAll());
 

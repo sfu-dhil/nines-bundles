@@ -20,7 +20,7 @@
 {% if is_granted('ROLE_ADMIN') %}
     <div>
         <h3>Details</h3>
-        <ol>
+        <ol aria-label="Error Details">
             {% for trace in backtrace %}
                 <li>
                     {{ trace['file']|slice(trim) }}:{{ trace['line'] }} {% if trace['function'] %} in {{ trace['function'] }}(){% endif %}

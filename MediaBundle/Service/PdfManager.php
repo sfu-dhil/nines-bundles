@@ -50,9 +50,6 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
         $pdf->setThumbPath($thumbPath);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents() : array {
         return [
             Events::prePersist,

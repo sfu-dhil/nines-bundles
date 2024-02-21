@@ -11,9 +11,6 @@ use Nines\BlogBundle\Entity\PostCategory;
 use Nines\BlogBundle\Entity\PostStatus;
 
 class ProductionFixtures extends Fixture implements FixtureGroupInterface {
-    /**
-     * {@inheritdoc}
-     */
     public static function getGroups() : array {
         return [
             'prod',

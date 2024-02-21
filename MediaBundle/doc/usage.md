@@ -402,17 +402,17 @@ display the image thumbnails with links to larger versions.
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>
-                <a href="{{ path('artefact_image_new', {'id': artefact.id}) }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Add Image </a>
+                <a href="{{ path('artefact_image_new', {id: artefact.id}) }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> Add Image </a>
             </div>
         </div>
     {% endif %}
     {% for image in artefact.images %}
         {% embed '@NinesMedia/image/partial/list-item.html.twig' with {
-            'image': image,
-            'path_show': path('artefact_image_view', {'artefact_id': artefact.id, 'id': image.id}),
-            'path_edit': path('artefact_image_edit', {'artefact_id': artefact.id, 'id': image.id}),
-            'path_delete': path('artefact_image_delete', {'artefact_id': artefact.id, 'id': image.id}),
+            image: image,
+            path_show: path('artefact_image_view', {artefact_id: artefact.id, id: image.id}),
+            path_edit: path('artefact_image_edit', {artefact_id: artefact.id, id: image.id}),
+            path_delete: path('artefact_image_delete', {artefact_id: artefact.id, id: image.id}),
         } %}
         {% endembed %}
     {% endfor %}
@@ -428,17 +428,18 @@ relevant controls.
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>
-                <a href="{{ path('recording_audio_new', {'id': recording.id}) }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Add Audio </a>
+                <a href="{{ path('recording_audio_new', {id: recording.id}) }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> Add Audio
+                </a>
             </div>
         </div>
     {% endif %}
     {% for audio in recording.audios %}
         {% embed '@NinesMedia/audio/partial/list-item.html.twig' with {
-            'audio': audio,
-            'path_show': path('recording_audio_view', {'recording_id': recording.id, 'id': image.id}),
-            'path_edit': path('recording_audio_edit', {'recording_id': recording.id, 'id': image.id}),
-            'path_delete': path('recording_audio_delete', {'recording_id': recording.id, 'id': image.id}),
+            audio: audio,
+            path_show: path('recording_audio_view', {recording_id: recording.id, id: image.id}),
+            path_edit: path('recording_audio_edit', {recording_id: recording.id, id: image.id}),
+            path_delete: path('recording_audio_delete', {recording_id: recording.id, id: image.id}),
         } %}
         {% endembed %}
     {% endfor %}
@@ -453,17 +454,18 @@ PDF thumbnails can be embedded in a template and will link to a PDF viewer.
     {% if is_granted('ROLE_CONTENT_ADMIN') %}
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>
-                <a href="{{ path('document_pdf_new', {'id': document.id}) }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Add Pdf </a>
+                <a href="{{ path('document_pdf_new', {id: document.id}) }}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> Add Pdf
+                </a>
             </div>
         </div>
     {% endif %}
     {% for pdf in recording.pdfs %}
         {% embed '@NinesMedia/pdf/partial/list-item.html.twig' with {
-            'pdf': pdf,
-            'path_show': path('document_pdf_view', {'document_id': document.id, 'id': image.id}),
-            'path_edit': path('document_pdf_edit', {'document_id': document.id, 'id': image.id}),
-            'path_delete': path('document_pdf_delete', {'document_id': document.id, 'id': image.id}),
+            pdf: pdf,
+            path_show: path('document_pdf_view', {document_id: document.id, id: image.id}),
+            path_edit: path('document_pdf_edit', {document_id: document.id, id: image.id}),
+            path_delete: path('document_pdf_delete', {document_id: document.id, id: image.id}),
         } %}
         {% endembed %}
     {% endfor %}

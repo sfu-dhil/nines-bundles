@@ -8,7 +8,7 @@
     </div>
     <ul class="list-group collapse" id="commentList">
         <li class="list-group-item">
-            {% include '@NinesFeedback/comment/comment-form.html.twig' with {'entity': entity} %}
+            {% include '@NinesFeedback/comment/comment-form.html.twig' with {entity: entity} %}
         </li>
         {% if is_granted('ROLE_FEEDBACK_ADMIN') %}
             {% include '@NinesFeedback/comment/comments-admin.html.twig' %}

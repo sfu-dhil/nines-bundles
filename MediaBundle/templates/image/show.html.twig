@@ -13,50 +13,50 @@
 {% endblock %}
 
 {% block action_buttons %}
-    <a href="{{ path('nines_media_image_view', {'id': image.id}) }}" class="btn btn-primary" target="_blank">
-        <i class="bi bi-download"></i> Download
+    <a href="{{ path('nines_media_image_view', {id: image.id}) }}" class="btn btn-primary" target="_blank">
+        <i class="bi bi-download" aria-hidden="true"></i> Download
     </a>
 {% endblock %}
 
 {% block body %}
     <figure class="text-center w-100">
-        <img src="{{ path('nines_media_image_view', {'id': image.id}) }}" class="figure-img img-fluid rounded">
+        <img src="{{ path('nines_media_image_view', {id: image.id}) }}" class="figure-img img-fluid rounded">
         <figcaption class="figure-caption text-truncate">{{ image.originalName }}</figcaption>
     </figure>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 g-4">
         <div class="col">
-            <h6><i class="bi bi-image"></i> Image Path</h6>
+            <h6><i class="bi bi-image" aria-hidden="true"></i> Image Path</h6>
             {{ image.path }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-image"></i> Thumbnail Path</h6>
+            <h6><i class="bi bi-image" aria-hidden="true"></i> Thumbnail Path</h6>
             {{ image.thumbPath }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-file-earmark"></i> Image Size</h6>
+            <h6><i class="bi bi-file-earmark" aria-hidden="true"></i> Image Size</h6>
             {{ image.imageWidth }}x{{ image.imageHeight }} {{ image.fileSize|byte_size }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-calendar-event"></i> Created</h6>
+            <h6><i class="bi bi-calendar-event" aria-hidden="true"></i> Created</h6>
             {{ image.created|date('Y-m-d') }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-calendar-event"></i> Last Updated</h6>
+            <h6><i class="bi bi-calendar-event" aria-hidden="true"></i> Last Updated</h6>
             {{ image.updated|date('Y-m-d') }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-info-circle"></i> Description</h6>
+            <h6><i class="bi bi-info-circle" aria-hidden="true"></i> Description</h6>
             {{ image.description|default('')|raw }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-list-task"></i> License</h6>
+            <h6><i class="bi bi-list-task" aria-hidden="true"></i> License</h6>
             {{ image.license|default('')|raw }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-link-45deg"></i> Entity</h6>
+            <h6><i class="bi bi-link-45deg" aria-hidden="true"></i> Entity</h6>
             {% include '@NinesUtil/linked_entity/link.html.twig' with {
-                'entity': image
+                entity: image
             } %}
         </div>
     </div>

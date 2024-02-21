@@ -31,8 +31,8 @@ function getTinyMceConfig(editorUploadPath) {
                 title: 'Image Left',
                 selector: 'img, figure',
                 styles: {
-                    'float': 'left',
-                    'margin': '0 10px 0 10px',
+                    float: 'left',
+                    margin: '0 10px 0 10px',
                 },
             },
             {
@@ -48,8 +48,8 @@ function getTinyMceConfig(editorUploadPath) {
                 title: 'Image Right',
                 selector: 'img, figure',
                 styles: {
-                    'float': 'right',
-                    'margin': '0 10px 0 10px',
+                    float: 'right',
+                    margin: '0 10px 0 10px',
                 },
             },
         ],

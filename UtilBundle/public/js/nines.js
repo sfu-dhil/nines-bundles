@@ -52,8 +52,8 @@
             allow_down: false,
             preserve_names: true,
             max: 400,
-            add: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i></a>',
-            remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle"></i></a>',
+            add: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle" aria-hidden="true"></i></a> <span class="visually-hidden">Add</span>',
+            remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle" aria-hidden="true"></i> <span class="visually-hidden">Remove</span></a>',
         });
     }
 
@@ -61,87 +61,31 @@
         if ( $('.collection-complex').length == 0 ) {
             return
         }
-        $('.collection-complex').collection({
-            init_with_n_elements: 1,
-            allow_up: false,
-            allow_down: false,
-            preserve_names: true,
-            max: 400,
-            add: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i></a>',
-            remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle"></i></a>',
-            after_add: function(collection, element){
-                $(element).find('.select2entity').select2entity();
-                $(element).find('.select2-container').css('width', '100%');
-                if (tinymce && $(element).find('.tinymce').length > 0 ) {
-                    $(element).find('.tinymce').each(function (index, textarea) {
-                        tinymce.execCommand("mceAddEditor", false, textarea.id);
+        $('.collection-complex').each( (_, collectionEl) => {
+            const label = $(collectionEl).data('collection-label');
+            const prompt = label ? `Add New ${label}` : `Add New Item`;
+            $(collectionEl).collection({
+                init_with_n_elements: 0,
+                allow_up: false,
+                allow_down: false,
+                max: 400,
+                position_field_selector: '.position-id',
+                add_at_the_end: true,
+                add: `<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle" aria-hidden="true"></i> ${prompt}</a>`,
+                remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle" aria-hidden="true"></i> <span class="visually-hidden">Remove</span></a>',
+                after_add: function(_, element){
+                    $(element).find('.select2entity').select2entity();
+                    $(element).find('.select2-simple').select2({
+                        width: '100%',
                     });
-                }
-                return true;
-            },
-        });
-    }
-
-    function mediaCollection() {
-        if ( $('.collection-media').length == 0 ) {
-            return
-        }
-        $('.collection-media.collection-media-image').collection({
-            init_with_n_elements: 0,
-            allow_up: false,
-            allow_down: false,
-            max: 400,
-            position_field_selector: '.position-id',
-            add_at_the_end: true,
-            add: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Image</a>',
-            remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle"></i></a>',
-            after_add: function(collection, element){
-                $(element).find('.select2entity').select2entity();
-                if (tinymce && $(element).find('.tinymce').length > 0 ) {
-                    $(element).find('.tinymce').each(function (index, textarea) {
-                        tinymce.execCommand("mceAddEditor", false, textarea.id);
-                    });
-                }
-                return true;
-            },
-        });
-        $('.collection-media.collection-media-audio').collection({
-            init_with_n_elements: 0,
-            allow_up: false,
-            allow_down: false,
-            max: 400,
-            position_field_selector: '.position-id',
-            add_at_the_end: true,
-            add: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Audio</a>',
-            remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle"></i></a>',
-            after_add: function(collection, element){
-                $(element).find('.select2entity').select2entity();
-                if (tinymce && $(element).find('.tinymce').length > 0 ) {
-                    $(element).find('.tinymce').each(function (index, textarea) {
-                        tinymce.execCommand("mceAddEditor", false, textarea.id);
-                    });
-                }
-                return true;
-            },
-        });
-        $('.collection-media.collection-media-pdf').collection({
-            init_with_n_elements: 0,
-            allow_up: false,
-            allow_down: false,
-            max: 400,
-            position_field_selector: '.position-id',
-            add_at_the_end: true,
-            add: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle"></i> Transcript</a>',
-            remove: '<a href="#" class="btn btn-primary btn-sm"><i class="bi bi-dash-circle"></i></a>',
-            after_add: function(collection, element){
-                $(element).find('.select2entity').select2entity();
-                if (tinymce && $(element).find('.tinymce').length > 0 ) {
-                    $(element).find('.tinymce').each(function (index, textarea) {
-                        tinymce.execCommand("mceAddEditor", false, textarea.id);
-                    });
-                }
-                return true;
-            },
+                    if (tinymce && $(element).find('.tinymce').length > 0 ) {
+                        $(element).find('.tinymce').each(function (_, textarea) {
+                            tinymce.execCommand("mceAddEditor", false, textarea.id);
+                        });
+                    }
+                    return true;
+                },
+            })
         });
     }
 
@@ -191,7 +135,6 @@
         if (typeof $().collection === 'function') {
             simpleCollection();
             complexCollection();
-            mediaCollection();
         }
         imageModals();
         menuTabs();
@@ -221,7 +164,7 @@
                                     }
                                     $(select2entityModal).modal('hide');
                                 } else {
-                                    alert('There was a problem saving the form.');
+                                    alert(`There was a problem saving the form: \n${result.errors.join('\n')}`);
                                 }
                             },
                         );

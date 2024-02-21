@@ -1,4 +1,4 @@
-<table class="table table-striped table-sm">
+<table class="table table-striped table-sm" title="List of elements">
     <thead>
         <tr>
             <th>ID</th>
@@ -14,7 +14,7 @@
         {% for element in elements %}
             <tr>
                 <td>
-                    <a href="{{ path('nines_dc_element_show', {'id': element.id}) }}">
+                    <a href="{{ path('nines_dc_element_show', {id: element.id}) }}">
                         {{ element.id }}
                     </a>
                 </td>

@@ -6,5 +6,4 @@ namespace Nines\MediaBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class NinesMediaBundle extends Bundle {
-}
+class NinesMediaBundle extends Bundle {}

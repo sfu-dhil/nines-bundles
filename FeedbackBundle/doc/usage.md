@@ -75,8 +75,8 @@ Next add the Comment UI partial template to the entity's show.html.twig page.
 {# templates/poem/show.html.twig #}
 
     ...
-    {% include '@NinesFeedback/comment/comment-interface.html.twig' with { 
-        'entity': book 
+    {% include '@NinesFeedback/comment/comment-interface.html.twig' with {
+        entity: book
     } %}
 ```
 

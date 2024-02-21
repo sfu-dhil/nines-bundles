@@ -14,9 +14,6 @@ class ElementFixtures extends Fixture implements FixtureGroupInterface {
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Element();

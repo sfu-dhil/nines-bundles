@@ -32,9 +32,6 @@ class UserFixtures extends Fixture implements FixtureGroupInterface {
         $this->passwordHasher = $passwordHasher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getGroups() : array {
         return ['dev', 'test'];
     }

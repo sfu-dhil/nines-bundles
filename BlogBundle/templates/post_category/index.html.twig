@@ -10,16 +10,16 @@
         <div class='btn-toolbar'>
             <div class='btn-group ms-auto'>
                 <a href="{{ path('nines_blog_post_category_new') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> New
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> New
                 </a>
             </div>
         </div>
     {% endif %}
 
     {% embed '@NinesUtil/term/partial/index.html.twig' with {
-        'terms': post_categories,
-        'path': 'nines_blog_post_category_show',
-        'caption': post_categories.getTotalItemCount ~ ' total',
+        terms: post_categories,
+        path: 'nines_blog_post_category_show',
+        caption: post_categories.getTotalItemCount ~ ' total',
     } %}
     {% endembed %}
 

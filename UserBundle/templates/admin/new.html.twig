@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}Create User{% endblock %}
 
 {% block breadcrumbs %}
     <li class="breadcrumb-item">Admin</li>
@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block body %}
+    <h1 class="h4">Create User</h1>
     {% embed '@NinesUser/admin/partial/form.html.twig' %}
     {% endembed %}
 {% endblock %}

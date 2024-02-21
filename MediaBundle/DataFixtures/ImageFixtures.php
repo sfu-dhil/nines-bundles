@@ -29,8 +29,6 @@ class ImageFixtures extends Fixture implements FixtureGroupInterface {
     }
 
     /**
-     * {@inheritDoc}
-     *
      * @throws Exception
      */
     public function load(ObjectManager $manager) : void {

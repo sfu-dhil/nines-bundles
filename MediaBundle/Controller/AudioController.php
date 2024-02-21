@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/audio')]
@@ -39,6 +40,17 @@ class AudioController extends AbstractController implements PaginatorAwareInterf
         return [
             'audio' => $audio,
         ];
+    }
+
+    #[Route(path: '/{id}/download', name: 'nines_media_audio_download', methods: ['GET'])]
+    public function download(Audio $audio) : BinaryFileResponse {
+        $response = new BinaryFileResponse($audio->getFile());
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $audio->getOriginalName()
+        );
+
+        return $response;
     }
 
     #[Route(path: '/{id}/play', name: 'nines_media_audio_play', methods: ['GET'])]

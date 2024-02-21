@@ -20,6 +20,7 @@ class Builder extends AbstractBuilder {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes([
             'class' => 'navbar-nav ms-auto',
+            'aria-label' => $this->hasRole('ROLE_USER') ? 'Account Options' : 'Login',
         ]);
 
         $user = $this->getUser();
@@ -45,10 +46,11 @@ class Builder extends AbstractBuilder {
                 'role' => 'button',
                 'data-bs-toggle' => 'dropdown',
                 'id' => 'user-dropdown',
+                'aria-label' => 'Account Options Dropdown',
             ],
             'childrenAttributes' => [
                 'class' => 'dropdown-menu text-small shadow dropdown-menu-end',
-                'aria-labelledby' => 'user-dropdown',
+                'aria-label' => 'Account Options',
             ],
         ]);
 
@@ -74,6 +76,9 @@ class Builder extends AbstractBuilder {
         if ($this->hasRole('ROLE_USER_ADMIN')) {
             $user->addChild('divider', [
                 'label' => '<hr class="dropdown-divider">',
+                'attributes' => [
+                    'aria-hidden' => 'true',
+                ],
                 'extras' => [
                     'safe_label' => true,
                 ],
@@ -98,10 +103,14 @@ class Builder extends AbstractBuilder {
         $menu = $this->factory->createItem('root');
         $menu->setChildrenAttributes([
             'class' => 'list-unstyled ps-0 mb-0 mt-auto',
+            'aria-label' => $this->hasRole('ROLE_USER') ? 'Account Options' : 'Login',
         ]);
 
         $menu->addChild('divider1', [
             'label' => '<hr>',
+            'attributes' => [
+                'aria-hidden' => 'true',
+            ],
             'extras' => [
                 'safe_label' => true,
             ],
@@ -119,7 +128,7 @@ class Builder extends AbstractBuilder {
 
         $user = $menu->addChild('user', [
             'uri' => '#',
-            'label' => "<i class='bi bi-person-circle h5'>&nbsp;</i>{$user->getUserIdentifier()}",
+            'label' => "<i class='bi bi-person-circle h5' aria-hidden='true'>&nbsp;</i>{$user->getUserIdentifier()}",
             'attributes' => [
                 'class' => 'dropdown',
             ],
@@ -128,10 +137,11 @@ class Builder extends AbstractBuilder {
                 'role' => 'button',
                 'data-bs-toggle' => 'dropdown',
                 'id' => 'user-dropdown',
+                'aria-label' => 'Account Options Dropdown',
             ],
             'childrenAttributes' => [
                 'class' => 'dropdown-menu text-small shadow',
-                'aria-labelledby' => 'user-dropdown',
+                'aria-label' => 'Account Options',
             ],
             'extras' => [
                 'safe_label' => true,
@@ -160,6 +170,9 @@ class Builder extends AbstractBuilder {
         }
         $user->addChild('divider1', [
             'label' => '<hr class="dropdown-divider">',
+            'attributes' => [
+                'aria-hidden' => 'true',
+            ],
             'extras' => [
                 'safe_label' => true,
             ],

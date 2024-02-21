@@ -24,6 +24,7 @@ class Text {
         $plain = strip_tags($content);
         $converted = html_entity_decode($plain, ENT_HTML5, 'UTF-8');
         $trimmed = preg_replace('/(^\\s+)|(\\s+$)/u', '', $converted);
+
         // \xA0 is the result of converting nbsp.
         return preg_replace('/[[:space:]\\x{A0}]/su', ' ', $trimmed);
     }

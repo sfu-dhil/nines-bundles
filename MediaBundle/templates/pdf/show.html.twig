@@ -13,50 +13,50 @@
 {% endblock %}
 
 {% block action_buttons %}
-    <a href="{{ path('nines_media_pdf_view', {'id': pdf.id}) }}" class="btn btn-primary" target="_blank">
-        <i class="bi bi-download"></i> Download
+    <a href="{{ path('nines_media_pdf_view', {id: pdf.id}) }}" class="btn btn-primary" target="_blank">
+        <i class="bi bi-download" aria-hidden="true"></i> Download
     </a>
 {% endblock %}
 
 {% block body %}
     <figure class="text-center w-100">
-        <img src="{{ path('nines_media_pdf_thumb', {'id': pdf.id}) }}" class="figure-img img-fluid rounded">
+        <img src="{{ path('nines_media_pdf_thumb', {id: pdf.id}) }}" class="figure-img img-fluid rounded">
         <figcaption class="figure-caption text-truncate">{{ pdf.originalName }}</figcaption>
     </figure>
 
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 my-3 g-4">
         <div class="col">
-            <h6><i class="bi bi-filetype-pdf"></i> PDF Path</h6>
+            <h6><i class="bi bi-filetype-pdf" aria-hidden="true"></i> PDF Path</h6>
             {{ pdf.path }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-image"></i> Thumbnail Path</h6>
+            <h6><i class="bi bi-image" aria-hidden="true"></i> Thumbnail Path</h6>
             {{ pdf.thumbPath }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-file-earmark"></i> PDF Size</h6>
+            <h6><i class="bi bi-file-earmark" aria-hidden="true"></i> PDF Size</h6>
             {{ pdf.fileSize|byte_size }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-calendar-event"></i> Created</h6>
+            <h6><i class="bi bi-calendar-event" aria-hidden="true"></i> Created</h6>
             {{ pdf.created|date('Y-m-d') }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-calendar-event"></i> Last Updated</h6>
+            <h6><i class="bi bi-calendar-event" aria-hidden="true"></i> Last Updated</h6>
             {{ pdf.updated|date('Y-m-d') }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-info-circle"></i> Description</h6>
+            <h6><i class="bi bi-info-circle" aria-hidden="true"></i> Description</h6>
             {{ pdf.description|default('')|raw }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-list-task"></i> License</h6>
+            <h6><i class="bi bi-list-task" aria-hidden="true"></i> License</h6>
             {{ pdf.license|default('')|raw }}
         </div>
         <div class="col">
-            <h6><i class="bi bi-link-45deg"></i> Entity</h6>
+            <h6><i class="bi bi-link-45deg" aria-hidden="true"></i> Entity</h6>
             {% include '@NinesUtil/linked_entity/link.html.twig' with {
-                'entity': pdf
+                entity: pdf
             } %}
         </div>
     </div>

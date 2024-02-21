@@ -12,14 +12,14 @@
         <div class='btn-group ms-auto'>
             {% if is_granted('ROLE_BLOG_ADMIN') %}
                 <a href="{{ path('nines_blog_page_new') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> New
+                    <i class="bi bi-plus-circle" aria-hidden="true"></i> New
                 </a>
                 <a href="{{ path('nines_blog_page_sort') }}" class="btn btn-primary">
-                    <i class="bi bi-arrow-down-up"></i> Sort
+                    <i class="bi bi-arrow-down-up" aria-hidden="true"></i> Sort
                 </a>
             {% endif %}
             <a href="{{ path('nines_blog_page_search') }}" class="btn btn-primary">
-                <i class="bi bi-search"></i> Search
+                <i class="bi bi-search" aria-hidden="true"></i> Search
             </a>
         </div>
     </div>
@@ -29,7 +29,7 @@
             <div class="card-header">
                 <h2 class="card-title row">
                     <div class="col">
-                        <a href="{{ path('nines_blog_page_show', {'id': page.id}) }}">
+                        <a href="{{ path('nines_blog_page_show', {id: page.id}) }}">
                             {{ page.title }}
                         </a>
                     </div>

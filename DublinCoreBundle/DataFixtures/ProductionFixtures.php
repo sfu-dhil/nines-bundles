@@ -123,9 +123,6 @@ class ProductionFixtures extends Fixture implements FixtureGroupInterface {
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getGroups() : array {
         return [
             'prod',

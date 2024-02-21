@@ -9,21 +9,22 @@
 {% endblock %}
 
 {% block action_buttons %}
-    <a href="{{ path('nines_user_admin_edit', {'id': user.id}) }}" class="btn btn-primary">
-        <i class="bi bi-pencil-square"></i> Edit
+    <a href="{{ path('nines_user_admin_edit', {id: user.id}) }}" class="btn btn-primary">
+        <i class="bi bi-pencil-square" aria-hidden="true"></i> Edit
     </a>
-    <a href="{{ path('nines_user_admin_password', {'id': user.id}) }}" class="btn btn-primary">
-        <i class="bi bi-lock"></i> Change Password
+    <a href="{{ path('nines_user_admin_password', {id: user.id}) }}" class="btn btn-primary">
+        <i class="bi bi-lock" aria-hidden="true"></i> Change Password
     </a>
-    <form class="d-inline-block" method="post" action="{{ path('nines_user_admin_delete', {'id': user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this user?');">
+    <form class="d-inline-block" method="post" action="{{ path('nines_user_admin_delete', {id: user.id}) }}" onsubmit="return confirm('Are you sure you want to delete this user?');">
         <input type="hidden" name="_method" value="DELETE">
         <input type="hidden" name="_token" value="{{ csrf_token('delete_user' ~ user.id) }}">
-        <button class="btn btn-danger w-100"><i class="bi bi-trash"></i> Delete</button>
+        <button class="btn btn-danger w-100"><i class="bi bi-trash" aria-hidden="true"></i> Delete</button>
     </form>
 {% endblock %}
 
 {% block body %}
-    <table class="table table-striped table-sm">
+    <h1 class="h4">User {{ user.email }}</h1>
+    <table class="table table-striped table-sm" title="User Details">
         <tbody>
             <tr>
                 <th>Id</th>

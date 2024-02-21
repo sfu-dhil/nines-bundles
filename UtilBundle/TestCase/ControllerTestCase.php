@@ -54,7 +54,7 @@ abstract class ControllerTestCase extends WebTestCase {
     /**
      * @param Form|FormField $form
      */
-    protected function overrideField($form, string $fieldName, array|string|bool|null $value) : void {
+    protected function overrideField($form, string $fieldName, null|array|bool|string $value) : void {
         $form[$fieldName]->disableValidation()->setValue($value);
     }
 

@@ -15,7 +15,7 @@
                         {{ comment.fullname }} - please do not contact.
                     {% endif %}
                     <span class="ms-auto mb-3">
-                        <a href="{{ path('nines_feedback_comment_show', {'id': comment.id}) }}">{{ comment.created|date }}</a>
+                        <a href="{{ path('nines_feedback_comment_show', {id: comment.id}) }}">{{ comment.created|date }}</a>
                     </span>
                 </div>
             </div>

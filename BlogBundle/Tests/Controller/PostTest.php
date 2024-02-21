@@ -152,7 +152,7 @@ class PostTest extends ControllerTestCase {
     }
 
     public function testAdminDelete() : void {
-        /** @var \Nines\BlogBundle\Repository\PostRepository $repo */
+        /** @var PostRepository $repo */
         $repo = static::getContainer()->get(PostRepository::class);
         $preCount = count($repo->findAll());
 

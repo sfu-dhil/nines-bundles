@@ -16,9 +16,6 @@ class PostFixtures extends Fixture implements DependentFixtureInterface, Fixture
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Post();
@@ -36,8 +33,6 @@ class PostFixtures extends Fixture implements DependentFixtureInterface, Fixture
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return array<string>
      */
     public function getDependencies() : array {

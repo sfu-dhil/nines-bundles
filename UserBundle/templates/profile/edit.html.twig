@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Profile {{ user.email }}{% endblock %}
+{% block title %}Edit Profile{% endblock %}
 
 {% block breadcrumbs %}
     <li class="breadcrumb-item"><a href="{{ path('homepage') }}">Home</a></li>
@@ -9,6 +9,10 @@
 {% endblock %}
 
 {% block body %}
+    <h1 class="h4">Edit Profile</h1>
+    {{ form_start(form, {
+        aria_label: 'Edit Profile',
+    }) }}
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <div class="mb-3 row">

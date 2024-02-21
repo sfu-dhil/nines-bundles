@@ -37,7 +37,8 @@ class ImageType extends AbstractFileType {
                 $options['required'] = false;
                 $options['attr']['html_block'] = '
                     <figure class="text-center w-100">
-                        <img src="' . $this->router->generate('nines_media_image_thumb', ['id' => $image->getId()]) . '" class="figure-img img-fluid">
+                        <img src="' . $this->router->generate('nines_media_image_thumb', ['id' => $image->getId()]) . '" class="figure-img img-fluid"
+                             alt="Please add a description of the image below" title="Please add a description of the image below">
                         <figcaption class="figure-caption text-truncate">' . $image->getOriginalName() . '</figcaption>
                     </figure>
                 ';

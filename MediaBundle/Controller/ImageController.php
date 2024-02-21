@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route(path: '/image')]
@@ -44,6 +45,17 @@ class ImageController extends AbstractController implements PaginatorAwareInterf
     #[Route(path: '/{id}/view', name: 'nines_media_image_view', methods: ['GET'])]
     public function view(Image $image) : BinaryFileResponse {
         return new BinaryFileResponse($image->getFile());
+    }
+
+    #[Route(path: '/{id}/download', name: 'nines_media_image_download', methods: ['GET'])]
+    public function download(Image $image) : BinaryFileResponse {
+        $response = new BinaryFileResponse($image->getFile());
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $image->getOriginalName()
+        );
+
+        return $response;
     }
 
     #[Route(path: '/{id}/thumb', name: 'nines_media_image_thumb', methods: ['GET'])]

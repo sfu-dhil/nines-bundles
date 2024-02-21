@@ -56,9 +56,6 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
         $image->setThumbPath($thumbPath);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents() : array {
         return [
             Events::prePersist,

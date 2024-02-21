@@ -16,9 +16,6 @@ class CommentNoteFixtures extends Fixture implements DependentFixtureInterface, 
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new CommentNote();
@@ -32,8 +29,6 @@ class CommentNoteFixtures extends Fixture implements DependentFixtureInterface, 
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return array<string>
      */
     public function getDependencies() : array {

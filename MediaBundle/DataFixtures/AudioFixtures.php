@@ -27,9 +27,6 @@ class AudioFixtures extends Fixture implements FixtureGroupInterface {
         return ['test', 'dev'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         $this->manager->setCopy(true);
         for ($i = 1; $i <= 5; $i++) {

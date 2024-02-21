@@ -116,9 +116,6 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
         return $entity instanceof AudioContainerInterface;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSubscribedEvents() : array {
         return [
             Events::prePersist,

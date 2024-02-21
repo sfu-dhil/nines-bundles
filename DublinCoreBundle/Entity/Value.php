@@ -27,9 +27,6 @@ class Value extends AbstractEntity implements LinkedEntityInterface {
         parent::__construct();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function __toString() : string {
         if ($this->data) {
             return $this->data;

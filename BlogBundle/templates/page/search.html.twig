@@ -13,14 +13,14 @@
 
 {% block body %}
 
-    <form method="get">
+    <form method="get" role="search">
         <div class="row mb-4">
             <label for="q" class="col-sm-2 col-form-label">Search query</label>
             <div class="col-sm-10">
                 <div class="input-group">
-                    <input type='text' name='q' id='q' class='form-control' value='{{ q }}'>
-                    <button class="btn btn-primary" id='btn-search' type="submit">
-                        <i class='bi bi-search'></i>
+                    <input type="text" name="q" id="q" class="form-control" value="{{ q }}">
+                    <button class="btn btn-primary" id="btn-search" type="submit">
+                        <i class="bi bi-search" aria-hidden="true"></i>
                         Search
                     </button>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="card-header">
                     <h2 class="card-title row">
                         <div class="col">
-                            <a href="{{ path('nines_blog_page_show', {'id': page.id}) }}">
+                            <a href="{{ path('nines_blog_page_show', {id: page.id}) }}">
                                 {{ page.title }}
                             </a>
                         </div>

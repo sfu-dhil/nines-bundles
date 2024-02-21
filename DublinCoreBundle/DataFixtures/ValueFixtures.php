@@ -16,9 +16,6 @@ class ValueFixtures extends Fixture implements DependentFixtureInterface, Fixtur
         return ['dev', 'test'];
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function load(ObjectManager $manager) : void {
         for ($i = 1; $i <= 5; $i++) {
             $fixture = new Value();
@@ -33,8 +30,6 @@ class ValueFixtures extends Fixture implements DependentFixtureInterface, Fixtur
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return array<string>
      */
     public function getDependencies() : array {

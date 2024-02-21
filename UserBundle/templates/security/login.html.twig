@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Sign In{% endblock %}
+{% block title %}Please sign in{% endblock %}
 
 {% block body %}
     {% if error %}
@@ -11,7 +11,7 @@
     {% endif %}
 
     <div class="form-signin w-100 m-auto text-center" style="max-width: 330px;">
-        <form method="post">
+        <form method="post" role="form">
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>

@@ -55,6 +55,17 @@ class PdfController extends AbstractController implements PaginatorAwareInterfac
         return $response;
     }
 
+    #[Route(path: '/{id}/download', name: 'nines_media_pdf_download', methods: ['GET'])]
+    public function download(Pdf $pdf) : BinaryFileResponse {
+        $response = new BinaryFileResponse($pdf->getFile());
+        $response->setContentDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $pdf->getOriginalName()
+        );
+
+        return $response;
+    }
+
     #[Route(path: '/{id}/thumb', name: 'nines_media_pdf_thumb', methods: ['GET'])]
     public function thumbnail(Pdf $pdf) : BinaryFileResponse {
         return new BinaryFileResponse($pdf->getThumbFile());
