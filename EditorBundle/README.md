@@ -53,12 +53,12 @@ Add the ``tinymce`` class to the form widgets that will be WISIWYGish.
 # AppBundle/Forms/ContentType.php
 
     $builder->add('content', null, array(
-            'label' => 'Content',
-            'required' => false,
-            'attr' => array(
-                'class' => 'tinymce',
-            ),
-        ));
+        'label' => 'Content',
+        'required' => false,
+        'attr' => array(
+            'class' => 'tinymce',
+        ),
+    ));
 ```
 
 Then add the editor widget javascript to your templates.

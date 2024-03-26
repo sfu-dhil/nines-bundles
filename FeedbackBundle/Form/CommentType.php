@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nines\FeedbackBundle\Form;
 
 use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
+use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
 use Nines\FeedbackBundle\Entity\Comment;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -35,6 +36,10 @@ class CommentType extends AbstractType {
                     'async' => true,
                 ],
             ],
+            'mapped' => false,
+            'constraints' => [
+                new RecaptchaTrue(),
+            ],
         ]);
 
         $builder->add('fullname', TextType::class, [
@@ -58,9 +63,6 @@ class CommentType extends AbstractType {
         $builder->add('content', TextareaType::class, [
             'label' => 'Content',
             'required' => true,
-            'attr' => [
-                'class' => 'tinymce',
-            ],
         ]);
     }
 

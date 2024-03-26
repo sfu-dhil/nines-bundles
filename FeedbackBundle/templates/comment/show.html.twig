@@ -59,7 +59,7 @@
                     </div>
                 {% endif %}
                 <div class="card-body">
-                    {{ note.content }}
+                    {{ note.content|default('')|sanitize_html }}
                 </div>
                 <div class="card-footer text-end nines-author">By {{ note.user.fullname }} on {{ note.created|date }}</div>
             </div>
