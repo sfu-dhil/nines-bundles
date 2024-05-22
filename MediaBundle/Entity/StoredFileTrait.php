@@ -16,10 +16,10 @@ trait StoredFileTrait {
 
     private ?File $file = null;
 
-    #[ORM\Column(type: 'string', length: 128, nullable: false)]
+    #[ORM\Column(type: 'text', nullable: false)]
     private ?string $originalName = null;
 
-    #[ORM\Column(type: 'string', length: 128, nullable: false)]
+    #[ORM\Column(type: 'text', nullable: false)]
     private ?string $path = null;
 
     #[ORM\Column(type: 'string', length: 64, nullable: false)]

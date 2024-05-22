@@ -23,7 +23,7 @@ class Image extends AbstractEntity implements LinkedEntityInterface, StoredFileI
 
     protected ?File $thumbFile = null;
 
-    #[ORM\Column(type: 'string', length: 128, nullable: false)]
+    #[ORM\Column(type: 'text', nullable: false)]
     protected ?string $thumbPath = null;
 
     #[ORM\Column(type: 'integer', nullable: false)]

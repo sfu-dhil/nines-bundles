@@ -17,7 +17,7 @@ abstract class AbstractPdf extends AbstractEntity implements StoredFileInterface
 
     protected ?File $thumbFile = null;
 
-    #[ORM\Column(type: 'string', length: 128, nullable: false)]
+    #[ORM\Column(type: 'text', nullable: false)]
     protected ?string $thumbPath = null;
 
     public function getThumbFile() : ?File {
