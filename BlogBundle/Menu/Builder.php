@@ -10,6 +10,7 @@ use Nines\BlogBundle\Repository\PostRepository;
 use Nines\BlogBundle\Repository\PostStatusRepository;
 use Nines\UtilBundle\Menu\AbstractBuilder;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class to build some menus for navigation.
@@ -17,11 +18,13 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 class Builder extends AbstractBuilder {
     use ContainerAwareTrait;
 
-    private ?PostStatusRepository $postStatusRepository = null;
-
-    private ?PostRepository $postRepository = null;
-
-    private ?PageRepository $pageRepository = null;
+    public function __construct(
+        private TranslatorInterface $translatorInterface,
+        private PostStatusRepository $postStatusRepository,
+        private PostRepository $postRepository,
+        private PageRepository $pageRepository,
+    ) {
+    }
 
     /**
      * @param array<string,string> $options
@@ -39,6 +42,7 @@ class Builder extends AbstractBuilder {
         );
         foreach ($posts as $post) {
             $menu->addChild($post->getTitle(), [
+                'label' => $this->translatorInterface->trans($post->getTitle()),
                 'route' => 'nines_blog_post_show',
                 'routeParameters' => [
                     'id' => $post->getId(),
@@ -48,6 +52,7 @@ class Builder extends AbstractBuilder {
         $this->addDivider($menu);
 
         $menu->addChild('All Announcements', [
+            'label' => $this->translatorInterface->trans('All Announcements'),
             'route' => 'nines_blog_post_index',
             'linkAttributes' => [
                 'class' => 'dropdown-item',
@@ -87,6 +92,7 @@ class Builder extends AbstractBuilder {
         );
         foreach ($pages as $page) {
             $menu->addChild($page->getTitle(), [
+                'label' => $this->translatorInterface->trans($page->getTitle()),
                 'route' => 'nines_blog_page_show',
                 'routeParameters' => [
                     'id' => $page->getId(),
@@ -100,6 +106,7 @@ class Builder extends AbstractBuilder {
         if ($this->hasRole('ROLE_BLOG_ADMIN')) {
             $this->addDivider($menu);
             $menu->addChild('All Pages', [
+                'label' => $this->translatorInterface->trans('All Pages'),
                 'route' => 'nines_blog_page_index',
                 'linkAttributes' => [
                     'class' => 'dropdown-item',
@@ -108,20 +115,5 @@ class Builder extends AbstractBuilder {
         }
 
         return $menu->getParent();
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setPostStatusRepository(PostStatusRepository $postStatusRepository) : void {
-        $this->postStatusRepository = $postStatusRepository;
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setPostRepository(PostRepository $postRepository) : void {
-        $this->postRepository = $postRepository;
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setPageRepository(PageRepository $pageRepository) : void {
-        $this->pageRepository = $pageRepository;
     }
 }

@@ -6,11 +6,17 @@ namespace Nines\UserBundle\Menu;
 
 use Knp\Menu\ItemInterface;
 use Nines\UtilBundle\Menu\AbstractBuilder;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class to build some menus for navigation.
  */
 class Builder extends AbstractBuilder {
+    public function __construct(
+        private TranslatorInterface $translatorInterface,
+    ) {
+    }
+
     /**
      * @param array<string,mixed> $options
      */
@@ -26,6 +32,7 @@ class Builder extends AbstractBuilder {
         $user = $this->getUser();
         if ( ! $this->hasRole('ROLE_USER')) {
             $menu->addChild($name, [
+                'label' => $this->translatorInterface->trans($name),
                 'route' => 'nines_user_security_login',
                 'linkAttributes' => [
                     'class' => 'dropdown-item',
@@ -55,18 +62,21 @@ class Builder extends AbstractBuilder {
         ]);
 
         $user->addChild('Profile', [
+            'label' => $this->translatorInterface->trans('Profile'),
             'route' => 'nines_user_profile_index',
             'linkAttributes' => [
                 'class' => 'dropdown-item',
             ],
         ]);
         $user->addChild('Change password', [
+            'label' => $this->translatorInterface->trans('Change password'),
             'route' => 'nines_user_profile_password',
             'linkAttributes' => [
                 'class' => 'dropdown-item',
             ],
         ]);
         $user->addChild('Logout', [
+            'label' => $this->translatorInterface->trans('Logout'),
             'route' => 'nines_user_security_logout',
             'linkAttributes' => [
                 'class' => 'dropdown-item',
@@ -85,7 +95,7 @@ class Builder extends AbstractBuilder {
             ]);
 
             $user->addChild('users', [
-                'label' => 'Users',
+                'label' => $this->translatorInterface->trans('Users'),
                 'route' => 'nines_user_admin_index',
                 'linkAttributes' => [
                     'class' => 'dropdown-item',
