@@ -305,7 +305,7 @@ class SecurityControllerTest extends ControllerTestCase {
             ['/not/a/path'],
             ['not/a/path'],
             ['file://c/foo/b%%ar this is # a checken.'],
-            ['http:/\\foo.com//ex/bob@xcma'],
+            ['http:/\foo.com//ex/bob@xcma'],
             [':/\foo.com//ex/bob@xcma'], // actual terrible url
             [''],
             [null],

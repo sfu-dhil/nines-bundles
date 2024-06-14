@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/comment')]
 class CommentController extends AbstractController implements PaginatorAwareInterface {
@@ -71,7 +72,7 @@ class CommentController extends AbstractController implements PaginatorAwareInte
      * @throws TransportExceptionInterface
      */
     #[Route(path: '/new', name: 'nines_feedback_comment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CommentService $service, EntityManagerInterface $em, EntityLinker $linker, Notifier $notifier) : Response {
+    public function new(Request $request, TranslatorInterface $translator, CommentService $service, EntityManagerInterface $em, EntityLinker $linker, Notifier $notifier) : Response {
         $entity_id = $request->request->get('entity_id', null);
         $entity_class = $request->request->get('entity_class', null);
         $repo = $em->getRepository($entity_class);
@@ -84,7 +85,7 @@ class CommentController extends AbstractController implements PaginatorAwareInte
         if ($form->isSubmitted() && $form->isValid()) {
             $service->addComment($entity, $comment);
             $em->flush();
-            $this->addFlash('success', 'The new comment has been saved.');
+            $this->addFlash('success', $translator->trans('The new comment has been saved.'));
             $recipients = $this->getParameter('nines_feedback.recipients');
             $notifier->notify($recipients, 'New Comment Received', '@NinesFeedback/notification/comment.html.twig', [
                 'comment' => $comment,

@@ -12,15 +12,17 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AbstractBuilder implements ContainerAwareInterface {
     use ContainerAwareTrait;
 
-    protected ?FactoryInterface $factory = null;
-
-    protected ?AuthorizationCheckerInterface $authChecker = null;
-
-    protected ?TokenStorageInterface $tokenStorage = null;
+    public function __construct(
+        protected TranslatorInterface $translatorInterface,
+        protected FactoryInterface $factory,
+        protected AuthorizationCheckerInterface $authChecker,
+        protected TokenStorageInterface $tokenStorage,
+    ) {}
 
     protected function hasRole(string $role) : bool {
         if ( ! $this->tokenStorage->getToken()) {
@@ -54,7 +56,7 @@ class AbstractBuilder implements ContainerAwareInterface {
 
         return $root->addChild($slug, [
             'uri' => '#',
-            'label' => $name,
+            'label' => $this->translatorInterface->trans($name),
             'attributes' => [
                 'class' => 'nav-item dropdown',
             ],
@@ -78,20 +80,5 @@ class AbstractBuilder implements ContainerAwareInterface {
                 'class' => 'dropdown-divider',
             ],
         ]);
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setFactory(FactoryInterface $factory) : void {
-        $this->factory = $factory;
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setAuthChecker(AuthorizationCheckerInterface $authChecker) : void {
-        $this->authChecker = $authChecker;
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setTokenStorage(TokenStorageInterface $tokenStorage) : void {
-        $this->tokenStorage = $tokenStorage;
     }
 }
