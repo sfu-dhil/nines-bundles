@@ -9,13 +9,10 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Exception;
 use Nines\MediaBundle\Entity\Image;
 use Nines\MediaBundle\Entity\ImageContainerInterface;
-use Nines\MediaBundle\Repository\ImageRepository;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -26,12 +23,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class ImageManager extends AbstractFileManager implements EventSubscriber {
     private ?Thumbnailer $thumbnailer = null;
 
-    private ?ImageRepository $repo = null;
-
     /**
      * Store the image file, extracta  little metadata, and generate a thumbnail.
-     *
-     * @throws Exception
      */
     protected function uploadFile(Image $image) : void {
         $file = $image->getFile();
@@ -66,11 +59,6 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
         ];
     }
 
-    /**
-     * Event subscriber action, called before saving an image to the database.
-     *
-     * @throws Exception
-     */
     public function prePersist(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Image) {
@@ -78,11 +66,6 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
         }
     }
 
-    /**
-     * Event subscriber action, called before updating an image in the database.
-     *
-     * @throws Exception
-     */
     public function preUpdate(PreUpdateEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Image) {
@@ -112,7 +95,9 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
             }
         }
         if ($entity instanceof ImageContainerInterface) {
-            $images = $this->repo->findBy([
+            $repo = $this->em->getRepository(Image::class);
+
+            $images = $repo->findBy([
                 'entity' => $class . ':' . $entity->getId(),
             ]);
             $entity->setImages($images);
@@ -126,8 +111,6 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
     public function postRemove(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Image && $entity->getFile()) {
-            $fs = new Filesystem();
-
             try {
                 $this->remove($entity->getFile());
                 $this->remove($entity->getThumbFile());
@@ -153,10 +136,5 @@ class ImageManager extends AbstractFileManager implements EventSubscriber {
     #[\Symfony\Contracts\Service\Attribute\Required]
     public function setThumbnailer(Thumbnailer $thumbnailer) : void {
         $this->thumbnailer = $thumbnailer;
-    }
-
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setRepo(ImageRepository $repo) : void {
-        $this->repo = $repo;
     }
 }

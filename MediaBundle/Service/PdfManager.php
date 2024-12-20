@@ -9,12 +9,10 @@ use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Exception;
 use Nines\MediaBundle\Entity\Pdf;
 use Nines\MediaBundle\Entity\PdfContainerInterface;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -27,8 +25,6 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
 
     /**
      * Store the pdf file, extracta  little metadata, and generate a thumbnail.
-     *
-     * @throws Exception
      */
     protected function uploadFile(Pdf $pdf) : void {
         $file = $pdf->getFile();
@@ -60,11 +56,6 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
         ];
     }
 
-    /**
-     * Event subscriber action, called before saving an pdf to the database.
-     *
-     * @throws Exception
-     */
     public function prePersist(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Pdf) {
@@ -72,11 +63,6 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
         }
     }
 
-    /**
-     * Event subscriber action, called before updating an pdf in the database.
-     *
-     * @throws Exception
-     */
     public function preUpdate(PreUpdateEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Pdf) {
@@ -123,8 +109,6 @@ class PdfManager extends AbstractFileManager implements EventSubscriber {
     public function postRemove(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Pdf && $entity->getFile()) {
-            $fs = new Filesystem();
-
             try {
                 $this->remove($entity->getFile());
                 $this->remove($entity->getThumbFile());

@@ -11,10 +11,8 @@ use Doctrine\ORM\Events;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Nines\MediaBundle\Entity\Audio;
 use Nines\MediaBundle\Entity\AudioContainerInterface;
-use Nines\MediaBundle\Repository\AudioRepository;
 use Nines\UtilBundle\Entity\AbstractEntity;
 use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -22,14 +20,13 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * Description of FileUploader.
  */
 class AudioManager extends AbstractFileManager implements EventSubscriber {
-    private ?AudioRepository $repo = null;
-
     private function uploadFile(Audio $audio) : void {
         $file = $audio->getFile();
         if ( ! $file instanceof UploadedFile) {
             return;
         }
         $audio->setOriginalName($file->getClientOriginalName());
+
         $filename = $this->upload($file);
         $path = $this->uploadDir . '/' . $filename;
 
@@ -41,12 +38,14 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
         $audio->setMimeType($audioFile->getMimeType());
     }
 
-    /**
-     * @param ?AudioRepository $repo
-     */
-    #[\Symfony\Contracts\Service\Attribute\Required]
-    public function setRepo(?AudioRepository $repo) : void {
-        $this->repo = $repo;
+    public function getSubscribedEvents() : array {
+        return [
+            Events::prePersist,
+            Events::preUpdate,
+            Events::postLoad,
+            Events::preRemove,
+            Events::postRemove,
+        ];
     }
 
     public function prePersist(LifecycleEventArgs $args) : void {
@@ -58,17 +57,9 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
 
     public function preUpdate(PreUpdateEventArgs $args) : void {
         $entity = $args->getObject();
-        if ( ! $entity instanceof Audio) {
-            return;
+        if ($entity instanceof Audio) {
+            $this->uploadFile($entity);
         }
-        $fs = new Filesystem();
-
-        try {
-            $fs->remove($this->uploadDir . '/' . $entity->getPath());
-        } catch (IOExceptionInterface $e) {
-            $this->logger->error('Cannot remote old file ' . $this->uploadDir . '/' . $entity->getPath());
-        }
-        $this->uploadFile($entity);
     }
 
     public function postLoad(LifecycleEventArgs $args) : void {
@@ -83,7 +74,9 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
             }
         }
         if ($entity instanceof AudioContainerInterface) {
-            $audios = $this->repo->findBy([
+            $repo = $this->em->getRepository(Audio::class);
+
+            $audios = $repo->findBy([
                 'entity' => $class . ':' . $entity->getId(),
             ]);
             $entity->setAudios($audios);
@@ -93,8 +86,6 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
     public function postRemove(LifecycleEventArgs $args) : void {
         $entity = $args->getObject();
         if ($entity instanceof Audio && $entity->getFile()) {
-            $fs = new Filesystem();
-
             try {
                 $this->remove($entity->getFile());
             } catch (IOExceptionInterface $ex) {
@@ -114,15 +105,5 @@ class AudioManager extends AbstractFileManager implements EventSubscriber {
 
     public function acceptsAudios(AbstractEntity $entity) : bool {
         return $entity instanceof AudioContainerInterface;
-    }
-
-    public function getSubscribedEvents() : array {
-        return [
-            Events::prePersist,
-            Events::preUpdate,
-            Events::postLoad,
-            Events::preRemove,
-            Events::postRemove,
-        ];
     }
 }
